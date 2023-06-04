@@ -11,6 +11,7 @@ import { provideFirestore, getFirestore, FirestoreModule } from '@angular/fire/f
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,7 @@ import { HttpClientModule } from '@angular/common/http';
     CommonModule, 
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    //ToastrModule.forRoot()
+    ToastrModule.forRoot(),    
   ],
   providers: [],
   bootstrap: [AppComponent]

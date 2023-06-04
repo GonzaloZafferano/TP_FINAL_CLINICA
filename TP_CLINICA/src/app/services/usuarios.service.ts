@@ -12,17 +12,20 @@ export class UsuarioService {
   constructor(private firestoreDB: FirestoreService) {
   }
 
-  cargarUsuarioConIdAsignado(usuario: Usuario) {
+  cargarUsuarioConIdAsignado(usuario: any) {
     return this.firestoreDB.guardarObjetoConIdAsignado(this.nombreColeccion, { ...usuario });
   }
 
-  cargarUsuarioSinIdAsignado(usuario: Usuario) {
+  cargarUsuarioSinIdAsignado(usuario: any) {
     return this.firestoreDB.guardarObjetoSinIdAsignado(this.nombreColeccion, { ...usuario });
   }
 
-
   async traerUsuarioPorId(idUsuario: string) {
     return this.firestoreDB.traerObjetoPorId_Promesa(this.nombreColeccion, idUsuario);
+  }
+
+  traerUsuarioPorId_Observable(idUsuario: string) {
+    return this.firestoreDB.traerObjetoPorId_Observable(this.nombreColeccion, idUsuario);
   }
 
   obtenerListaDeUsuarios() {
@@ -42,14 +45,18 @@ export class UsuarioService {
   }
 
   traerListaDeCorreosFiltradaConObservable(correoElectronico: string) {
-    return this.firestoreDB.traerListaDeObjetosFiltradaConObservable(this.nombreColeccion, 'correo', TipoIgualdad.igual,  correoElectronico);
+    return this.firestoreDB.traerListaDeObjetosFiltradaConObservable(this.nombreColeccion, 'correo', TipoIgualdad.igual, correoElectronico);
   }
 
-  traerListaDeUsuariosFiltradaConObservable(nombreUsuario: string) {
-    return this.firestoreDB.traerListaDeObjetosFiltradaConObservable(this.nombreColeccion, 'usuario', TipoIgualdad.igual, nombreUsuario,);
+  traerListaDeUsuariosFiltradaConObservable(columna: string, valor : any) {
+    return this.firestoreDB.traerListaDeObjetosFiltradaConObservable(this.nombreColeccion, columna, TipoIgualdad.igual, valor);
   }
 
   traerListaDeCorreosFiltrada(correoElectronico: string) {
     return this.firestoreDB.traerListaDeObjetosFiltrada(this.nombreColeccion, 'correo', TipoIgualdad.igual, correoElectronico);
+  }
+
+  traerListaDeDniFiltradaConObservable(dni: string) {
+    return this.firestoreDB.traerListaDeObjetosFiltradaConObservable(this.nombreColeccion, 'dni', TipoIgualdad.igual, dni);
   }
 }

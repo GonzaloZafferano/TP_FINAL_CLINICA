@@ -5,6 +5,7 @@ import { Usuario } from '../models/class/usuario';
 import { AuthService } from '../services/auth.service';
 import { UsuarioService } from '../services/usuarios.service';
 import { validarCorreo } from '../validators/validaciones';
+import { ToastService } from '../services/toast.service';
 
 
 @Component({
@@ -18,7 +19,7 @@ export class LoginComponent {
   cargando: boolean = false;
 
   constructor(private router: Router, private authService: AuthService, private usuarioService: UsuarioService, 
-    //private toastPredeterminado: ToastPredeterminadosService
+    private toastService: ToastService
     ) { }
 
   ngOnInit(): void {
@@ -51,7 +52,6 @@ export class LoginComponent {
 
   iniciarSesion() {
     this.cargando = true;
-    //console.log(this.form.value);
     let hayError = false;
     let hayCamposVacios = false;
 
@@ -73,7 +73,7 @@ export class LoginComponent {
       mensajeError += 'Hay campos vacíos, por favor complételos para poder registrarse.';
 
     if (hayError || hayCamposVacios){
-     // this.toastPredeterminado.error(mensajeError, 'Error.');
+      this.toastService.error(mensajeError, 'Error.');
       this.cargando = false;
     }
 
@@ -94,14 +94,14 @@ export class LoginComponent {
             .then(x => {
               if (x != null) {
                 let usuario = x as any;
-                this.usuario.clave = usuario.clave;
-                this.usuario.correo = usuario.correo;
-               /// this.usuario.usuario = usuario.usuario;
+               // this.usuario.clave = usuario.clave;
+               // this.usuario.correo = usuario.correo;
+              // this.usuario.usuario = usuario.usuario;
                 this.usuario.id = usuario.id;
-               // this.usuario.fechaRegistro = usuario.fechaRegistro;
+              // this.usuario.fechaRegistro = usuario.fechaRegistro;
 
                
-                //this.toastPredeterminado.exito(`Bienvenido/a ${this.usuario.usuario}!`, 'Login exitoso!');
+                this.toastService.exito(`Bienvenido/a ${this.usuario}!`, 'Login exitoso!');
 
               
       
@@ -117,7 +117,7 @@ export class LoginComponent {
           mensajeError = 'Ha ocurrido un error al intentar cargar los datos del usuario.';
 
         if (mensajeError != '') {
-         // this.toastPredeterminado.error(mensajeError);
+          this.toastService.error(mensajeError);
           this.cargando = false;
         }
       })
@@ -143,7 +143,7 @@ export class LoginComponent {
             break;
         }
         if (mensajeError != '') {
-      //    this.toastPredeterminado.error(mensajeError, 'Ha ocurrido un error.');
+          this.toastService.error(mensajeError, 'Ha ocurrido un error.');
           this.cargando = false;
         }
       });

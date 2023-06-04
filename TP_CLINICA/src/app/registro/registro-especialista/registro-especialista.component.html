@@ -1,0 +1,211 @@
+<div class="container">
+    <div class="row w-100 d-flex justify-content-center ml-0">
+        <div class="col col-12 justify-content-center col-lg-12">
+
+            <div class="card p-4 mt-4 centrar sombra-luminosa">
+                <form [formGroup]="form">
+                    <fieldset>
+                        <legend>
+                            Complete sus datos para registrarse (ESPECIALISTA)
+                        </legend>
+                        <div class="display justify-content-between w-100">
+
+                            <!--PRIMER BLOQUE-->
+                            <div class="width p-3">
+                                <!--NOMBRE-->
+                                <div>
+                                    <label class="form-label" for="nombre">Nombre</label>
+                                    <input type="text" class="form-control" id="nombre" formControlName="nombre">
+                                    <ng-container *ngIf="nombre?.errors">
+                                        <small class="d-block error"
+                                            *ngFor="let error of obtenerErrores(nombre?.errors)">
+                                            {{nombre?.getError(error).mensaje}}
+                                        </small>
+                                    </ng-container>
+                                </div>
+
+                                <!--APELLIDO-->
+                                <div>
+                                    <label class="form-label" for="apellido">Apellido</label>
+                                    <input type="text" class="form-control" id="apellido" formControlName="apellido">
+                                    <ng-container *ngIf="apellido?.errors">
+                                        <small class="d-block error"
+                                            *ngFor="let error of obtenerErrores(apellido?.errors)">
+                                            {{apellido?.getError(error).mensaje}}
+                                        </small>
+                                    </ng-container>
+                                </div>
+
+                                <!--EDAD-->
+                                <div>
+                                    <label class="form-label" for="edad">Edad</label>
+                                    <input type="text" class="form-control" id="edad" formControlName="edad">
+                                    <ng-container *ngIf="edad?.errors">
+                                        <small class="d-block error" *ngFor="let error of obtenerErrores(edad?.errors)">
+                                            {{edad?.getError(error).mensaje}}
+                                        </small>
+                                    </ng-container>
+                                </div>
+
+                                <!--DNI-->
+                                <div>
+                                    <label class="form-label" for="dni">DNI</label>
+                                    <input type="text" class="form-control" id="dni" formControlName="dni">
+                                    <ng-container *ngIf="validarDni.validando">
+                                        <div class="d-flex justify-content-start"
+                                            style="align-items: center; height: 100% !important;">
+                                            <span class="m-0 fs-6 fw-bold text-primary">Validando...</span>
+                                            <div class="spinner-border text-primary"
+                                                style="align-self: center; scale: 0.5;">
+                                            </div>
+                                        </div>
+                                    </ng-container>
+                                    <ng-container *ngIf="dni?.errors">
+                                        <small class="d-block error" *ngFor="let error of obtenerErrores(dni?.errors)">
+                                            {{dni?.getError(error).mensaje}}
+                                        </small>
+                                    </ng-container>
+                                </div>
+
+                                <!--ESPECIALIDAD-->
+                                <div class="border p-2 m-3">
+                                    <label class="form-label d-block" for="especialidad">Seleccione sus
+                                        especialidades</label>
+                                    <div>
+                                        <select class="w-100 form-select" name="selectEspecialidades"
+                                            id="selectEspecialidades" formControlName="selectEspecialidades"
+                                            (change)="seleccion($event)">
+                                            <optgroup>
+                                                <option selected disabled value="-1">Seleccione especialidad...</option>
+                                                <option *ngFor="let especialidad of especialidadesVisibles"
+                                                    value="{{especialidad.id}}">
+                                                    {{especialidad.nombre | titlecase }}
+                                                </option>
+                                            </optgroup>
+                                        </select>
+                                    </div>
+                                    <label>Especialidades seleccionadas</label>
+                                    <input readonly type="text" class="form-control deshabilitado" id="especialidad"
+                                        formControlName="especialidad">
+                                    <ng-container *ngIf="especialidad?.errors">
+                                        <small class="d-block error"
+                                            *ngFor="let error of obtenerErrores(especialidad?.errors)">
+                                            {{especialidad?.getError(error).mensaje}}
+                                        </small>
+                                    </ng-container>
+
+                                    <!--OTRAS ESPECIALIDADES-->
+                                    <div>
+                                        <div class="form-check">
+                                            <label for="otroEspecialidad" class="form-check-label">Agregar otra especialidad</label>
+                                            <input type="checkbox" #check (change)="checked($event)"
+                                                class="form-check-input" formControlName="otro" id="otro" name="otro">
+                                        </div>
+                                        <input type="text" formControlName="otroEspecialidad" id="otroEspecialidad"
+                                            name="otroEspecialidad" [ngClass]="{'deshabilitado' : !check.checked}"
+                                            [readOnly]=" !check.checked" class="form-control">
+
+                                        <ng-container *ngIf="validarEspecialidad.validando">
+                                            <div class="d-flex justify-content-start"
+                                                style="align-items: center; height: 100% !important;">
+                                                <span class="m-0 fs-6 fw-bold text-primary">Validando...</span>
+                                                <div class="spinner-border text-primary"
+                                                    style="align-self: center; scale: 0.5;">
+                                                </div>
+                                            </div>
+                                        </ng-container>
+                                        <ng-container *ngIf="otroEspecialidad?.errors">
+                                            <small class="d-block error"
+                                                *ngFor="let error of obtenerErrores(otroEspecialidad?.errors)">
+                                                {{otroEspecialidad?.getError(error).mensaje}}
+                                            </small>
+                                        </ng-container>
+                                    </div>
+                                    <div class="d-flex justify-content-end">
+                                        <button class="btn btn-secondary mt-2 fw-bold"
+                                            (click)="limpiarEspecialidad()">Limpiar</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--SEGUNDO BLOQUE-->
+                            <div class="width p-3">
+
+                                <!--CORREO-->
+                                <div>
+                                    <label class="form-label" for="correo">Correo Electronico</label>
+                                    <input type="text" class="form-control" id="correo" formControlName="correo">
+                                    <ng-container *ngIf="validarCorreo.validando">
+                                        <div class="d-flex justify-content-start"
+                                            style="align-items: center; height: 100% !important;">
+                                            <span class="m-0 fs-6 fw-bold text-primary">Validando...</span>
+                                            <div class="spinner-border text-primary"
+                                                style="align-self: center; scale: 0.5;">
+                                            </div>
+                                        </div>
+                                    </ng-container>
+                                    <ng-container *ngIf="correo?.errors">
+                                        <small class="d-block error"
+                                            *ngFor="let error of obtenerErrores(correo?.errors)">
+                                            {{correo?.getError(error).mensaje}}
+                                        </small>
+                                    </ng-container>
+                                </div>
+
+                                <!--CONTRASEÑA-->
+                                <div>
+                                    <label class="form-label" for="clave">Contraseña</label>
+                                    <input type="password" class="form-control" id="clave" formControlName="clave">
+                                    <ng-container *ngIf="clave?.errors">
+                                        <small class="d-block error"
+                                            *ngFor="let error of obtenerErrores(clave?.errors)">
+                                            {{clave?.getError(error).mensaje}}
+                                        </small>
+                                    </ng-container>
+                                </div>
+
+                                <!--REINGRESO CONTRASEÑA-->
+                                <div>
+                                    <label class="form-label" for="confirmarClave">Reingrese Contraseña</label>
+                                    <input type="password" class="form-control" id="confirmarClave"
+                                        formControlName="confirmarClave">
+                                    <ng-container *ngIf="confirmarClave?.errors">
+                                        <small class="d-block error"
+                                            *ngFor="let error of obtenerErrores(confirmarClave?.errors)">
+                                            {{confirmarClave?.getError(error).mensaje}}
+                                        </small>
+                                    </ng-container>
+                                </div>
+
+                                <!--IMAGEN 1-->
+                                <div>
+                                    <label for="imagen1" class="form-label">Imagen para Perfil</label>
+                                    <input type="file" (change)="cargarArchivo(0,$event)" formControlName="imagen1"
+                                        class="form-control" name="imagen1" id="imagen1"
+                                        accept="image/png, image/jpeg, image/jpg" [multiple]="false">
+                                    <ng-container *ngIf="imagen1?.errors">
+                                        <small class="d-block error"
+                                            *ngFor="let error of obtenerErrores(imagen1?.errors)">
+                                            {{imagen1?.getError(error).mensaje}}
+                                        </small>
+                                    </ng-container>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--BOTONES-->
+                        <div class="d-flex justify-content-between">
+                            <button type="button" (click)="limpiarFormulario()" class="btn btn-secondary mt-2 fw-bold">
+                                Limpiar
+                            </button>
+                            <button type="button" (click)="registrarUsuario()" class="btn btn-primary mt-2 fw-bold">
+                                Registrar
+                            </button>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<app-loader [texto]="textoCarga" *ngIf="cargando;"></app-loader>

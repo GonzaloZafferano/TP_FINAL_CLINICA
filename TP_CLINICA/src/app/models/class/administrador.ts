@@ -1,18 +1,16 @@
 import { Acceso } from "../enums/acceso";
 import { Perfil } from "../enums/perfil";
 
-export class Usuario {
+export class Administrador {
   id: string = '';
   correo: string = '';
   nombre: string = '';
   apellido: string = '';
   dni: number = 0;
-  imagen1: string = '';
-  imagen2: string = '';
+  imagen: string = '';
   edad: number = 0;
-  obraSocial: number = 0
-  habilitado: Acceso = Acceso.espera; 
+  habilitado: Acceso = Acceso.espera;
   correoRegistrado: boolean = false;
-  perfil : Perfil = Perfil.usuario;
+  perfil : Perfil = Perfil.administrador;
   fechaRegistro : Date = new Date();
 }

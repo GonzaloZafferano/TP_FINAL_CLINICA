@@ -1,0 +1,25 @@
+.error {
+    color: red;
+}
+
+.deshabilitado{
+    background-color: var(--bs-secondary-bg) !important;
+}
+
+.display {
+    display: flex;
+}
+
+.width {
+    width: 50%;
+}
+
+@media (max-width: 700px) {
+    .display {
+        display: block;
+    }
+
+    .width {
+        width: 100%;
+    }
+}
