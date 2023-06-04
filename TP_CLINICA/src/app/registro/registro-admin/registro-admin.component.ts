@@ -9,6 +9,7 @@ import { Acceso } from "src/app/models/enums/acceso";
 import { AuthService } from "src/app/services/auth.service";
 import { FirestorageService } from "src/app/services/firestorage.service";
 import { FormatoService } from "src/app/services/formato.service";
+import { SwalService } from "src/app/services/swal.service";
 import { ToastService } from "src/app/services/toast.service";
 import { UsuarioService } from "src/app/services/usuarios.service";
 import { validarCorreo, validarSiCorreoExisteAsync, validarConfirmacionDeClave, validarCampoTexto, validarCampoNumero, validarCampoArchivo, validarSiDniExisteAsync } from "src/app/validators/validaciones";
@@ -87,6 +88,7 @@ export class RegistroAdminComponent {
     private authService: AuthService,
     private formato: FormatoService,
     private usuarioService: UsuarioService,
+    private swalService : SwalService,
     private firestorageService: FirestorageService,
     private toastService: ToastService) {
     this.validarCorreo = new ValidacionAsync();
@@ -154,7 +156,7 @@ export class RegistroAdminComponent {
   private registrarUsuarioEnFirestore() {
     this.cargando = true;
 
-    this.authService.registrarUsuario(this.correo?.value, this.clave?.value)
+    this.authService.registrarUsuarioConVerificacion(this.correo?.value, this.clave?.value)
       .then(x => {
         let idUsuario = x.user?.uid;
         if (idUsuario != null) {
@@ -185,11 +187,13 @@ export class RegistroAdminComponent {
               administrador.fechaRegistro = new Date();
 
               this.usuarioService.cargarUsuarioConIdAsignado(administrador)
-                .then(x => {
-                  //this.router.navigate(['../home']);
+                .then(x => {              
                   this.limpiarFormulario();
                   this.cargando = false;
                   this.toastService.exito('El registro se ha completado exitosamente!.', 'Registro exitoso');
+                  this.authService.logOut();
+                  this.swalService.exito('El registro se ha completado exitosamente. Por favor, ingrese a su cuenta para verificar su correo electrónico y, a continuación, inicie sesión.', 'AVISO');
+                  this.router.navigate(['../login']);
                 })
             }
           })

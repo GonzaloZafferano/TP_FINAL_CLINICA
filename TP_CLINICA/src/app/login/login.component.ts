@@ -4,8 +4,11 @@ import { Router } from '@angular/router';
 import { Usuario } from '../models/class/usuario';
 import { AuthService } from '../services/auth.service';
 import { UsuarioService } from '../services/usuarios.service';
-import { validarCorreo } from '../validators/validaciones';
+import { validarCampoTexto, validarCorreo } from '../validators/validaciones';
 import { ToastService } from '../services/toast.service';
+import Swal from 'sweetalert2';
+import { SwalService } from '../services/swal.service';
+import { Acceso } from '../models/enums/acceso';
 
 
 @Component({
@@ -14,13 +17,16 @@ import { ToastService } from '../services/toast.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  form!: FormGroup;
-  usuario: Usuario = new Usuario();
+  form!: FormGroup; 
   cargando: boolean = false;
+  loaderTexto = 'Iniciando Sesión';
 
-  constructor(private router: Router, private authService: AuthService, private usuarioService: UsuarioService, 
+  constructor(private router: Router,
+    private authService: AuthService,
+    private usuarioService: UsuarioService,
+    private swalService: SwalService,
     private toastService: ToastService
-    ) { }
+  ) { }
 
   ngOnInit(): void {
 
@@ -35,7 +41,7 @@ export class LoginComponent {
           clave: new FormControl('',
             {
               validators: [
-                Validators.minLength(6)
+                validarCampoTexto(6, 100, null, false)
               ]
             }
           ),
@@ -67,13 +73,13 @@ export class LoginComponent {
 
     let mensajeError = '';
     if (hayError)
-      mensajeError += 'Hay campos con errores, por favor corríjalos para poder registrarse. </br>';
+      mensajeError += 'Hay campos con errores, por favor corríjalos para iniciar sesión. </br>';
 
-    if (hayCamposVacios)
-      mensajeError += 'Hay campos vacíos, por favor complételos para poder registrarse.';
+    // if (hayCamposVacios)
+    //   mensajeError += 'Hay campos vacíos, por favor complételos para iniciar sesión.';
 
-    if (hayError || hayCamposVacios){
-      this.toastService.error(mensajeError, 'Error.');
+    if (hayError || hayCamposVacios) {
+      this.toastService.error(mensajeError, 'Aviso.');
       this.cargando = false;
     }
 
@@ -82,39 +88,49 @@ export class LoginComponent {
     }
   }
 
+  public obtenerErrores(errores: any): string[] {
+    return Object.keys(errores);
+  }
+
+
   loguearUsuario() {
     let mensajeError = '';
 
-    this.authService.registrarUsuario(this.correo?.value, this.clave?.value)
+    this.authService.logIn(this.correo?.value, this.clave?.value)
       .then(async x => {
         let idUsuario = x.user?.uid;
+        let verificado = x.user?.emailVerified;
+        if (verificado) {
 
-        if (idUsuario != null) {
-          await this.usuarioService.traerUsuarioPorId(idUsuario)
-            .then(x => {
-              if (x != null) {
-                let usuario = x as any;
-               // this.usuario.clave = usuario.clave;
-               // this.usuario.correo = usuario.correo;
-              // this.usuario.usuario = usuario.usuario;
-                this.usuario.id = usuario.id;
-              // this.usuario.fechaRegistro = usuario.fechaRegistro;
+          if (idUsuario != null) {
+            await this.usuarioService.traerUsuarioPorId(idUsuario)
+              .then(x => {
+                if (x != null) {
+                  let usuario = x as any;
 
-               
-                this.toastService.exito(`Bienvenido/a ${this.usuario}!`, 'Login exitoso!');
-
-              
-      
-                this.router.navigate(['../home']);
-
-                setTimeout(() => {
-                  this.cargando = false;
-                }, 1000);
-              } else
-                mensajeError = 'Ha ocurrido un error al intentar cargar los datos del usuario.';
-            }).catch();
-        } else
-          mensajeError = 'Ha ocurrido un error al intentar cargar los datos del usuario.';
+                  if (usuario.habilitado == Acceso.habilitado) {  
+                    this.toastService.exito(`Bienvenido/a ${usuario.nombre}, ${usuario.apellido} !`, 'Login exitoso!');
+                    
+                    setTimeout(() => {
+                      this.router.navigate(['home']);
+                      this.cargando = false;
+                    }, 1000);
+                  }
+                  else {
+                    this.authService.logOut();
+                    this.swalService.error('Su cuenta no esta habilitada para iniciar sesión.');
+                    this.cargando = false;
+                  }
+                } else
+                  mensajeError = 'Ha ocurrido un error al intentar cargar los datos del usuario.';
+              }).catch();
+          } else
+            mensajeError = 'Ha ocurrido un error al intentar cargar los datos del usuario.';
+        } else {
+          this.authService.logOut();
+          this.swalService.error('¡Debe verificar su correo electrónico! Por favor, revise su bandeja de entrada (incluyendo la carpeta de Spam) y haga clic en el enlace de verificación para completar el proceso.');
+          this.cargando = false;
+        }
 
         if (mensajeError != '') {
           this.toastService.error(mensajeError);
@@ -143,7 +159,7 @@ export class LoginComponent {
             break;
         }
         if (mensajeError != '') {
-          this.toastService.error(mensajeError, 'Ha ocurrido un error.');
+          this.toastService.error(mensajeError, 'Aviso.');
           this.cargando = false;
         }
       });
@@ -161,18 +177,18 @@ export class LoginComponent {
 
   listaUsuarios: any = [
     {
-      correo: 'prueba@prueba.com',
+      correo: 'posate6372@onlcool.com',
       clave: '111111'
     },
     {
-      correo: 'test@test.com',
+      correo: 'dedor27772@pyadu.com',
       clave: '111111'
     },
     {
-      correo: 'gonzalo@prueba.com',
+      correo: 'vifat71287@peogi.com',
       clave: '111111'
     }
-  ];
+  ];  
 
   cargarUsuarioDefault(index: number) {
     this.correo?.setValue(this.listaUsuarios[index].correo);

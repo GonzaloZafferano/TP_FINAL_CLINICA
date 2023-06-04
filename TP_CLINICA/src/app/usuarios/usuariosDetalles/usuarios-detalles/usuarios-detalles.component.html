@@ -1,0 +1,50 @@
+<ng-container>
+    <div *ngIf="spinner; else detalleUsuario" class="d-flex justify-content-around" [style]="anchoSpinner">
+        <span class="fs-3 fw-bold">Cargando...</span>
+        <div class="spinner-border text-danger text-center" style="align-self: center; scale: 1.2;"></div>
+    </div>
+    <ng-template #detalleUsuario>
+        <div *ngIf="usuario" style="height: 100% !important;" class="card">
+            <div class="card-header bg-dark text-light">
+                <h3 class="card-title">
+                    Detalles Usuario
+                </h3>
+            </div>
+            <div class="d-flex justify-content-center">
+                <img [src]="obtenerUrlImagen(usuario)" class="card-img-top imagen-usuario" alt="imagen usuario">
+            </div>
+            <div class="card-body">
+                <div class="d-flex justify-content-center">
+                    <div>
+                        <div class="d-flex">
+                            <h5 class="">Nombre: {{usuario?.nombre}} {{usuario?.apellido}}</h5>
+                        </div>
+                        <div class="d-flex">
+                            <h5 class="">Edad: {{usuario?.edad}} años</h5>
+                        </div>
+                        <div class="d-flex">
+                        <h5 class="">Dni: {{usuario?.dni}}</h5>
+                    </div>
+                    <div class="d-flex">
+                        <h5 class="">Estado: {{usuario?.habilitado | estados}}</h5>
+                    </div>
+                    <div class="d-flex">
+                        <h5 class="">Perfil: {{usuario?.perfil | tipoUsuario}}</h5>
+                    </div>
+                </div>
+                </div>
+                <div class="d-flex justify-content-around" style="align-items: center;">
+                    <button class="btn btn-danger p-2 m-2 fs-4 fw-bold" 
+                    [disabled]="!estaHabilitado(usuario) || esUsuarioActual(usuario)"
+                    (click)="deshabilitar(usuario)"
+                        >Deshabilitar</button>
+                        <h3 *ngIf="esUsuarioActual(usuario)">No se puede habilitar/deshabilitar a si mismo.</h3>
+                    <button class="btn btn-success p-2 m-2 fs-4 fw-bold" 
+                    [disabled]="estaHabilitado(usuario) || esUsuarioActual(usuario)"
+                    (click)="habilitar(usuario)"
+                        >Habilitar</button>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</ng-container>

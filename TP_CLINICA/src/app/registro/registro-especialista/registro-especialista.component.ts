@@ -10,6 +10,7 @@ import { EspecialidadService } from "src/app/services/especialidad.service";
 import { FirestorageService } from "src/app/services/firestorage.service";
 import { FormatoService } from "src/app/services/formato.service";
 import { SolicitudesService } from "src/app/services/solicitudes.service";
+import { SwalService } from "src/app/services/swal.service";
 import { ToastService } from "src/app/services/toast.service";
 import { UsuarioService } from "src/app/services/usuarios.service";
 import { validarCorreo, validarSiCorreoExisteAsync, validarConfirmacionDeClave, validarCampoTexto, validarCampoNumero, validarCampoArchivo, validarSiDniExisteAsync, validarCampoSelect, validarCampoOtro, validarSiEspecialidadExisteAsync } from "src/app/validators/validaciones";
@@ -121,6 +122,7 @@ export class RegistroEspecialistaComponent {
 
   constructor(private router: Router,
     private authService: AuthService,
+    private swalService : SwalService,
     private formato: FormatoService,
     private usuarioService: UsuarioService,
     private firestorageService: FirestorageService,
@@ -233,7 +235,7 @@ export class RegistroEspecialistaComponent {
   }
 
   cargarUsuarioAceptado(especialista: any) {
-    this.authService.registrarUsuario(this.correo?.value, this.clave?.value)
+    this.authService.registrarUsuarioConVerificacion(this.correo?.value, this.clave?.value)
       .then(x => {
         let idUsuario = x.user?.uid;
         if (idUsuario != null && idUsuario != undefined) {
@@ -267,6 +269,9 @@ export class RegistroEspecialistaComponent {
                 this.usuarioService.cargarUsuarioConIdAsignado(usuario).then(x => {
                   this.cargando = false;
                   this.toastService.exito('Se ha habilitado su ingreso!', 'Aviso.', 3500);
+                  this.authService.logOut();
+                  this.swalService.exito('El registro se ha completado exitosamente. Por favor, ingrese a su cuenta para verificar su correo electrónico y, a continuación, inicie sesión.', 'AVISO');
+                  this.router.navigate(['../login']);
                 });
               }
             });

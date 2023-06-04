@@ -9,6 +9,8 @@ export class FechaStringPipe implements PipeTransform {
 
   transform(fecha: any): string {
     if (fecha) {
+
+      let fecha2 = new Date(fecha.seconds * 1000);
       let fechaDate = fecha.toDate();
       return this.formato.fechaToString(fechaDate, false, false);
     }

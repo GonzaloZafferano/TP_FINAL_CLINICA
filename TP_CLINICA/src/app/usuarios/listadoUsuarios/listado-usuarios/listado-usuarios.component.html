@@ -1,0 +1,100 @@
+<div class="container-fluid">
+    <button class="btn btn-warning p-2 m-2 fs-4 fw-bold" routerLink="./usuarios-en-espera">Usuarios en espera ({{usuariosEnEspera == -1 ? '0' : usuariosEnEspera}})</button>
+
+    <h3 class="text-center custom-font">Listado de Usuarios</h3>
+    <div class="d-flex justify-content-center">
+        <div class="w-75">
+            <app-usuarios-detalles [usuario]="filaSeleccionada"></app-usuarios-detalles>
+        </div>
+    </div>
+    <div class="row bg-dark text-light text-center">
+        <div class="col col border d-none">
+            <h3 class="custom-font-headers">Id</h3>
+        </div>
+        <div class="col col-12 col-xl-1 border">
+            <h3 class="custom-font-headers">Nombre</h3>
+        </div>
+        <div class="col col-12 col-xl-1 border">
+            <h3 class="custom-font-headers">Apellido</h3>
+        </div>
+        <div class="col col-12 col-xl-1 border">
+            <h3 class="custom-font-headers">Edad</h3>
+        </div>
+        <div class="col col-12 col-xl-1 border">
+            <h3 class="custom-font-headers">Dni</h3>
+        </div>
+        <div class="col col-12 col-xl-2 border">
+            <h3 class="custom-font-headers">Tipo Usuario</h3>
+        </div>
+        <div class="col col-12 col-xl-2 border">
+            <h3 class="custom-font-headers">Correo</h3>
+        </div> 
+        <div class="col col-12 col-xl-1 border">
+            <h3 class="custom-font-headers">Registro</h3>
+        </div> 
+        <div class="col col-12 col-xl-2 border">
+            <h3 class="custom-font-headers">Imagen</h3>
+        </div>        
+        <div class="col col-12 col-xl-1 border">
+            <h3 class="custom-font-headers">Estado</h3>
+        </div>
+    </div>
+
+    <div *ngIf="spinner; else lista" class="d-flex justify-content-center">
+        <span class="m-3 fs-3 fw-bold">Cargando...</span>
+        <div class="spinner-border text-danger" style="align-self: center; scale: 1.2;"></div>
+    </div>
+    <ng-template #lista>
+        <div *ngFor="let item of listado" class="row custom-pointer" (click)="seleccionDeFila(item)"
+            [class.fila-seleccionada]="filaSeleccionada != null && item.id === filaSeleccionada.id">
+            <div class="col col border d-none" >
+                {{item.id}}
+            </div>
+            <div class="col col-12 col-xl-1 border custom-font-data columna">
+                <p>
+                    {{item.nombre}}
+                </p>
+            </div>
+            <div class="col col-12 col-xl-1 border custom-font-data columna">
+                <p>
+                    {{item.apellido}}
+                </p>                
+            </div>
+            <div class="col col-12 col-xl-1 border custom-font-data columna">
+                <p>                   
+                    {{item.edad}}
+                </p>
+            </div>
+            <div class="col col-12 col-xl-1 border custom-font-data columna">
+                <p>
+                    {{item.dni}}
+                </p>
+            </div>       
+            <div class="col col-12 col-xl-2 border custom-font-data columna">
+                <p>
+                    {{item.perfil | tipoUsuario}}
+                </p> 
+            </div>      
+            <div class="col col-12 col-xl-2 border custom-font-data text-right columna">
+                <p>                    
+                    {{item.correo}}
+                </p>
+            </div>  
+            <div class="col col-12 col-xl-1 border custom-font-data text-right columna">
+                <p>                    
+                    {{item.fechaRegistro | fechaString}}
+                </p>
+            </div> 
+            <div class="col col-12 col-xl-2 border custom-font-data text-right justify-content-center columna">
+                <div class="d-flex justify-content-center">
+                    <img [src]="obtenerUrlImagen(item)" class="imagen-usuario" alt="imagen usuario">               
+                </div>
+            </div>  
+            <div class="col col-12 col-xl-1 border custom-font-data text-right columna">
+                <p>                    
+                    {{item.habilitado | estados}}
+                </p>
+            </div>
+        </div>
+    </ng-template>
+</div>

@@ -45,13 +45,13 @@
 
 /***************************** SWEET ALERT ******************************************/
 .sw-container {
-    background-color: rgba(81, 255, 0, 0.2) !important;
-    border-radius: 50px !important;
+    background-color: rgba(105, 215, 54, 0.558) !important;
+    /* border-radius: 50px !important; */
 }
 
-.sw-container-perdio {
-    background-color: rgba(255, 55, 0, 0.2) !important;
-    border-radius: 50px !important;
+.sw-container-error{
+    background-color: rgba(255, 55, 0, 0.465) !important;
+    /* border-radius: 50px !important; */
 }
 
 .sw-cancel {

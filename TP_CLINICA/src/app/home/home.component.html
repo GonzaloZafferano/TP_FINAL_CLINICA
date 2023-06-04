@@ -1,0 +1,6 @@
+<p>home works!</p>
+
+
+<button class="btn btn-warning fs-4 fw-bold p-2 m-2" (click)="cerrarSesion()">Cerrar Sesión</button>
+<button class="btn btn-success fs-4 fw-bold p-2 m-2" [hidden]="!esAdmin()" routerLink="../usuarios/" >Usuarios</button>
+

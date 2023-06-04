@@ -1,8 +1,11 @@
 
 
-<button routerLink="usuario">Usuario</button>
-<button routerLink="administrador">Administrador</button>
-<button routerLink="especialista">Especialista</button>
-<button>Usuario</button>
+<button class="btn btn-primary fs-4 fw-bold p-2 m-2" routerLink="" [hidden]="usuarioEstaLogueado()">Bienvenido</button>
+
+<button class="btn btn-primary fs-4 fw-bold p-2 m-2" routerLink="administrador" [hidden]="ocultarBtnCuentaAdmin || !esAdministrador()" (click)="cuenta(1)">Registro Administrador</button>
+<button class="btn btn-primary fs-4 fw-bold p-2 m-2" routerLink="especialista" [hidden]="ocultarBtnCuentaEspecialista" (click)="cuenta(2)">Registro Especialista</button>
+<button class="btn btn-primary fs-4 fw-bold p-2 m-2" routerLink="usuario" [hidden]="ocultarBtnCuentaUsuario" (click)="cuenta(3)">Registro Usuario</button>
+
+
 
 <router-outlet></router-outlet>

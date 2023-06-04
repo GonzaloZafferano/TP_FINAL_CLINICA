@@ -1,5 +1,5 @@
 .custom-font-headers {
-    font-size: 2em !important;
+    font-size: 1.4em !important;
     font-weight: bold !important;
 }
 
@@ -32,11 +32,6 @@ img {
     height: 100px;
 }
 
-.imagen-usuario {
-    border-radius: 100px;
-    width: 100px;
-}
-
 .textarea {
     resize: none;
     height: 100%;
@@ -46,10 +41,4 @@ img {
     color: red;
     font-weight: bolder;
     font-size: 1.03em;
-}
-
-.columna {
-    display: flex;
-    flex-direction: row;
-    align-items: center !important;
 }

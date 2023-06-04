@@ -7,6 +7,7 @@ import { FirestoreService } from './firestore.service';
 })
 export class SolicitudesService {
   private nombreColeccion: string = 'solicitudes';
+  public usuariosEnEspera : number = 0;
 
   constructor(private firestoreDB: FirestoreService) {
   }
