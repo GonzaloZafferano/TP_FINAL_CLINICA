@@ -4,3 +4,29 @@
 <button class="btn btn-warning fs-4 fw-bold p-2 m-2" (click)="cerrarSesion()">Cerrar Sesión</button>
 <button class="btn btn-success fs-4 fw-bold p-2 m-2" [hidden]="!esAdmin()" routerLink="../usuarios/" >Usuarios</button>
 
+
+
+<div class="container"> 
+    <br>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="card text-white bg-dark mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Registrar nuevos usuarios</h5>
+                    <p class="card-text">Puede registrarse como un paciente, especialista o administrador.</p>
+                    <a href="registro">Registrarse</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="card text-white bg-dark mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Informacion de usuarios</h5>
+                    <p class="card-text">Puede ver detalle de usuarios y administrar cuentas.</p>
+                    <a href="panelUsuarios">Detalle usuarios</a>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div> 
+

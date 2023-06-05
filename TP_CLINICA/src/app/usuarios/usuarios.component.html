@@ -1,6 +1,9 @@
 <div class="container-fluid">
     <div>
+        <button [hidden]="ocultarBotonUsuariosEnEspera" (click)="ocultarBotones('/usuarios/usuarios-en-espera')" class="btn btn-warning p-2 m-2 fs-4 fw-bold" routerLink="usuarios-en-espera">Usuarios en espera
+            ({{getUsuarioEnEspera() == -1 ? '0' : getUsuarioEnEspera()}})</button>
+        <button [hidden]="ocultarBotonUsuarios" (click)="ocultarBotones('/usuarios')" class="btn btn-success fs-4 fw-bold p-2 m-2" routerLink="./">Usuarios</button>
         <button (click)="cerrarSesion()" class="btn btn-warning p-2 m-2 fs-4 fw-bold">Cerrar Sesión</button>
     </div>
-    <router-outlet></router-outlet>    
+    <router-outlet></router-outlet>
 </div>

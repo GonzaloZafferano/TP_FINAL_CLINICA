@@ -66,69 +66,71 @@
                                         </small>
                                     </ng-container>
                                 </div>
-
-                                <!--ESPECIALIDAD-->
-                                <div class="border p-2 m-3">
-                                    <label class="form-label d-block" for="especialidad">Seleccione sus
-                                        especialidades</label>
-                                    <div>
-                                        <select class="w-100 form-select" name="selectEspecialidades"
-                                            id="selectEspecialidades" formControlName="selectEspecialidades"
-                                            (change)="seleccion($event)">
-                                            <optgroup>
-                                                <option selected disabled value="-1">Seleccione especialidad...</option>
-                                                <option *ngFor="let especialidad of especialidadesVisibles"
-                                                    value="{{especialidad.id}}">
-                                                    {{especialidad.nombre | titlecase }}
-                                                </option>
-                                            </optgroup>
-                                        </select>
-                                    </div>
-                                    <label>Especialidades seleccionadas</label>
-                                    <input readonly type="text" class="form-control deshabilitado" id="especialidad"
-                                        formControlName="especialidad">
-                                    <ng-container *ngIf="especialidad?.errors">
-                                        <small class="d-block error"
-                                            *ngFor="let error of obtenerErrores(especialidad?.errors)">
-                                            {{especialidad?.getError(error).mensaje}}
-                                        </small>
-                                    </ng-container>
-
-                                    <!--OTRAS ESPECIALIDADES-->
-                                    <div>
-                                        <div class="form-check">
-                                            <label for="otroEspecialidad" class="form-check-label">Agregar otra especialidad</label>
-                                            <input type="checkbox" #check (change)="checked($event)"
-                                                class="form-check-input" formControlName="otro" id="otro" name="otro">
-                                        </div>
-                                        <input type="text" formControlName="otroEspecialidad" id="otroEspecialidad"
-                                            name="otroEspecialidad" [ngClass]="{'deshabilitado' : !check.checked}"
-                                            [readOnly]=" !check.checked" class="form-control">
-
-                                        <ng-container *ngIf="validarEspecialidad.validando">
-                                            <div class="d-flex justify-content-start"
-                                                style="align-items: center; height: 100% !important;">
-                                                <span class="m-0 fs-6 fw-bold text-primary">Validando...</span>
-                                                <div class="spinner-border text-primary"
-                                                    style="align-self: center; scale: 0.5;">
-                                                </div>
-                                            </div>
-                                        </ng-container>
-                                        <ng-container *ngIf="otroEspecialidad?.errors">
-                                            <small class="d-block error"
-                                                *ngFor="let error of obtenerErrores(otroEspecialidad?.errors)">
-                                                {{otroEspecialidad?.getError(error).mensaje}}
-                                            </small>
-                                        </ng-container>
-                                    </div>
-                                    <div class="d-flex justify-content-end">
-                                        <button class="btn btn-secondary mt-2 fw-bold"
-                                            (click)="limpiarEspecialidad()">Limpiar</button>
-                                    </div>
-                                </div>
                             </div>
 
                             <!--SEGUNDO BLOQUE-->
+                            <div class="width p-3">
+                                <!--ESPECIALIDAD-->
+                                <label class="form-label d-block" for="especialidad">Especialidades</label>
+                                <div>
+                                    <select class="w-100 form-select" name="selectEspecialidades"
+                                        id="selectEspecialidades" formControlName="selectEspecialidades"
+                                        (change)="seleccion($event)">
+                                        <optgroup>
+                                            <option selected disabled value="-1">Seleccione especialidad...</option>
+                                            <option *ngFor="let especialidad of especialidadesVisibles"
+                                                value="{{especialidad.id}}">
+                                                {{especialidad.nombre | titlecase }}
+                                            </option>
+                                        </optgroup>
+                                    </select>
+                                </div>
+                                <label>Especialidades seleccionadas</label>
+                                <textarea readonly type="text" class="form-control deshabilitado fijo" id="especialidad"
+                                    formControlName="especialidad"></textarea>
+                                <ng-container *ngIf="especialidad?.errors">
+                                    <small class="d-block error"
+                                        *ngFor="let error of obtenerErrores(especialidad?.errors)">
+                                        {{especialidad?.getError(error).mensaje}}
+                                    </small>
+                                </ng-container>
+
+                                <!--OTRAS ESPECIALIDADES-->
+                                <div>
+                                    <div class="form-check">
+                                        <label for="otroEspecialidad" class="form-check-label">Agregar otra
+                                            especialidad</label>
+                                        <input type="checkbox" #check (change)="checked($event)"
+                                            class="form-check-input" formControlName="otro" id="otro" name="otro">
+                                    </div>
+                                    <input type="text" formControlName="otroEspecialidad" id="otroEspecialidad"
+                                        name="otroEspecialidad" [ngClass]="{'deshabilitado' : !check.checked}"
+                                        [readOnly]=" !check.checked" class="form-control">
+
+                                    <ng-container *ngIf="validarEspecialidad.validando">
+                                        <div class="d-flex justify-content-start"
+                                            style="align-items: center; height: 100% !important;">
+                                            <span class="m-0 fs-6 fw-bold text-primary">Validando...</span>
+                                            <div class="spinner-border text-primary"
+                                                style="align-self: center; scale: 0.5;">
+                                            </div>
+                                        </div>
+                                    </ng-container>
+                                    <ng-container *ngIf="otroEspecialidad?.errors">
+                                        <small class="d-block error"
+                                            *ngFor="let error of obtenerErrores(otroEspecialidad?.errors)">
+                                            {{otroEspecialidad?.getError(error).mensaje}}
+                                        </small>
+                                    </ng-container>
+                                </div>
+                                <div class="d-flex justify-content-end">
+                                    <button class="btn btn-secondary mt-2 fw-bold"
+                                        (click)="limpiarEspecialidad()">Limpiar Especialidades</button>
+                                </div>
+
+                            </div>
+
+                            <!--TERCER BLOQUE-->
                             <div class="width p-3">
 
                                 <!--CORREO-->

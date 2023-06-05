@@ -12,13 +12,35 @@ import { AuthService } from '../services/auth.service';
   selector: 'app-usuarios',
   templateUrl: './usuarios.component.html',
   styleUrls: ['./usuarios.component.css']
-})  
+})
 export class UsuariosComponent {
-  constructor(private solicitudService: SolicitudesService, 
+  ocultarBotonUsuarios: boolean = false;
+  ocultarBotonUsuariosEnEspera: boolean = false;
+
+  constructor(private solicitudService: SolicitudesService,
     private authService: AuthService, private router: Router) { }
 
-    cerrarSesion() {
+  ngOnInit() {
+    this.ocultarBotones();
+  }
+
+  cerrarSesion() {
     this.authService.logOut();
     this.router.navigate(['/login']);
+  }
+
+  getUsuarioEnEspera() {
+    return this.solicitudService.usuariosEnEspera;
+  }
+
+  ocultarBotones(ruta: string = '') {
+    let rutaAEvaluar = ''
+    if (ruta != '')
+      rutaAEvaluar = ruta;
+    else
+      rutaAEvaluar = this.router.url;
+
+    this.ocultarBotonUsuarios = rutaAEvaluar == '/usuarios';
+    this.ocultarBotonUsuariosEnEspera = rutaAEvaluar.includes('/usuarios/usuarios-en-espera');
   }
 }

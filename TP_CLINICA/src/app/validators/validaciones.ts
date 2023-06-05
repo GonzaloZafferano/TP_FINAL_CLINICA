@@ -19,7 +19,7 @@ export function validarCampoNumero(minimo: number, maximo: number, mensajes: any
     //CARGO LOS DISTINTOS ERRORES QUE PUEDE TENER.
     if (campoAValidar?.value == '' || campoAValidar?.value == null || campoAValidar?.value == undefined)
       errors.campoVacio = { hayError: true, mensaje: mensajes != null && mensajes.campoVacio != null ? mensajes.campoVacio : 'Campo requerido.' };
-    else if (isNaN(campoAValidar?.value) || campoAValidar?.value?.includes('.'))
+    else if (isNaN(campoAValidar?.value) || campoAValidar?.value?.includes('.') || campoAValidar?.value?.includes(','))
       errors.textoInvalido = { hayError: true, mensaje: mensajes != null && mensajes.textoInvalido != null ? mensajes.textoInvalido : 'Solo se pueden ingresar caracteres numéricos.' };
     else if (campoAValidar?.value < minimo || campoAValidar?.value > maximo) {
       errors.valorInvalido = { hayError: true, mensaje: mensajes != null && mensajes.valorInvalido != null ? mensajes.valorInvalido : `Solo se admiten valores entre ${minimo} y ${maximo}.` };

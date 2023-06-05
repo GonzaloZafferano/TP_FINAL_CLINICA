@@ -1,6 +1,7 @@
 import { Component } from "@angular/core";
 import { Perfil } from "../models/enums/perfil";
 import { AuthService } from "../services/auth.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: 'app-registro',
@@ -12,9 +13,14 @@ export class RegistroComponent {
   ocultarBtnCuentaAdmin: boolean = false;
   ocultarBtnCuentaEspecialista: boolean = false;
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService, private router : Router) {
   }
 
+  ngOnInit(){
+    let ruta = this.router.url;
+    this.ocultarBtnCuentaEspecialista= ruta.includes('registro/especialista');
+    this.ocultarBtnCuentaUsuario = ruta.includes('registro/usuario');
+  }
   esAdministrador() {
     let usuario = this.verificarEstadoDeUsuario();
     return usuario != null && usuario.perfil == Perfil.administrador;
