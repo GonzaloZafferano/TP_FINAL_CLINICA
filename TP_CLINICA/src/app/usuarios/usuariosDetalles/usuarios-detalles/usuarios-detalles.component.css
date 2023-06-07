@@ -3,3 +3,17 @@
     width: 200px;
     height: 200px;
 }
+
+.texto {
+    word-wrap: break-word;
+}
+
+.ancho {
+    width: 90%;
+}
+
+@media (min-width: 600px) {    
+    .ancho {
+        width: 50%;
+    }
+}

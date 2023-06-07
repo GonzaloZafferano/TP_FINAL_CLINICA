@@ -1,0 +1,28 @@
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
+import { UsuarioService } from 'src/app/services/usuarios.service';
+
+@Component({
+  selector: 'app-header',
+  templateUrl: './header.component.html',
+  styleUrls: ['./header.component.css']
+})
+export class HeaderComponent {
+  ocultarBotonHome: boolean = false;
+  constructor(private authService: AuthService, private usuarioService : UsuarioService, private router: Router,) { }
+
+  ngOnInit() {
+    this.ocultarBotones();
+  }
+
+  ocultarBotones(home: boolean = false) {
+    this.ocultarBotonHome = this.router.url == '/home';
+    if (home)
+      this.router.navigate(['/home']);
+  }
+
+  cerrarSesion() {
+    this.usuarioService.cerrarSesionUsuario();
+  }
+}

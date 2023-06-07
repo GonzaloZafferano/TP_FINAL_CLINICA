@@ -7,11 +7,12 @@ import { UsuariosComponent } from './usuarios.component';
 const routes: Routes = [
   {
     path: '', component: UsuariosComponent,
-    children: 
-    [
-      { path: '', component: ListadoUsuariosComponent },
-      { path: 'usuarios-en-espera', component: ListaUsuariosEnEsperaComponent },
-    ]
+    children:
+      [
+        { path: '', component: ListadoUsuariosComponent },
+        { path: 'usuarios-en-espera', component: ListaUsuariosEnEsperaComponent },
+        { path: 'registro', loadChildren: () => import('../registro/registro.module').then(m => m.RegistroModule), },
+      ]
   },
 ];
 

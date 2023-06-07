@@ -1,11 +1,19 @@
-
-
-<button class="btn btn-primary fs-4 fw-bold p-2 m-2" routerLink="" [hidden]="usuarioEstaLogueado()">Bienvenido</button>
-
-<button class="btn btn-primary fs-4 fw-bold p-2 m-2" routerLink="administrador" [hidden]="ocultarBtnCuentaAdmin || !esAdministrador()" (click)="cuenta(1)">Registro Administrador</button>
-<button class="btn btn-primary fs-4 fw-bold p-2 m-2" routerLink="especialista" [hidden]="ocultarBtnCuentaEspecialista" (click)="cuenta(2)">Registro Especialista</button>
-<button class="btn btn-primary fs-4 fw-bold p-2 m-2" routerLink="usuario" [hidden]="ocultarBtnCuentaUsuario" (click)="cuenta(3)">Registro Usuario</button>
-
-
-
+<button class="btn btn-primary fs-4 fw-bold p-2 m-2" routerLink="" [hidden]="usuarioEstaLogueado()">Volver a
+    Bienvenido</button>
+<ng-container *ngIf="!ocultarLogo">
+    <div class="text-center">
+        <h3 class="fw-bold fs-2 text-dark">
+            Seleccione el tipo de usuario que desea registrar.
+        </h3>
+        <img src="assets/logo/logo192x192.png" class="card-img-top w-25" alt="imagen-usuario">
+    </div>
+</ng-container>
+<div class="d-flex justify-content-center">
+    <button class="btn btn-primary fs-4 fw-bold p-2 m-2" routerLink="administrador"
+        [hidden]="ocultarBtnCuentaAdmin || !esAdministrador()" (click)="cuenta(1)">Registro Administrador</button>
+    <button class="btn btn-primary fs-4 fw-bold p-2 m-2" routerLink="especialista"
+        [hidden]="ocultarBtnCuentaEspecialista" (click)="cuenta(2)">Registro Especialista</button>
+    <button class="btn btn-primary fs-4 fw-bold p-2 m-2" routerLink="usuario" [hidden]="ocultarBtnCuentaUsuario"
+        (click)="cuenta(3)">Registro Usuario</button>
+</div>
 <router-outlet></router-outlet>

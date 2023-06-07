@@ -2,6 +2,7 @@ import { Component } from "@angular/core";
 import { Perfil } from "../models/enums/perfil";
 import { AuthService } from "../services/auth.service";
 import { Router } from "@angular/router";
+import { UsuarioService } from "../services/usuarios.service";
 
 @Component({
   selector: 'app-registro',
@@ -12,14 +13,19 @@ export class RegistroComponent {
   ocultarBtnCuentaUsuario: boolean = false;
   ocultarBtnCuentaAdmin: boolean = false;
   ocultarBtnCuentaEspecialista: boolean = false;
+  public ocultarLogo: boolean = false;
 
-  constructor(private authService: AuthService, private router : Router) {
+  constructor(private authService: AuthService, 
+    private usuarioService : UsuarioService,
+    private router: Router) {
   }
 
-  ngOnInit(){
+  ngOnInit() {
     let ruta = this.router.url;
-    this.ocultarBtnCuentaEspecialista= ruta.includes('registro/especialista');
+    this.ocultarLogo = ruta != '/registro'  && ruta != '/usuarios/registro';
+    this.ocultarBtnCuentaEspecialista = ruta.includes('registro/especialista');
     this.ocultarBtnCuentaUsuario = ruta.includes('registro/usuario');
+    this.ocultarBtnCuentaAdmin = ruta.includes('registro/administrador');
   }
   esAdministrador() {
     let usuario = this.verificarEstadoDeUsuario();
@@ -27,18 +33,18 @@ export class RegistroComponent {
   }
 
   usuarioEstaLogueado() {
-    return this.authService.getUsuarioEstaLogueado;
+    return this.usuarioService.getUsuarioEstaLogueado;
   }
 
   verificarEstadoDeUsuario() {
-    return this.authService.getUsuarioActualBasico;
+    return this.usuarioService.getUsuarioActualBasico;
   }
 
   /**
    * 
    * @param tipo 1 Cuenta Admin, 2 Cuenta Especialista, 3 Cuenta Usuario
    */
-  cuenta(tipo: number) {
+  cuenta(tipo: number) { 
     if (tipo == 1) {
       this.ocultarBtnCuentaAdmin = true;
       this.ocultarBtnCuentaUsuario = false;
@@ -54,5 +60,6 @@ export class RegistroComponent {
       this.ocultarBtnCuentaUsuario = true;
       this.ocultarBtnCuentaEspecialista = false;
     }
+    this.ocultarLogo = true;
   }
 }

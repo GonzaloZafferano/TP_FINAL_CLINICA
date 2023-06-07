@@ -17,7 +17,7 @@ import { Acceso } from '../models/enums/acceso';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-  form!: FormGroup; 
+  form!: FormGroup;
   cargando: boolean = false;
   loaderTexto = 'Iniciando Sesión';
 
@@ -108,9 +108,9 @@ export class LoginComponent {
                 if (x != null) {
                   let usuario = x as any;
 
-                  if (usuario.habilitado == Acceso.habilitado) {  
+                  if (usuario.habilitado == Acceso.habilitado) {
                     this.toastService.exito(`Bienvenido/a ${usuario.nombre}, ${usuario.apellido} !`, 'Login exitoso!');
-                    
+                    this.usuarioService.cargarUsuarioActual(usuario);
                     setTimeout(() => {
                       this.router.navigate(['home']);
                       this.cargando = false;
@@ -123,11 +123,13 @@ export class LoginComponent {
                   }
                 } else
                   mensajeError = 'Ha ocurrido un error al intentar cargar los datos del usuario.';
-              }).catch();
+              }).catch(err => {
+              });
           } else
             mensajeError = 'Ha ocurrido un error al intentar cargar los datos del usuario.';
         } else {
           this.authService.logOut();
+          this.usuarioService.limpiarUsuarioActual();
           this.swalService.error('¡Debe verificar su correo electrónico! Por favor, revise su bandeja de entrada (incluyendo la carpeta de Spam) y haga clic en el enlace de verificación para completar el proceso.');
           this.cargando = false;
         }
@@ -188,7 +190,7 @@ export class LoginComponent {
       correo: 'vifat71287@peogi.com',
       clave: '111111'
     }
-  ];  
+  ];
 
   cargarUsuarioDefault(index: number) {
     this.correo?.setValue(this.listaUsuarios[index].correo);

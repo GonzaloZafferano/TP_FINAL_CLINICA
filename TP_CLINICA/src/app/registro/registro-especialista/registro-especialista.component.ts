@@ -5,6 +5,7 @@ import { forkJoin } from "rxjs";
 import { Especialista } from "src/app/models/class/especialista";
 import { ValidacionAsync } from "src/app/models/class/validacionAsync";
 import { Acceso } from "src/app/models/enums/acceso";
+import { Perfil } from "src/app/models/enums/perfil";
 import { AuthService } from "src/app/services/auth.service";
 import { EspecialidadService } from "src/app/services/especialidad.service";
 import { FirestorageService } from "src/app/services/firestorage.service";
@@ -34,7 +35,7 @@ export class RegistroEspecialistaComponent {
   especialidadesSeleccionadas: any[] = [];
   textoCarga: string = 'Cargando...';
   suscripcion: any;
-
+  usuarioActual: any;
   //Propiedades
   get nombre() {
     return this.form?.get('nombre');
@@ -122,7 +123,9 @@ export class RegistroEspecialistaComponent {
 
   constructor(private router: Router,
     private authService: AuthService,
-    private swalService : SwalService,
+    private swalService: SwalService,
+    private especialidadService: EspecialidadService,
+    private formatoService: FormatoService,
     private formato: FormatoService,
     private usuarioService: UsuarioService,
     private firestorageService: FirestorageService,
@@ -132,9 +135,14 @@ export class RegistroEspecialistaComponent {
     this.validarCorreo = new ValidacionAsync();
     this.validarDni = new ValidacionAsync();
     this.validarEspecialidad = new ValidacionAsync();
+    this.usuarioActual = null;
   }
 
   ngOnInit(): void {
+    this.usuarioService.obtenerUsuarioActual().then(x => {
+      this.usuarioActual = x;
+    });
+
     this.especialidadesServices.obtenerListadoDeEspecialidadesObservable()
       .subscribe(x => {
         this.especialidades = x.map((x: any) => { return { nombre: x.nombre, id: x.id } });
@@ -228,10 +236,28 @@ export class RegistroEspecialistaComponent {
     especialista.especialidades = this.especialidadesSeleccionadas.length > 0 ? this.especialidadesSeleccionadas : [];
     especialista.fechaRegistro = new Date();
 
-    this.solicitudService.cargarSolicitudConIdAsignado(especialista)
-      .then(x => {
-        this.esperandoHabilitacion(especialista);
-      })
+    if (this.usuarioActual == null) {
+      this.solicitudService.cargarSolicitudConIdAsignado(especialista)
+        .then(x => {
+          this.esperandoHabilitacion(especialista);
+        })
+    } else if (this.usuarioActual.perfil == Perfil.administrador) {
+      this.aceptarAutomaticamente(especialista);
+    }
+  }
+
+  aceptarAutomaticamente(usuario: any) {
+    usuario.habilitado = Acceso.habilitado;
+
+    if (usuario.otroEspecialidad != '') {
+      let otraEspecialidad = { id: v4(), nombre: this.formatoService.eliminarEspaciosYPasarAMin_May(usuario.otroEspecialidad) };
+      this.especialidadService.cargarEspecialidadConIdAsignado(otraEspecialidad).then(x => {
+        usuario.especialidades.push(otraEspecialidad);
+        this.cargarUsuarioAceptado(usuario);
+      });
+    } else {
+      this.cargarUsuarioAceptado(usuario);
+    }
   }
 
   cargarUsuarioAceptado(especialista: any) {
@@ -268,8 +294,12 @@ export class RegistroEspecialistaComponent {
 
                 this.usuarioService.cargarUsuarioConIdAsignado(usuario).then(x => {
                   this.cargando = false;
-                  this.toastService.exito('Se ha habilitado su ingreso!', 'Aviso.', 3500);
+
+                  if (this.usuarioActual == null) {
+                    this.toastService.exito('Se ha habilitado su ingreso!', 'Aviso.', 3500);
+                  }
                   this.authService.logOut();
+                  this.usuarioService.limpiarUsuarioActual();
                   this.swalService.exito('El registro se ha completado exitosamente. Por favor, ingrese a su cuenta para verificar su correo electrónico y, a continuación, inicie sesión.', 'AVISO');
                   this.router.navigate(['../login']);
                 });

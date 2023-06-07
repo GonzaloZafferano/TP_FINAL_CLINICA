@@ -14,45 +14,22 @@ import { UsuarioService } from 'src/app/services/usuarios.service';
 export class ListadoUsuariosComponent {
   filaSeleccionada: any;
   listado: any[] = [];
-  usuariosEnEspera: number = -1;
   spinner: boolean = false;
   suscripcion: any;
   suscripcionEnEspera: any;
 
-  constructor(private usuarioService: UsuarioService,
-    private solicitudService: SolicitudesService,
-    private formatoService: FormatoService,
-    private toastService: ToastService) { }
-
+  constructor(private usuarioService: UsuarioService) { }
 
   ngOnInit(): void {
-    this.obtenerUsuariosEnEspera();
     this.obtenerUsuarios();
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     if (this.suscripcion)
-    this.suscripcion.unsubscribe();
-
-    if (this.suscripcionEnEspera)
-    this.suscripcionEnEspera.unsubscribe();
-  }
-
-  async obtenerUsuariosEnEspera() {    
-    this.spinner = true;
+      this.suscripcion.unsubscribe();
 
     if (this.suscripcionEnEspera)
       this.suscripcionEnEspera.unsubscribe();
-
-    this.suscripcionEnEspera = this.solicitudService.traerListaDeSolicitudesFiltradaConObservable('habilitado', Acceso.espera).subscribe(x => {
-      if (this.usuariosEnEspera == -1)
-        this.usuariosEnEspera = x.length;
-   
-      if (this.usuariosEnEspera < x.length)
-        this.toastService.informacion('Un nuevo usuario solicita habilitación', 'Aviso.', 3000);
-      this.usuariosEnEspera = x.length;
-      this.solicitudService.usuariosEnEspera = x.length;
-    });
   }
 
   async obtenerUsuarios() {

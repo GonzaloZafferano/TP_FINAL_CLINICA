@@ -209,6 +209,7 @@ export class RegistroUsuarioComponent {
                   this.cargando = false;
                   this.toastService.exito('El registro se ha completado exitosamente!.', 'Registro exitoso');
                   this.authService.logOut();
+                  this.usuarioService.limpiarUsuarioActual();
                   this.swalService.exito('El registro se ha completado exitosamente. Por favor, ingrese a su cuenta para verificar su correo electrónico y, a continuación, inicie sesión.', 'AVISO');
                   this.router.navigate(['../login']);
                 })

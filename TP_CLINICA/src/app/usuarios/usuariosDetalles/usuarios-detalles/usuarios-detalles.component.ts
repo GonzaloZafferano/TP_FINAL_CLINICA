@@ -26,8 +26,8 @@ export class UsuariosDetallesComponent {
   }
 
   esUsuarioActual(usuario: any) {
-    if (this.authService.getUsuarioActualBasico)
-      return this.authService.getUsuarioActualBasico.id == usuario.id;
+    if (this.usuarioService.getUsuarioActualBasico)
+      return this.usuarioService.getUsuarioActualBasico.id == usuario.id;
     else
       return true;
   }

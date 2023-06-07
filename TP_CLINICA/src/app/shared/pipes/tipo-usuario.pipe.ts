@@ -5,7 +5,6 @@ import { Perfil } from 'src/app/models/enums/perfil';
   name: 'tipoUsuario'
 })
 export class TipoUsuarioPipe implements PipeTransform {
-
   transform(perfil: any): string {
     if (perfil == Perfil.administrador)
       return 'Administrador';

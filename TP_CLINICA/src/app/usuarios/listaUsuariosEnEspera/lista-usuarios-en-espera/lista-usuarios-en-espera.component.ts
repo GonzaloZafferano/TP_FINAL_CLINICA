@@ -16,7 +16,6 @@ export class ListaUsuariosEnEsperaComponent {
   listado: any[] = [];
   spinner: boolean = false;
   suscripcion: any;
-  usuariosEnEspera: number = -1;
 
   constructor(private solicitudService: SolicitudesService,
     private especialidadService: EspecialidadService,
@@ -40,14 +39,6 @@ export class ListaUsuariosEnEsperaComponent {
 
     this.suscripcion = this.solicitudService.traerListaDeSolicitudesFiltradaConObservable('habilitado', Acceso.espera).subscribe(x => {
       this.spinner = true;
-
-      if (this.usuariosEnEspera == -1)
-        this.usuariosEnEspera = x.length;
-        
-      if (this.usuariosEnEspera < x.length) {
-        this.toastService.informacion('Un nuevo usuario solicita habilitación', 'Aviso.', 3000);
-      }
-      this.usuariosEnEspera = x.length;
       this.listado = x;
       this.spinner = false;
     });
