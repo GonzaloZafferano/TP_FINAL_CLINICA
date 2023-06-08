@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid justify-content-end">
-        <button class="btn btn-warning fs-4 fw-bold p-2 m-2" [hidden]="ocultarBotonHome"
-        (click)="ocultarBotones(true)">Home</button>
-        <button class="btn btn-danger fs-4 fw-bold p-2 m-2" (click)="cerrarSesion()">Cerrar Sesión</button>
+        <button class="btn btn-warning fs-4 fw-bold p-2 m-2" [hidden]="!usuarioLogueado" routerLink="mi-perfil" (click)="miPerfil()">Mi Perfil</button>        
+        <button class="btn btn-warning fs-4 fw-bold p-2 m-2" [hidden]="!usuarioLogueado || routerUrl == '/home'" (click)="home()">Home</button>
+        <button class="btn btn-danger fs-4 fw-bold p-2 m-2" [hidden]="!usuarioLogueado" (click)="cerrarSesion()">Cerrar Sesión</button>
     </div>
 </nav>

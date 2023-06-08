@@ -10,10 +10,18 @@ import { UsuarioService } from 'src/app/services/usuarios.service';
 })
 export class HeaderComponent {
   ocultarBotonHome: boolean = false;
-  constructor(private authService: AuthService, private usuarioService : UsuarioService, private router: Router,) { }
+  constructor(private authService: AuthService, private usuarioService: UsuarioService, private router: Router,) { }
 
   ngOnInit() {
     this.ocultarBotones();
+  }
+
+  get usuarioLogueado() {
+    return this.usuarioService.usuarioEstaLogueado;
+  }
+
+  get routerUrl() {
+    return this.router.url;
   }
 
   ocultarBotones(home: boolean = false) {
@@ -24,5 +32,14 @@ export class HeaderComponent {
 
   cerrarSesion() {
     this.usuarioService.cerrarSesionUsuario();
+  }
+
+  miPerfil() {
+    this.router.navigate(['mi-perfil']);
+  }
+
+  
+  home() {
+    this.router.navigate(['home']);
   }
 }

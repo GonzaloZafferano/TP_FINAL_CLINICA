@@ -13,6 +13,10 @@ const routes: Routes = [
   { path: 'registro', loadChildren: () => import('./registro/registro.module').then(m => m.RegistroModule), canActivate : [RegistroGuard] },
   { path: 'usuarios', loadChildren: () => import('./usuarios/usuarios.module').then(m => m.UsuariosModule), canActivate : [UsuariosGuard] },
   { path: 'home', loadChildren: () => import('./home/home.module').then(m => m.HomeModule), canActivate : [HomeGuard] },
+  { path: 'mis-turnos', loadChildren: () => import('./mis-turnos/mis-turnos.module').then(m => m.MisTurnosModule) },
+  { path: 'turnos', loadChildren: () => import('./turnos/turnos.module').then(m => m.TurnosModule) },
+  { path: 'mi-perfil', loadChildren: () => import('./mi-perfil/mi-perfil.module').then(m => m.MiPerfilModule) },
+  { path: 'solicitar-turno', loadChildren: () => import('./solicitar-turno/solicitar-turno.module').then(m => m.SolicitarTurnoModule) },
 
 ];
 

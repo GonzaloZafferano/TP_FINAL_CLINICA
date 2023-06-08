@@ -14,6 +14,7 @@ export class Especialista {
   especialidades: any[] = [];
   fechaRegistro: Date = new Date();
   habilitado: Acceso = Acceso.espera;
+  horarios : any = [];
 }
 
 
