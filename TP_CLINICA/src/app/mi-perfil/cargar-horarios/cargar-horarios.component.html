@@ -93,7 +93,7 @@
             <ng-template #lista>
                 <!-- <div style="height: 500px !important; width: 270px; overflow-y: scroll;"> -->
                 <div>
-                    <div *ngFor="let turno of usuarioObservable?.horarios">
+                    <div *ngFor="let turno of usuarioObservable?.horarios | sortdiashorarios">
                         <div class="d-flex justify-content-between mx-0 border bg-light text-dark paises">
                             <p class="m-2">{{turno | turnos}}</p>
                             <button class="btn btn-danger" (click)="eliminarTurno(turno)">Eliminar</button>

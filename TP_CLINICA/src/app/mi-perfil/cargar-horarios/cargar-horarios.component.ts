@@ -166,7 +166,30 @@ export class CargarHorariosComponent {
           await this.generarFechasParaTurnos(especialidad, dia, horaInicio, horaFin);
           if (!this.usuarioObservable.horarios)
             this.usuarioObservable.horarios = [];
-          this.usuarioObservable.horarios.push({ dia: dia, horaInicio: horaInicio, horaFin: horaFin, especialidad: especialidad });
+
+            let diaN = -1; 
+            switch (dia.toLowerCase()) {
+              case 'lunes':
+                diaN = 1;
+                break;
+              case 'martes':
+                diaN = 2;
+                break;
+              case 'miércoles':
+                diaN = 3;
+                break;
+              case 'jueves':
+                diaN = 4;
+                break;
+              case 'viernes':
+                diaN = 5;
+                break;
+              case 'sábado':
+                diaN = 6;
+                break;
+            }
+
+          this.usuarioObservable.horarios.push({ dia: dia, diaN : diaN, horaInicio: horaInicio, horaFin: horaFin, especialidad: especialidad });
           this.usuarioService.modificarUsuario(this.usuarioObservable);
           this.limpiarSelects();
           this.toastService.exito('Se ha guardado el horario con exito!', 'Aviso.');
@@ -188,7 +211,7 @@ export class CargarHorariosComponent {
   }
 
   async generarFechasParaTurnos(especialidad: string, diaSeleccionado: string, horaInicio: number, horaFin: number) {
-    let dia = -1;
+    let dia = -1; 
     switch (diaSeleccionado.toLowerCase()) {
       case 'lunes':
         dia = 1;
@@ -222,6 +245,7 @@ export class CargarHorariosComponent {
       let horario = new Turno();
       horario.fechaString = fechaFormateada;
       horario.dia = diaSeleccionado;
+      horario.diaN = dia;
       horario.horaFIn = horaFin;
       horario.horaInicio = horaInicio;
       horario.idEspecialidad = this.selectEspecialidades?.value;

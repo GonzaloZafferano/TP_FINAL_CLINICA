@@ -7,14 +7,15 @@ import { FechaStringPipe } from './pipes/fecha-string.pipe';
 import { TipoUsuarioPipe } from './pipes/tipo-usuario.pipe';
 import { HeaderComponent } from './components/header/header.component';
 import { TurnosPipe } from './pipes/turnos.pipe';
+import { SortdiashorariosPipe } from './pipes/sortdiashorarios.pipe';
 
 
 @NgModule({
   declarations: [   
-    LoaderComponent, EstadosPipe, EspecialidadesPipe, FechaStringPipe, TipoUsuarioPipe, HeaderComponent, TurnosPipe
+    LoaderComponent, EstadosPipe, EspecialidadesPipe, FechaStringPipe, TipoUsuarioPipe, HeaderComponent, TurnosPipe, SortdiashorariosPipe
   ],
   exports : [
-    LoaderComponent, EstadosPipe, EspecialidadesPipe, FechaStringPipe, TipoUsuarioPipe, HeaderComponent, TurnosPipe
+    LoaderComponent, EstadosPipe, EspecialidadesPipe, FechaStringPipe, TipoUsuarioPipe, HeaderComponent, TurnosPipe, SortdiashorariosPipe
   ],
   imports: [
     CommonModule,    

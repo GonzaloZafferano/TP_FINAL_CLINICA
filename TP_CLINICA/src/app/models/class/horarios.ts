@@ -3,6 +3,7 @@ import { EstadoTurno } from "../types/estadoTurno";
 
 export class Turno {
     dia: string = '';
+    diaN : number = 0;
     fechaString : string = '';
     fechaDate? : Date;
     horaInicio: number = 0;
