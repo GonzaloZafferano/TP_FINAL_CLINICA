@@ -172,6 +172,16 @@ export class FirestoreService {
     }
   }
 
+  traerListaDeObjetosCon_DOS_FiltrosDe_IGUALDAD_ConObservable(nombreColeccion: string, columna1: string, valorBuscado1: any, columna2: string, valorBuscado2: any) {
+    const coleccion: CollectionReference<DocumentData> = collection(this.firestore, nombreColeccion);
+    return collectionData(query(coleccion, where(columna1, '==', valorBuscado1), where(columna2, '==', valorBuscado2)));
+  }
+
+  traerListaDeObjetosCon_TRES_FiltrosDe_IGUALDAD_ConObservable(nombreColeccion: string, columna1: string, valorBuscado1: any, columna2: string, valorBuscado2: any, columna3: string, valorBuscado3: any) {
+    const coleccion: CollectionReference<DocumentData> = collection(this.firestore, nombreColeccion);
+    return collectionData(query(coleccion, where(columna1, '==', valorBuscado1), where(columna2, '==', valorBuscado2), where(columna3, '==', valorBuscado3)));
+  }
+
   async traerListaDeObjetosOrdenada(nombreColeccion: string, columna: string, orden: Orden = Orden.asc) {
     const coleccion: CollectionReference<DocumentData> = collection(this.firestore, nombreColeccion);
     let q;
@@ -207,5 +217,29 @@ export class FirestoreService {
     const coleccion: CollectionReference<DocumentData> = collection(this.firestore, nombreColeccion);
     const documentoAEliminar: DocumentReference<DocumentData> = doc(coleccion, id);
     return deleteDoc(documentoAEliminar);
+  }
+
+  /**
+   * Obtiene una lista de elementos, que tienen en su campo ARRAY, el elemento EXACTO que se recibe por parametro.
+   * @param nombreColeccion Nombre de lista.
+   * @param campo Campo donde se busca.
+   * @param objetoExactoQueSeBusca Objeto EXACTO que se desea buscar, con todas las propiedades especificadas.
+   * @returns elementos cuyo array contiene el elemento EXACTO que se recibe por parametro.
+   */
+  obtenerElementosDeListasConCoincidenciaExacta(nombreColeccion: string, campo: string, objetoExactoQueSeBusca: any) {
+    const coleccion: CollectionReference<DocumentData> = collection(this.firestore, nombreColeccion);
+    return collectionData(query(coleccion, where(campo, 'array-contains', objetoExactoQueSeBusca)));
+  }
+
+  /**
+   * Obtiene una lista de elementos, que tienen en su campo ARRAY, el elemento EXACTO que se recibe por parametro.
+   * @param nombreColeccion Nombre de lista.
+   * @param campo Campo donde se busca.
+   * @param listaConElementosExactosQueSeBuscan lista que contiene los Objetos EXACTOS que se desea buscar, con todas las propiedades especificadas.
+   * @returns elementos cuyo array contiene alguno de los elementos EXACTOS que se reciben por parametro.
+   */
+  obtenerElementosQueContienenEnSuListaAlMenosUnElementoExactoDeOtraLista(nombreColeccion: string, campo: string, listaConElementosExactosQueSeBuscan: any) {
+    const coleccion: CollectionReference<DocumentData> = collection(this.firestore, nombreColeccion);
+    return collectionData(query(coleccion, where(campo, 'array-contains-any', listaConElementosExactosQueSeBuscan)));
   }
 }

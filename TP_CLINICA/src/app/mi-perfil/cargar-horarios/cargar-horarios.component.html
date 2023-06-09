@@ -75,6 +75,30 @@
                     </ng-container>
                 </div>
 
+                
+                <div>
+                    <select class="w-100 form-select" name="duracionAtencion" id="duracionAtencion" formControlName="duracionAtencion">
+                        <optgroup>
+                            <option selected disabled value="-1">Seleccione duración...</option>
+                            <option *ngFor="let duracion of  duraciones">
+                                {{duracion | duracionAtencion}}
+                            </option>
+                        </optgroup>
+                    </select>
+                    <ng-container *ngIf="duracionAtencion?.errors">
+                        <small class="d-block error" *ngFor="let error of obtenerErrores(duracionAtencion?.errors)">
+                            {{duracionAtencion?.getError(error).mensaje}}
+                        </small>
+                    </ng-container>
+                </div>
+
+
+                
+
+
+
+
+
                 <div>
                     <button [disabled]="form.invalid" class="btn btn-success fs-4 fw-bold p-2 m-2"
                         (click)="guardar()">Cargar</button>
@@ -84,7 +108,7 @@
         </form>
     </div>
     <div class="w-50">
-        <div class="border p-2 w-100 bg-dark text-light">
+        <div class="border p-2 w-75 mx-5 bg-dark text-light">
             <h3>Horarios</h3>
             <div *ngIf="spinner; else lista" class="d-flex justify-content-around">
                 <span class="fs-3 fw-bold">Cargando...</span>
@@ -104,4 +128,6 @@
         </div>
     </div>
 </div>
+
+
 <app-loader *ngIf="cargando" [texto]="titulo"></app-loader>

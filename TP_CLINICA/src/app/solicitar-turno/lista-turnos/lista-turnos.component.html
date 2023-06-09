@@ -1,0 +1,27 @@
+<div style="height: 500px; overflow-y: auto;">
+    <div class="border p-2 w-100  bg-dark text-light">
+        <h3>Turnos Disponibles</h3>
+        <div *ngIf="spinner; else lista" class="d-flex justify-content-around">
+            <span class="fs-3 fw-bold">Cargando...</span>
+            <div class="spinner-border text-danger text-center" style="align-self: center; scale: 1.2;"></div>
+        </div>
+        <ng-template #lista>
+            <ng-container *ngIf="turnos">
+                <div *ngIf="turnos.length > 0; else sinTurnos">
+                    <div *ngFor="let turno of turnos | sortBySeconds">
+                        <div class="d-flex justify-content-between mx-0 border bg-light text-dark"
+                        style="align-items: center;"
+                            (click)="seleccionTurno(turno)">
+                            <p class="m-2">{{turno | turnos : false}}</p>
+                            <button class="btn btn-success fs-4 fw-bold p-2 m-2"
+                                (click)="seleccionTurno(turno)">Solicitar Turno</button>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </ng-template>
+        <ng-template #sinTurnos>
+            <h2>El especialista seleccionado NO TIENE turnos disponibles para la especialidad seleccionada.</h2>
+        </ng-template>
+    </div>
+</div>

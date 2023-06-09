@@ -9,11 +9,13 @@ import { UsuarioService } from 'src/app/services/usuarios.service';
 })
 export class PerfilComponent {
   usuario: any;
-  horarios : any [] = [];
-  tieneHorarios : boolean = true;
-  esAdmin : boolean = false;
-  esUsuario : boolean = false;
-  esEspecialista : boolean = false;
+  horarios: any[] = [];
+  tieneHorarios: boolean = true;
+  esAdmin: boolean = false;
+  esUsuario: boolean = false;
+  esEspecialista: boolean = false;
+  usuarioObservable: any;
+  suscripcion: any;
 
   constructor(
     private usuarioService: UsuarioService,
@@ -22,22 +24,26 @@ export class PerfilComponent {
   async ngOnInit() {
     this.usuario = await this.usuarioService.obtenerUsuarioActual();
 
-    if(this.usuario){
+    if (this.usuario) {
       this.esAdmin = this.usuario.perfil == Perfil.administrador;
       this.esEspecialista = this.usuario.perfil == Perfil.especialista;
       this.esUsuario = this.usuario.perfil == Perfil.usuario;
     }
+    this.suscripcion = this.usuarioService.traerUsuarioPorId_Observable(this.usuario.id).subscribe(x => {
+      if (x && x.length > 0) {
+        this.usuarioObservable = x[0];
+      }
+    });
   }
 
   cargarHorarios() {
- 
-  }
 
+  }
 
   //public usuario: any = null;
   public especialidades: any;
   especialidad_elegida: string = '0';
- // tieneHorarios: boolean | any;
+  // tieneHorarios: boolean | any;
   horariosActuales: any;
   dias_check: Array<any> = [
     { dia: 'lunes', trabaja: false, ingreso: 0, salida: 0 },
@@ -59,7 +65,7 @@ export class PerfilComponent {
   // }
 
 
-  guardar() { 
+  guardar() {
     let especialidad_guardar = {
       uidEspecialista: this.usuario.uid,
       especialidad: this.especialidad_elegida,
@@ -68,35 +74,35 @@ export class PerfilComponent {
 
     if (this.tieneHorarios) {
 
-      console.log('tiene horarios previos.->actualizar:: '+ this.horariosActuales.doc_id)
-      
+      console.log('tiene horarios previos.->actualizar:: ' + this.horariosActuales.doc_id)
 
-    //  this.horariosSrv.actualizarHorario( this.horariosActuales.doc_id, especialidad_guardar).finally(() => {
-    //     this.router.navigate(['miperfil'])
-    //   });
-    // } else {
-    //   console.log('no tiene horarios previos->cargar de cero')
-      
-    // this.horariosSrv.setItem(especialidad_guardar).finally(() =>
-    //           this.router.navigate(['miperfil'])
-    //         );
-      } 
 
+      //  this.horariosSrv.actualizarHorario( this.horariosActuales.doc_id, especialidad_guardar).finally(() => {
+      //     this.router.navigate(['miperfil'])
+      //   });
+      // } else {
+      //   console.log('no tiene horarios previos->cargar de cero')
+
+      // this.horariosSrv.setItem(especialidad_guardar).finally(() =>
+      //           this.router.navigate(['miperfil'])
+      //         );
     }
-  
+
+  }
+
 
   capturar() {
     console.log(this.especialidad_elegida);
-  //   this.horariosSrv.traerHorariosEspecialista_Especialidad(this.usuario.uid, this.especialidad_elegida).subscribe((res) => {
-  //      if(res.length==1){
-  //       console.log(res[0].doc_id)
-      
-  //       this.horariosActuales= res[0];
-  //        this.tieneHorarios=true;
-  //      }else{
-  //        this.tieneHorarios=false;
-  //      }  
-  //      console.log('hroarios= '+this.tieneHorarios) 
-  // })
+    //   this.horariosSrv.traerHorariosEspecialista_Especialidad(this.usuario.uid, this.especialidad_elegida).subscribe((res) => {
+    //      if(res.length==1){
+    //       console.log(res[0].doc_id)
+
+    //       this.horariosActuales= res[0];
+    //        this.tieneHorarios=true;
+    //      }else{
+    //        this.tieneHorarios=false;
+    //      }  
+    //      console.log('hroarios= '+this.tieneHorarios) 
+    // })
   }
 }

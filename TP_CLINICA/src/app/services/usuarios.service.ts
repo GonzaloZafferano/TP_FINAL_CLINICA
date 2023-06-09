@@ -40,19 +40,19 @@ export class UsuarioService {
     private authService: AuthService,
     private router: Router) {
     this.suscripcion = this.authService.ObtenerCambiosDeEstado().subscribe(usuario => {
-      if (usuario) {       
-        this.traerUsuarioPorId(usuario.uid).then((x: any )=>{
-          this.localStorage.guardarItem('usuarioClinica', { id: usuario.uid, mail: usuario.email, perfil : x?.perfil });
+      if (usuario) {
+        this.traerUsuarioPorId(usuario.uid).then((x: any) => {
+          this.localStorage.guardarItem('usuarioClinica', { id: usuario.uid, mail: usuario.email, perfil: x?.perfil });
           this.usuarioEstaLogueado = true;
         });
       }
     });
   }
 
-  async obtenerUsuarioActual(idUsuario : number = 0) {
-    if (!this.usuario) {    
+  async obtenerUsuarioActual(idUsuario: number = 0) {
+    if (!this.usuario) {
       let id = idUsuario != 0 ? idUsuario : this.getUsuarioActualBasico?.id
-      if(id){
+      if (id) {
         this.usuario = await this.traerUsuarioPorId(id);
       }
     }
@@ -120,5 +120,9 @@ export class UsuarioService {
 
   traerListaDeDniFiltradaConObservable(dni: string) {
     return this.firestoreDB.traerListaDeObjetosFiltradaConObservable(this.nombreColeccion, 'dni', TipoIgualdad.igual, dni);
+  }
+
+  obtenerEspecialistaPorEspecialidad(especialidad: any) {
+    return this.firestoreDB.obtenerElementosDeListasConCoincidenciaExacta(this.nombreColeccion, 'especialidades', especialidad);
   }
 }

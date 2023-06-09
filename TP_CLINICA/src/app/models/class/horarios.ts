@@ -7,17 +7,19 @@ export class Turno {
     fechaString : string = '';
     fechaDate? : Date;
     horaInicio: number = 0;
-    horaFIn: number = 0;
+    horaFin: number = 0;    
     
     motivo: string = '';    
     detalle: string = '';
     diagnostico: string = '';
     ocupado: boolean = false;
     estadoTurno? : EstadoTurno;
+    duracion : number = 0;
     
     idMedico: string = '';
     idEspecialidad: number = 0;
-    nombreEspecialidad: string = '';
+    nombreEspecialista : string = '';
+    especialidad: string = '';
 
     idPaciente : string = '';
     nombrePaciente : string = '';

@@ -46,4 +46,8 @@ export class HorariosService {
   traerListaDeItemsFiltradaConObservable(columna: string, valor: any) {
     return this.firestoreDB.traerListaDeObjetosFiltradaConObservable(this.nombreColeccion, columna, TipoIgualdad.igual, valor);
   }
+
+  traerListaDeItemsFiltradoPor_TRES_CamposDe_IGUALDAD(columna1: string, valorBuscado1: any, columna2: string, valorBuscado2: any, columna3: string, valorBuscado3: any) {
+    return this.firestoreDB.traerListaDeObjetosCon_TRES_FiltrosDe_IGUALDAD_ConObservable(this.nombreColeccion, columna1, valorBuscado1, columna2, valorBuscado2, columna3, valorBuscado3);
+  }
 }

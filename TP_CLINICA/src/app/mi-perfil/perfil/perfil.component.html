@@ -35,99 +35,24 @@
                         <div *ngIf="esEspecialista" class="text-start">
                             <h4>Especialidades:</h4>
                             <ng-container *ngIf="usuario?.especialidades">
-                                <h5  *ngFor="let espe of usuario?.especialidades"> {{espe.nombre | titlecase}}</h5>
+                                <h5 *ngFor="let espe of usuario?.especialidades"> {{espe.nombre | titlecase}}</h5>
                             </ng-container>
                         </div>
                     </div>
-                    <div *ngIf="usuario">
-
-                        <div *ngIf="tieneHorarios && esEspecialista">
-                            <h4 class="fw-bold">Horarios de atención al publico</h4>
-                            <div *ngFor="let horario of horarios">
-                                <h5> {{horario?.especialidad}} </h5>
-
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Dia</th>
-                                            <th scope="col">Ingreso</th>
-                                            <th scope="col">Salida</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody *ngFor="let h of horario?.horarios">
-                                        <tr *ngIf="h.trabaja">
-                                            <th scope="row"> {{h.dia}} </th>
-                                            <td>{{h.ingreso}}</td>
-                                            <td>{{h.salida}}</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                    <div *ngIf="usuario && esEspecialista">
+                        <div *ngIf="usuarioObservable?.horarios && usuarioObservable?.horarios.length > 0">
+                            <h4 class="fw-bold">Horarios de atención</h4>
+                            <div *ngFor="let horario of usuarioObservable?.horarios | sortdiashorarios">
+                                <h5> {{horario | turnos}} </h5>
                             </div>
-                            <button class="btn  btn-warning" routerLink="mis-horarios" (click)="cargarHorarios()">Cambiar mis horarios</button>
                         </div>
-
-                        <div *ngIf="!tieneHorarios">
-                            <button class="btn  btn-warning" (click)="cargarHorarios()">Cargar horarios</button>
+                        <div>
+                            <button class="btn btn-warning fw-bold fs-4"  routerLink="mis-horarios" (click)="cargarHorarios()">Cargar
+                                horarios</button>
                         </div>
-
-
-                    </div>
-
-
-
-                    <div *ngIf="usuario?.perfil=='paciente'">
-                        <!-- <app-historia-clinica></app-historia-clinica> -->
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-
-<!-- <app-cargar-horarios></app-cargar-horarios> -->
-
-
-<!--  
-<h2><b>Mis horarios de atención al publico</b></h2>
-<select class="form-select form-select-lg " (change)="capturar()">
-    <option selected value="0">Elegir opcion</option>
-    <option *ngFor="let especialidad of especialidades" 
-            value="{{especialidad}}" ngDefaultControl> {{especialidad}} 
-    </option>
-</select>
-<div *ngIf="especialidad_elegida!= '0'">
-
-<table class="table table-warning" >
-    <thead>
-        <tr>
-            <th scope="col">Trabajo este dia ?</th>
-            <th scope="col">Dias</th> 
-            <th scope="col">Comienzo de jornada</th>
-            <th scope="col">Fin de jornada</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let dia of dias_check;let i = index">
-            <td>
-                <input type="checkbox"  >
-            </td>
-            <td>{{dias_check[i].dia}}</td>
-            <td>
-             <select >
-                 <option  class="form-select form-select-lg mb-3" *ngFor="let hora of listaHorarios" value="{{hora}}" ngDefaultControl  > {{hora}} </option>
-             </select>
-            </td>
-            <td>
-                <select >
-                    <option  class="form-select form-select-lg mb-3" *ngFor="let hora of listaHorariossalida" value="{{hora}}" ngDefaultControl > {{hora}} </option>
-                </select>
-             
-            </td>
-        </tr>
-    </tbody>
-</table>
-
-
-<button class="btn btn-success btn-block" (click)="guardar()">Guardar</button>
-</div> -->

@@ -54,6 +54,16 @@
     /* border-radius: 50px !important; */
 }
 
+.sw-container-info{
+    background-color: rgba(0, 51, 255, 0.465) !important;
+    /* border-radius: 50px !important; */
+}
+
+.sw-container-warning{
+    background-color: rgba(208, 255, 0, 0.317) !important;
+    /* border-radius: 50px !important; */
+}
+
 .sw-cancel {
     background-color: #d17575 !important;
     font-size: 2em !important;

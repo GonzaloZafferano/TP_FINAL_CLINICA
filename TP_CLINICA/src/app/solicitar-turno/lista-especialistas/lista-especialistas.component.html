@@ -1,0 +1,24 @@
+<div style="height: 500px; overflow-y: auto">
+    <div class="border p-2 w-100 bg-dark text-light">
+        <h3>{{titulo}}</h3>
+        <div *ngIf="spinner; else lista" class="d-flex justify-content-around">
+            <span class="fs-3 fw-bold">Cargando...</span>
+            <div class="spinner-border text-danger text-center" style="align-self: center; scale: 1.2;"></div>
+        </div>
+        <ng-template #lista>
+            <ng-container *ngIf="especialistas">
+                <div *ngIf="especialistas.length > 0; else sinEspecialistas">
+                    <div *ngFor="let especialista of especialistas">
+                        <div class="d-flex justify-content-between mx-0 border bg-light text-dark"
+                        (click)="seleccionEspecialista(especialista)">
+                        <p class="m-2">{{especialista | especialistas}}</p>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
+    </ng-template>
+    <ng-template #sinEspecialistas>
+        <h2>La especialidad seleccionada NO CUENTA con especialistas por el momento.</h2>
+    </ng-template>
+    </div>
+</div>

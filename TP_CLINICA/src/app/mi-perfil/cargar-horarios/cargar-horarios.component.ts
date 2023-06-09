@@ -91,6 +91,12 @@ export class CargarHorariosComponent {
     this.form?.get('selectEspecialidades')?.patchValue(value);
   }
 
+  get duracionAtencion() {
+    return this.form?.get('duracionAtencion');
+  }
+  set duracionAtencion(value: any) {
+    this.form?.get('duracionAtencion')?.patchValue(value);
+  }
 
   validar(): void {
     this.form = new FormGroup
@@ -100,10 +106,21 @@ export class CargarHorariosComponent {
           horaInicio: new FormControl('', { validators: [validarCampoSelect()], }),
           horaFin: new FormControl('', { validators: [validarCampoSelect()] }),
           selectEspecialidades: new FormControl('', { validators: [validarCampoSelect()] }),
+          duracionAtencion: new FormControl('', { validators: [validarCampoSelect()] }),
         }
       );
   }
 
+
+  duraciones: any =
+    [
+      '',
+      30,
+      45,
+      60,
+      90,
+      120,
+    ]
 
   dias: string[] = ['', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
   horariosInicio: string[] = ['', '8:00', '9:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00'];
@@ -140,34 +157,42 @@ export class CargarHorariosComponent {
       let selectedIndex = selectElement?.selectedIndex;
       let especialidad = selectElement?.options[selectedIndex].text;
 
-      if (horaInicio < horaFin) {
+      let duracionAtencionHTML = document.getElementById("duracionAtencion") as any;
+      let duracionAtencionIndice = duracionAtencionHTML?.selectedIndex;
+      let duracionAtencion = this.obtenerDuracionAtencion(duracionAtencionIndice);
 
-        for (let i = 0; i < this.horariosActuales.length; i++) {
-          let horarioActual = this.horariosActuales[i];
+      let diferencia = horaFin - horaInicio;
 
-          if (horarioActual.dia == dia &&
-            ((horarioActual.horaInicio < horaFin &&
-              horarioActual.horaInicio > horaInicio) ||
-              (horarioActual.horaFIn < horaFin &&
-                horarioActual.horaFIn > horaInicio) ||
-              (horarioActual.horaFIn == horaFin &&
-                horarioActual.horaInicio == horaInicio))) {
+      if ((diferencia * 60) >= duracionAtencion) {
 
-            let horarioExistente = `${horarioActual.dia} - ${horarioActual.horaInicio}:00 - ${horarioActual.horaFIn}:00`;
-            this.toastService.error('Error. Conflicto con el horario. <br> Ya existe un horario:<br>' + horarioExistente + '<br>Un horario no puede incluir a otro existente.', 'Aviso.', 4000);
-            sePuedeCargar = false;
-            break;
+        if (horaInicio < horaFin) {
+
+          for (let i = 0; i < this.horariosActuales.length; i++) {
+            let horarioActual = this.horariosActuales[i];
+
+            if (horarioActual.dia == dia &&
+              ((horarioActual.horaInicio < horaFin &&
+                horarioActual.horaInicio > horaInicio) ||
+                (horarioActual.horaFin < horaFin &&
+                  horarioActual.horaFin > horaInicio) ||
+                (horarioActual.horaFin == horaFin &&
+                  horarioActual.horaInicio == horaInicio))) {
+
+              let horarioExistente = `${horarioActual.dia} - ${horarioActual.horaInicio}:00 - ${horarioActual.horaFin}:00`;
+              this.toastService.error('Error. Conflicto con el horario. <br> Ya existe un horario:<br>' + horarioExistente + '<br>Un horario no puede incluir a otro existente.', 'Aviso.', 4000);
+              sePuedeCargar = false;
+              break;
+            }
           }
-        }
 
-        //SI SE PUEDE CARGAR, NO EXISTE CONFLICTOS DE HORARIOS, ENTONCES HAGO PUSH AL HORARIO.
-        if (sePuedeCargar) {
+          //SI SE PUEDE CARGAR, NO EXISTE CONFLICTOS DE HORARIOS, ENTONCES HAGO PUSH AL HORARIO.
+          if (sePuedeCargar) {
 
-          await this.generarFechasParaTurnos(especialidad, dia, horaInicio, horaFin);
-          if (!this.usuarioObservable.horarios)
-            this.usuarioObservable.horarios = [];
+            await this.generarFechasParaTurnos(especialidad, dia, horaInicio, horaFin, duracionAtencion);
+            if (!this.usuarioObservable.horarios)
+              this.usuarioObservable.horarios = [];
 
-            let diaN = -1; 
+            let diaN = -1;
             switch (dia.toLowerCase()) {
               case 'lunes':
                 diaN = 1;
@@ -189,16 +214,22 @@ export class CargarHorariosComponent {
                 break;
             }
 
-          this.usuarioObservable.horarios.push({ dia: dia, diaN : diaN, horaInicio: horaInicio, horaFin: horaFin, especialidad: especialidad });
-          this.usuarioService.modificarUsuario(this.usuarioObservable);
-          this.limpiarSelects();
-          this.toastService.exito('Se ha guardado el horario con exito!', 'Aviso.');
-          this.cargando = false;
+            let turnosGenerados = Math.floor(((horaFin - horaInicio) * 60) / duracionAtencion);
+
+            this.usuarioObservable.horarios.push({ dia: dia, diaN: diaN, duracionAtencion: duracionAtencion, horaInicio: horaInicio, horaFin: horaFin, especialidad: especialidad });
+            this.usuarioService.modificarUsuario(this.usuarioObservable);
+            this.limpiarSelects();
+            this.swalService.exito('Se ha guardado el horario con exito! También se han generado los turnos en base a su disponibilidad horaria y duración de atención.', 'Aviso.');
+            this.cargando = false;
+          }
         }
+        else {
+          this.toastService.error('La hora de inicio no puede ser mayor o igual que la hora fin.', 'Aviso.')
+        }
+      } else {
+        this.toastService.error('La duración de atencion NO puede ser mayor que su disponibilidad horaria.', 'Aviso.')
       }
-      else {
-        this.toastService.error('La hora de inicio no puede ser mayor o igual que la hora fin.', 'Aviso.')
-      }
+
     }
     this.cargando = false;
   }
@@ -208,10 +239,11 @@ export class CargarHorariosComponent {
     this.dia = '';
     this.horaInicio = '';
     this.selectEspecialidades = '';
+    this.duracionAtencion = '';
   }
 
-  async generarFechasParaTurnos(especialidad: string, diaSeleccionado: string, horaInicio: number, horaFin: number) {
-    let dia = -1; 
+  async generarFechasParaTurnos(especialidad: string, diaSeleccionado: string, horaInicio: number, horaFin: number, duracion: number) {
+    let dia = -1;
     switch (diaSeleccionado.toLowerCase()) {
       case 'lunes':
         dia = 1;
@@ -232,28 +264,53 @@ export class CargarHorariosComponent {
         dia = 6;
         break;
     }
-    const fechas = [];
+    //const fechas = [];
     const today = new Date();
     let fecha = new Date(today);
 
+    let iteraciones = Math.floor(((horaFin - horaInicio) * 60) / duracion);
+
     for (let i = 0; i < 4; i++) {
-      fecha.setDate(fecha.getDate() + ((dia - fecha.getDay() + 7) % 7)); // Ajusta la fecha al próximo viernes
+      fecha.setDate(fecha.getDate() + ((dia - fecha.getDay() + 7) % 7)); // Ajusta la fecha al próximo dia
       let fechaFormateada = fecha.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
-      fechas.push(fechaFormateada);
-      fecha.setDate(fecha.getDate() + 7); // Añade 7 días para obtener el siguiente viernes
 
-      let horario = new Turno();
-      horario.fechaString = fechaFormateada;
-      horario.dia = diaSeleccionado;
-      horario.diaN = dia;
-      horario.horaFIn = horaFin;
-      horario.horaInicio = horaInicio;
-      horario.idEspecialidad = this.selectEspecialidades?.value;
-      horario.nombreEspecialidad = especialidad;
-      horario.idMedico = this.usuarioObservable.id;
-      horario.estadoTurno = 'Libre';
+      let date = fechaFormateada.split('/');
+      let dateTime = new Date(parseInt(date[2]), parseInt(date[1]) - 1, parseInt(date[0]), horaInicio);
+      let hoy = new Date();
+      let mismoDia = dateTime.getDate() == hoy.getDate() && dateTime.getMonth() == hoy.getMonth();
 
-      await this.horarioService.cargarItemSinIdAsignado(horario);
+      if (mismoDia) {
+        i--;
+        fecha.setDate(fecha.getDate() + 7);
+        continue;
+      }
+
+      for (let j = 0; j < iteraciones; j++) {
+
+        let horario = new Turno();
+        horario.fechaString = fechaFormateada;
+        horario.dia = diaSeleccionado;
+        horario.diaN = dia;
+        horario.horaFin = horaFin;
+        horario.horaInicio = horaInicio;
+        horario.idEspecialidad = this.selectEspecialidades?.value;
+        horario.especialidad = especialidad;
+        horario.nombreEspecialista = this.usuarioObservable?.apellido + ' ' + this.usuarioObservable?.nombre;
+        horario.idMedico = this.usuarioObservable.id;
+        horario.estadoTurno = 'Libre';
+        horario.duracion = duracion;
+
+        let fecha2 = dateTime;
+        if (j != 0) {
+          fecha2.setMinutes(dateTime.getMinutes() + duracion);
+        }
+        horario.fechaDate = fecha2;
+
+        await this.horarioService.cargarItemSinIdAsignado(horario);
+      }
+
+      //fechas.push(fechaFormateada);
+      fecha.setDate(fecha.getDate() + 7); // Añade 7 días para obtener el siguiente dia
     }
 
     //let fechaDate = new Date('2023/06/07');  
@@ -265,7 +322,7 @@ export class CargarHorariosComponent {
     this.cargando = true;
     this.titulo = 'Eliminando...';
 
-    let horariosABorrar = this.horariosActuales.filter((x: any) => x.dia == turno.dia && x.horaFin == turno.horaFIn && x.horaInicio == turno.horaInicio);
+    let horariosABorrar = this.horariosActuales.filter((x: any) => x.dia == turno.dia && x.horaFin == turno.horaFin && x.horaInicio == turno.horaInicio);
     let hayTurnosOcupados = horariosABorrar.filter((x: any) => x.ocupado == true);
 
     if (hayTurnosOcupados.length > 0) {
@@ -278,12 +335,17 @@ export class CargarHorariosComponent {
 
       this.usuarioObservable.horarios = this.usuarioObservable.horarios.filter((x: any) => x != turno);
       this.usuarioService.modificarUsuario(this.usuarioObservable).then(x => {
-        this.swalService.exito('Se han eliminado los horarios!', 'Aviso');
+        this.swalService.exito('Se han eliminado los horarios y turnos asociados!', 'Aviso');
         this.cargando = false;
       }).finally(() => {
         this.cargando = false;
       });
     }
+  }
 
+  obtenerDuracionAtencion(duracion: any) {
+    if (duracion > 0)
+      return this.duraciones[duracion - 1];
+    return 30;
   }
 }
