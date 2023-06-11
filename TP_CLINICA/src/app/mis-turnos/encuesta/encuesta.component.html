@@ -1,0 +1,112 @@
+<div class="loader-fondo">
+    <div class="row w-25">
+        <div class="col-12 mx-auto mt-4">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="text-center">Encuesta sobre su Turno</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row m-2">
+                        <div class="col col-12">
+                            <label class="text-center">Puntuación de la atención</label>
+                            <div class="form-check">
+                                <input class="form-check-input" id="valor1" checked type="radio"
+                                    (click)="atencionSeleccionada(1)" name="puntuacion" value="1">
+                                <label class="form-check-label label" for="valor1">Muy Mala</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" id="valor2" type="radio"
+                                    (click)="atencionSeleccionada(2)" name="puntuacion" value="2">
+                                <label class="form-check-label label" for="valor2">Mala</label>
+                            </div>
+                            <input class="form-check-input" id="valor3" type="radio" (click)="atencionSeleccionada(3)"
+                                name="puntuacion" value="3">
+                            <label class="form-check-label label" for="valor3">Regular</label>
+                            <div class="form-check">
+
+                                <input class="form-check-input" id="valor4" type="radio"
+                                    (click)="atencionSeleccionada(4)" name="puntuacion" value="4">
+                                <label class="form-check-label label" for="valor4">Buena</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" id="valor5" type="radio"
+                                    (click)="atencionSeleccionada(5)" name="puntuacion" value="5">
+                                <label class="form-check-label label" for="valor5">Excelente</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row m-2">
+                        <div class="col col-12">
+                            <label class="text-center" for="">Puntuación del sistema de turnos</label>
+                            <div class="form-check">
+                                <input class="form-check-input" id="sis1" checked type="radio"
+                                    (click)="sistemaSeleccionado(1)" name="sistema" value="1">
+                                <label class="form-check-label label" for="sis1">Muy Mala</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" id="sis2" type="radio" name="sistema"
+                                    (click)="sistemaSeleccionado(2)" value="2">
+                                <label class="form-check-label label" for="sis2">Mala</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" id="sis3" type="radio" name="sistema"
+                                    (click)="sistemaSeleccionado(3)" value="3">
+                                <label class="form-check-label label" for="sis3">Regular</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" id="sis4" type="radio" name="sistema"
+                                    (click)="sistemaSeleccionado(4)" value="4">
+                                <label class="form-check-label label" for="sis4">Buena</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" id="sis5" type="radio" name="sistema"
+                                    (click)="sistemaSeleccionado(5)" value="5">
+                                <label class="form-check-label label" for="sis5">Excelente</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row m-2">
+                        <div class="col col-12">
+                            <label class="text-center">¿Volvería?</label>
+                            <div class="form-check">
+                                <input type="radio" id="NO" class="form-check-input" name="volveria"
+                                    (click)="volverSeleccionado(1)" value="NO" checked>
+                                <label for="volveriaNO" class="form-check-label label" id="NO">No</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="radio" id="SI" class="form-check-input" name="volveria"
+                                    (click)="volverSeleccionado(2)" value="SI">
+                                <label for="volveriaSI" class="form-check-label label" id="SI">Si</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row m-2">
+                        <div class="col col-12">
+                            <label class="text-center posicion">¿Nos recomendaría?</label>
+                            <div class="form-check">
+                                <input type="radio" id="recomendacionNO" class="form-check-input"
+                                    (click)="recomendarSeleccionado(1)" name="recomendacion" checked value="NO">
+                                <label for="recomendacionNO" class="form-check-label label">No</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="radio" id="recomendacionSI" class="form-check-input"
+                                    (click)="recomendarSeleccionado(2)" name="recomendacion" value="SI">
+                                <label for="recomendacionSI" class="form-check-label label">Si</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-2">
+                        <label class="text-center">Comentarios / opiniones / mejoras</label>
+                        <textarea class="form-control no-resize" #input></textarea>
+                    </div>
+                    <div class="d-flex justify-content-between m-3">
+                        <button class="btn btn-danger fw-bold fs-4" type="button" (click)="cancelar()">Cancelar</button>
+                        <button class="btn btn-success fw-bold fs-4" type="button"
+                            (click)="guardar(input)">Enviar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

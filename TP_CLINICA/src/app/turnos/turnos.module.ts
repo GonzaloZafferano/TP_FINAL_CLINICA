@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { TurnosRoutingModule } from './turnos-routing.module';
 import { TurnosComponent } from './turnos.component';
+import { SharedModule } from '../shared/shared.module';
 
 
 @NgModule({
@@ -11,7 +12,8 @@ import { TurnosComponent } from './turnos.component';
   ],
   imports: [
     CommonModule,
-    TurnosRoutingModule
+    TurnosRoutingModule,
+    SharedModule
   ]
 })
 export class TurnosModule { }

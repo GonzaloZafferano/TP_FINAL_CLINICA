@@ -33,6 +33,7 @@ export class SolicitarTurnoComponent {
   pacienteSeleccionado: any = null;
   usuarioPipe: any;
   ordenarPorNombreYApellidoPipe: any;
+  limpiarAutocomplete: boolean = false;
   constructor(
     private usuarioService: UsuarioService,
     private especialidadService: EspecialidadService,
@@ -189,6 +190,7 @@ export class SolicitarTurnoComponent {
     this.turnos = null;
     this.pacienteSeleccionado = null;
     this.filaSeleccionada = null;
+    this.limpiarAutocomplete = !this.limpiarAutocomplete;
     this.traerEspecialidades();
   }
 

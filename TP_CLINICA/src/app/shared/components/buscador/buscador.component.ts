@@ -18,7 +18,7 @@ export class BuscadorComponent {
   cargando: boolean = false;
   datos: any;
 
-  constructor(private toastService : ToastService){}
+  constructor(private toastService: ToastService) { }
 
   async buscar() {
     this.cargando = true;
@@ -26,7 +26,7 @@ export class BuscadorComponent {
       let texto = this.inputTexto?.nativeElement.value;
       this.datos = await this.funcionBuscador(texto);
 
-      if(this.datos && this.datos.length == 0){
+      if (this.datos && this.datos.length == 0) {
         this.toastService.informacion('No se encontraron resultados.');
       }
     }
@@ -43,7 +43,7 @@ export class BuscadorComponent {
     for (const propName in event) {
       if (event.hasOwnProperty(propName)) {
         if (propName === 'limpiarDesdeExterior') {
-          this.limpiar();
+          this.limpiarSinEmitirEvento();
         }
       }
     }
@@ -54,6 +54,11 @@ export class BuscadorComponent {
   }
 
   limpiar() {
+    this.limpiarSinEmitirEvento();
+    this.OnLimpiarBuscador.emit();
+  }
+
+  limpiarSinEmitirEvento() {
     this.datos = null;
 
     const inputTexto = document.getElementById('inputTexto') as HTMLInputElement;
@@ -61,7 +66,6 @@ export class BuscadorComponent {
     inputTexto.value = '';
 
     (document.getElementById('btnBuscar') as HTMLButtonElement).disabled = false;
-    this.OnLimpiarBuscador.emit();
   }
 
   seleccionItem(item: any, input: HTMLInputElement) {

@@ -5,6 +5,10 @@ import { BienvenidoGuard } from './guards/bienvenido.guard';
 import { LoginGuard } from './guards/login.guard';
 import { RegistroGuard } from './guards/registro.guard';
 import { UsuariosGuard } from './guards/usuarios.guard';
+import { MisTurnosGuard } from './guards/mis-turnos.guard';
+import { TurnosGuard } from './guards/turnos.guard';
+import { MiPerfilGuard } from './guards/mi-perfil.guard';
+import { SolicitarTurnoGuard } from './guards/solicitar-turno.guard';
 
 const routes: Routes = [
   { path: '', loadChildren: () => import('./bienvenido/bienvenido.module').then(m => m.BienvenidoModule), canActivate : [BienvenidoGuard] }, 
@@ -13,10 +17,10 @@ const routes: Routes = [
   { path: 'registro', loadChildren: () => import('./registro/registro.module').then(m => m.RegistroModule), canActivate : [RegistroGuard] },
   { path: 'usuarios', loadChildren: () => import('./usuarios/usuarios.module').then(m => m.UsuariosModule), canActivate : [UsuariosGuard] },
   { path: 'home', loadChildren: () => import('./home/home.module').then(m => m.HomeModule), canActivate : [HomeGuard] },
-  { path: 'mis-turnos', loadChildren: () => import('./mis-turnos/mis-turnos.module').then(m => m.MisTurnosModule) },
-  { path: 'turnos', loadChildren: () => import('./turnos/turnos.module').then(m => m.TurnosModule) },
-  { path: 'mi-perfil', loadChildren: () => import('./mi-perfil/mi-perfil.module').then(m => m.MiPerfilModule) },
-  { path: 'solicitar-turno', loadChildren: () => import('./solicitar-turno/solicitar-turno.module').then(m => m.SolicitarTurnoModule) },
+  { path: 'mis-turnos', loadChildren: () => import('./mis-turnos/mis-turnos.module').then(m => m.MisTurnosModule), canActivate : [MisTurnosGuard]  },
+  { path: 'mi-perfil', loadChildren: () => import('./mi-perfil/mi-perfil.module').then(m => m.MiPerfilModule), canActivate : [MiPerfilGuard]  },
+  { path: 'solicitar-turno', loadChildren: () => import('./solicitar-turno/solicitar-turno.module').then(m => m.SolicitarTurnoModule), canActivate : [SolicitarTurnoGuard]  },
+  { path: 'turnos', loadChildren: () => import('./turnos/turnos.module').then(m => m.TurnosModule), canActivate : [TurnosGuard]  },
 
 ];
 

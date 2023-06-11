@@ -1,9 +1,9 @@
-<div class="container-fluid">
-    <div class="d-flex justify-content-between">
-        <h3>Mis Turnos</h3>
+<div class="container-fluid m-0 p-0">
+    <div class="d-flex bg-dark p-2 justify-content-between">
+        <h3 class="fw-bold fs-4 text-light">Mis Turnos</h3>
         <button class="btn btn-warning fw-bold fs-4 p-2" (click)="limpiar()">Limpiar</button>
     </div>
-    <div class="row w-50">
+    <div class="row w-50 mx-auto">
         <div class="col border p-2 w-50 bg-dark text-light">
             <app-buscador [funcionBuscador]="buscarPacienteOEspecialidad" [titulo]="tituloBuscador"
                 [funcionPipe]="transformarTexto" [limpiarDesdeExterior]="limpiarAutocomplete"
@@ -12,10 +12,10 @@
         </div>
     </div>
 
-    <div class="row w-100 bg-dark text-light text-center">
+    <div class="row w-100 bg-dark mx-auto text-light text-center">
         <div class="col col border d-none">
             <h3 class="custom-font-headers">Id</h3>
-        </div>
+        </div> 
         <div class="col col-12 col-xl-1 border">
             <h3 class="custom-font-headers">Especialidad</h3>
         </div>
@@ -48,7 +48,7 @@
         <div class="spinner-border text-danger" style="align-self: center; scale: 1.2;"></div>
     </div>
     <ng-template #lista>
-        <div *ngFor="let item of listado | sortBySeconds; let indice = index" class="row w-100 bg-light custom-pointer"
+        <div *ngFor="let item of listado | sortBySeconds; let indice = index" class="row w-100 mx-auto bg-light custom-pointer"
         style="min-height: 100px;" 
             (click)="seleccionDeFila(item)"
             [class.fila-seleccionada]="filaSeleccionada != null && item.id === filaSeleccionada.id">

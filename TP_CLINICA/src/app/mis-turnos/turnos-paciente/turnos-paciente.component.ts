@@ -11,8 +11,10 @@ import { UsuarioService } from 'src/app/services/usuarios.service';
 export class TurnosPacienteComponent {
   spinner: boolean = false;
   cargando: boolean = false;
+  completarEncuesta: boolean = false;
   filaSeleccionada: any = null;
   listado: any = null;
+  turnoParaEncuesta: any;
   suscripcion: any;
   usuarioActual: any;
   limpiarAutocomplete: boolean = false;
@@ -68,6 +70,11 @@ export class TurnosPacienteComponent {
     item.mostrarComentario = !item.mostrarComentario;
   }
 
+  abrirEncuesta(item: any) {
+    this.turnoParaEncuesta = item;
+    this.completarEncuesta = true;
+  }
+
   calificarOK(item: any, indice: number) {
     if (!item.calificado) {
       let comentarios = document.getElementById('comentarioPaciente' + indice) as HTMLInputElement;
@@ -80,6 +87,7 @@ export class TurnosPacienteComponent {
         //item.detalle = 'Paciente: \nCalificación: Buena. \nComentarios: ' + comentarios.value.trim() + '\n' + item?.detalle + '\n';
         item.comentarioPaciente = 'Calificacion: Buena. \nComentario: ' + comentarios.value.trim();
         delete item['mostrarDetalle'];
+        delete item['mostrarComentario'];
         this.horariosService.modificarItem(item).then(x => {
           this.swalService.exito('Atención calificada!', 'Aviso.');
           this.cargando = false;
@@ -101,6 +109,7 @@ export class TurnosPacienteComponent {
         item.calificado = true;
         item.comentarioPaciente = 'Calificacion: Mala. \nComentario: ' + comentarios.value.trim();
         delete item['mostrarDetalle'];
+        delete item['mostrarComentario'];
         this.horariosService.modificarItem(item).then(x => {
           this.swalService.exito('Atención calificada!', 'Aviso.');
           this.cargando = false;
@@ -112,12 +121,13 @@ export class TurnosPacienteComponent {
   }
 
   cancelar(item: any, indice: number) {
-    let comentarios = document.getElementById('comentarioPaciente' + indice) as HTMLInputElement;  
+    let comentarios = document.getElementById('comentarioPaciente' + indice) as HTMLInputElement;
     if (comentarios.value?.trim() != '') {
       this.cargando = true;
       item.estadoTurno = 'Cancelado';
       item.comentarioPaciente = comentarios.value.trim();
       delete item['mostrarDetalle'];
+      delete item['mostrarComentario'];
       this.horariosService.modificarItem(item).then(x => {
         this.swalService.exito('Turno cancelado!', 'Aviso.');
         this.cargando = false;
@@ -130,6 +140,20 @@ export class TurnosPacienteComponent {
   limpiar() {
     this.listado = null;
     this.limpiarAutocomplete = !this.limpiarAutocomplete;
+  }
+
+  guardarEncuesta(turno: any) {
+    this.cargando = true;
+    this.completarEncuesta = false;
+    this.turnoParaEncuesta = null;
+    this.horariosService.modificarItem(turno).finally(() => {
+      this.cargando = false;
+    });
+  }
+
+  encuestaCancelada() {
+    this.completarEncuesta = false;
+    this.turnoParaEncuesta = null;
   }
 
   ////////////////////-------------BUSCADOR----------------//////////////////////////////////////////

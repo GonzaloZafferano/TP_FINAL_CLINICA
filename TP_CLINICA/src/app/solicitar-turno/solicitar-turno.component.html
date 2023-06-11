@@ -1,14 +1,20 @@
-<h3 class="text-center custom-font">Solicitud de Turnos</h3>
-<div class="d-flex justify-content-center">
-    <div class="row w-50">
+<div class="bg-dark">
+    <h3 class="text-center text-light custom-font">SOLICITUD DE TURNOS</h3>
+</div>
+<div class="d-flex justify-content-between">
+    <div class="row w-50 m-2">
         <div class="col border p-2 w-50 bg-dark text-light" *ngIf="esAdmin()">        
             <app-buscador 
              [funcionBuscador]="buscarPaciente" 
              [titulo]="tituloBuscador" 
              [funcionPipe]="transformarTexto" 
+             [limpiarDesdeExterior]="limpiarAutocomplete"
              (OnLimpiarBuscador)="limpiarDatos()"
              (OnSeleccionElemento)="obtenerUsuario($event)" ></app-buscador>
         </div>
+    </div>
+    <div class="m-2">
+        <button class="btn btn-warning fw-bold fs-4" (click)="limpiarDatos()">Limpiar</button>
     </div>
 </div>
 <div class="row w-100 p-0 m-0">

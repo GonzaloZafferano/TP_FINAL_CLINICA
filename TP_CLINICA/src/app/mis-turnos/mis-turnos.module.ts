@@ -7,6 +7,7 @@ import { TurnosPacienteComponent } from './turnos-paciente/turnos-paciente.compo
 import { TurnosEspecialistaComponent } from './turnos-especialista/turnos-especialista.component';
 import { SharedModule } from '../shared/shared.module';
 import { TurnosComponent } from './turnos/turnos.component';
+import { EncuestaComponent } from './encuesta/encuesta.component';
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import { TurnosComponent } from './turnos/turnos.component';
     MisTurnosComponent,
     TurnosPacienteComponent,
     TurnosEspecialistaComponent,
-    TurnosComponent
+    TurnosComponent,
+    EncuestaComponent
   ],
   imports: [
     CommonModule,

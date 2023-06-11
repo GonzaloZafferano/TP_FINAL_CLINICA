@@ -69,7 +69,8 @@
         </ng-container>
         <ng-container>
             <div>
-                <button class="btn btn-success fs-4 fw-bold p-2 m-2" routerLink="../mis-turnos">{{esAdmin() ? 'Turnos' : 'Mis turnos'}}</button>
+                <button class="btn btn-success fs-4 fw-bold p-2 m-2" [hidden]="esAdmin()" routerLink="../mis-turnos">Mis turnos</button>
+                <button class="btn btn-success fs-4 fw-bold p-2 m-2" [hidden]="!esAdmin()" routerLink="../turnos">Turnos</button>
             </div>
         </ng-container>     
     </div>

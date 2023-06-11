@@ -1,1 +1,142 @@
-<p>turnos works!</p>
+<div class="container-fluid  p-0 m-0">
+    <div class="bg-dark d-flex justify-content-between">
+        <h3 class="fw-bold fs-4 text-light p-2">TURNOS DE LA CLÍNICA</h3>
+        <div class="d-flex bg-dark justify-content-between p-2">
+            <button class="btn btn-warning fw-bold fs-4 p-2" (click)="limpiar()">Limpiar</button>
+        </div>
+    </div>
+    <div class="row w-50 mx-auto">
+        <div class="col border p-2 w-50 bg-dark text-light">        
+            <app-buscador 
+            [funcionBuscador]="buscarEspecialistaOEspecialidad" 
+            [titulo]="tituloBuscador" 
+            [funcionPipe]="transformarTexto" 
+            [limpiarDesdeExterior]="limpiarAutocomplete"
+            (OnLimpiarBuscador)="limpiarDatos()"
+            (OnSeleccionElemento)="obtenerItemSeleccionado($event)" ></app-buscador>            
+        </div>
+    </div>
+
+    <div class="row w-100 mx-auto bg-dark text-light text-center">
+        <div class="col col border d-none">
+            <h3 class="custom-font-headers">Id</h3>
+        </div>
+        <div class="col col-12 col-xl-2 border">
+            <h3 class="custom-font-headers">Especialidad</h3>
+        </div>
+        <div class="col col-12 col-xl-1 border">
+            <h3 class="custom-font-headers">Especialista</h3>
+        </div>
+        <div class="col col-12 col-xl-1 border">
+            <h3 class="custom-font-headers">Paciente</h3>
+        </div>
+        <div class="col col-12 col-xl-2 border">
+        <h3 class="custom-font-headers">Fecha y hora Turno</h3>
+    </div>
+    
+    <!--RESEÑA YA REALIZADA-->
+    <div class="col col-12 col-xl-2 border">
+        <h3 class="custom-font-headers">Reseñas</h3>
+    </div>
+    
+    <div class="col col-12 col-xl-1 border">
+        <h3 class="custom-font-headers">Estado</h3>
+    </div>
+
+    <div class="col col-12 col-xl-1 border">
+        <h3 class="custom-font-headers">Accion</h3>
+    </div>
+    <div class="col col-12 col-xl-2 border">
+        <h3 class="custom-font-headers">Comentarios</h3>
+    </div>
+</div>
+
+<div *ngIf="spinner; else lista" class="d-flex justify-content-center">
+    <span class="m-3 fs-3 fw-bold">Cargando...</span>
+    <div class="spinner-border text-danger" style="align-self: center; scale: 1.2;"></div>
+</div>
+<ng-template #lista>
+    <div *ngFor="let item of listado | sortBySeconds; let indice = index" class="row w-100 mx-auto custom-pointer bg-light" style="min-height: 100px;" (click)="seleccionDeFila(item)"
+    [class.fila-seleccionada]="filaSeleccionada != null && item.id === filaSeleccionada.id">
+    <div class="col col border d-none">
+        {{item.id}}
+    </div>
+    <div class="col col-12 col-xl-2 border custom-font-data columna">
+        <p>
+            {{item.especialidad}}
+        </p>
+    </div>
+    <div class="col col-12 col-xl-1 border custom-font-data columna">
+        <p>
+            {{item.nombreEspecialista}}
+        </p>
+    </div>
+    <div class="col col-12 col-xl-1 border custom-font-data columna">
+        <p>
+            {{item.nombrePaciente}}
+        </p>
+    </div>
+    <div class="col col-12 col-xl-2 border custom-font-data columna">
+        <p>
+            {{item | turnos}}
+        </p>
+        </div>
+
+        <!--RESEÑA-->
+        <div class="col col-12 col-xl-2 border custom-font-data columna justify-content-center">
+            <ng-container *ngIf="item.comentarioMedico && item.comentarioMedico != ''">
+                <div *ngIf="!item.mostrarDetalle; else mostrar">
+                    <button class="btn btn-warning" (click)="mostrarDetalle(item)"><i class="bi bi-eye-fill scale"></i></button>
+                </div>
+                <ng-template #mostrar>
+                    <button class="btn btn-warning m-1" (click)="mostrarDetalle(item)"><i class="bi bi-eye-slash-fill scale"></i></button>
+                    <textarea class="form-control w-100 deshabilitado resize" disabled readonly>{{item.comentarioMedico}}</textarea>
+                </ng-template>
+            </ng-container>
+        </div>
+        
+        <div class="col col-12 col-xl-1 border custom-font-data columna justify-content-center">
+            <p class="text-center">
+                {{item.estadoTurno}}
+            </p>
+        </div>
+        
+        <!--CANCELAR O CALIFICAR-->
+        <div class="col col-12 col-xl-1 border custom-font-data text-right columna">
+            <ng-container *ngIf="item.estadoTurno == 'Realizado'">
+                <div class="d-flex fs-6" style="flex-direction: column;">
+                   
+                </div>
+            </ng-container>   
+            
+            <ng-container *ngIf="item.estadoTurno == 'Solicitado'">
+                <div class="d-flex justify-content-center w-100">
+                    <button class="btn btn-danger fw-bold fs-4 m-1" (click)="cancelar(item, indice)">Cancelar
+                    </button>
+                </div>
+            </ng-container>            
+        </div>
+        
+        <div class="col col-12 col-xl-2 border custom-font-data columna justify-content-center">
+            <ng-container *ngIf="item.calificado || item.estadoTurno == 'Cancelado'; else mostrarInput">
+                <ng-container *ngIf="item.comentarioPaciente && item.comentarioPaciente != ''">
+                    <div *ngIf="!item.mostrarComentario; else mostrarComentarios">
+                        <button class="btn btn-warning" (click)="mostrarComentario(item)"><i class="bi bi-eye-fill scale"></i></button>
+                    </div>
+                    <ng-template #mostrarComentarios>
+                    <button class="btn btn-warning m-1" (click)="mostrarComentario(item)"><i class="bi bi-eye-slash-fill scale"></i></button>
+                    <textarea class="form-control w-100 deshabilitado resize" disabled readonly>{{item.comentarioPaciente}}</textarea>
+                </ng-template>
+            </ng-container>
+        </ng-container>
+        <ng-template #mostrarInput>
+            <ng-container *ngIf="item.estadoTurno == 'Solicitado'">
+                <textarea [id]="'comentarioPaciente' + indice" class="w-100 resize form-control"></textarea>
+            </ng-container>
+        </ng-template>
+        </div>
+    </div>
+</ng-template>
+</div>
+
+<app-loader *ngIf="cargando"></app-loader>

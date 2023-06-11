@@ -73,7 +73,8 @@ export class TurnosEspecialistaComponent {
       this.cargando = true;
       item.estadoTurno = 'Cancelado';
       item.comentarioMedico = input?.value.trim();
-      delete item['mostrarDetalle'];
+        delete item['mostrarComentario'];
+        delete item['mostrarDetalle'];
       this.horariosService.modificarItem(item).then(x => {
         this.swalService.exito('Turno cancelado!', 'Aviso.');
         this.cargando = false;
@@ -87,6 +88,7 @@ export class TurnosEspecialistaComponent {
     this.cargando = true;
     item.estadoTurno = 'Aceptado';
     delete item['mostrarDetalle'];
+    delete item['mostrarComentario'];
     this.horariosService.modificarItem(item).then(x => {
       this.swalService.exito('Turno Aceptado!', 'Aviso.');
     }).finally(() => this.cargando = false);
@@ -99,6 +101,7 @@ export class TurnosEspecialistaComponent {
       item.estadoTurno = 'Realizado';
       item.comentarioMedico = input.value;
       delete item['mostrarDetalle'];
+      delete item['mostrarComentario'];
       this.horariosService.modificarItem(item).then(x => {
         this.swalService.exito('Turno Finalizado!', 'Aviso.');
       }).finally(() => this.cargando = false);
@@ -113,6 +116,7 @@ export class TurnosEspecialistaComponent {
       item.estadoTurno = 'Rechazado';
       item.comentarioMedico = input?.value.trim();
       delete item['mostrarDetalle'];
+      delete item['mostrarComentario'];
       this.horariosService.modificarItem(item).then(x => {
         this.swalService.exito('Turno Rechazado!', 'Aviso.');
         this.cargando = false;
