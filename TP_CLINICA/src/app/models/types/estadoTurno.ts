@@ -1,1 +1,1 @@
-export type EstadoTurno = 'Libre' | 'Ocupado' | 'Cancelado' | 'Rechazado' | 'Realizado';
+export type EstadoTurno = 'Libre' | 'Solicitado' | 'Cancelado' | 'Aceptado' | 'Rechazado' | 'Realizado';

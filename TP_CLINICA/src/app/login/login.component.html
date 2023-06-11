@@ -44,11 +44,14 @@
                                 <a class="" routerLink="../registro">AQUI</a></label>
                         </div>
                     </fieldset>
+                    <div class="d-flex" style="flex-wrap: wrap;">
+                        <div *ngFor="let usuario of listaUsuarios">
+                            <button class="btn botones" type="button" (click)='cargarUsuarioDefault(usuario)'>
+                                <img src="{{usuario.imagen}} " class="img-foto" width="50px">
+                            </button>                    
+                        </div>
+                    </div>
                 </form>
-                <button class="btn btn-secondary m-1 fw-bold fs-6" (click)="cargarUsuarioDefault(0)">Administrador</button>
-                <button class="btn btn-secondary m-1 fw-bold fs-6"
-                    (click)="cargarUsuarioDefault(1)">Especialista</button>
-                <button class="btn btn-secondary m-1 fw-bold fs-6" (click)="cargarUsuarioDefault(2)">Paciente</button>
             </div>
         </div>
     </div>

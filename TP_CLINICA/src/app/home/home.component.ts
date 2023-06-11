@@ -32,6 +32,6 @@ export class HomeComponent {
   }
 
   esPaciente() {
-    return this.usuarioActual?.perfil == Perfil.usuario;
+    return this.usuarioActual?.perfil == Perfil.paciente;
   }
 }

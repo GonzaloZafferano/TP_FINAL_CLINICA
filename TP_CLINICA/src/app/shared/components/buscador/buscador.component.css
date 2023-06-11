@@ -1,0 +1,24 @@
+.contenedor-resultados{
+    background-color: white;
+    position: absolute;
+    min-width: 400px;
+}
+
+.resultado{
+    cursor: pointer;
+    border: 1px solid rgba(0, 0, 0, 0.491);
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    color: black;
+}
+
+.resultado:hover{
+    background-color: #009331 !important;
+    color: #fff !important;
+    font-weight: bold !important;
+}
+
+.p-resultado{
+    margin: 0px !important;
+}

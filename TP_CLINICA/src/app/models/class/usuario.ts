@@ -13,6 +13,6 @@ export class Usuario {
   obraSocial: number = 0
   habilitado: Acceso = Acceso.espera; 
   correoRegistrado: boolean = false;
-  perfil : Perfil = Perfil.usuario;
+  perfil : Perfil = Perfil.paciente;
   fechaRegistro : Date = new Date();
 }

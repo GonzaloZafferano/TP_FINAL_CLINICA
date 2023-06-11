@@ -1,0 +1,29 @@
+<div>
+    <div class="mb-3">
+        <label for="inputTexto" class="form-label">{{titulo}}</label>
+        <div class="d-flex justify-content-around">
+            <input type="text" class="form-control" autocomplete="off" (keydown)="keyDown($event)" #inputTexto name="inputTexto" id="inputTexto">
+            <button class="btn btn-primary m-1" id="btnBuscar" (click)="buscar()">
+                <!-- https://icons.getbootstrap.com/ -->
+                <i class="bi bi-search fw-bold"></i>
+            </button>
+            <button class="btn btn-primary m-1" (click)="limpiar()">
+                <!-- https://icons.getbootstrap.com/ -->
+                <i class="bi bi-x-circle"></i>
+            </button>
+        </div>
+    </div>
+    <div class="contenedor-resultados">
+        <div *ngIf="cargando; else resultados" class="d-flex justify-content-center">
+            <span class="fs-3 fw-bold m-2 text-dark">Cargando...</span>
+            <div class="spinner-border text-danger text-center m-2" style="align-self: center; scale: 1.2;"></div>
+        </div>
+        <ng-template #resultados>
+            <ng-container *ngIf="datos && datos.length > 0">
+                <div class="resultado" *ngFor="let dato of datos" (click)="seleccionItem(dato,inputTexto)">
+                    <p class="p-resultado">{{ funcionPipe(dato) }} </p>
+                </div>
+            </ng-container>
+        </ng-template>
+    </div>
+</div>

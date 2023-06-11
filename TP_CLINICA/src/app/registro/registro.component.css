@@ -1,0 +1,10 @@
+.botones{
+    background:rgb(76, 204, 62);
+    border-radius:50%; 
+    border: none;
+}
+.img-foto{
+    border-radius: 50%;
+    height: 150px;
+    width: 150px;
+}

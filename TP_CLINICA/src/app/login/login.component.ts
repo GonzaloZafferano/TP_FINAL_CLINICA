@@ -179,21 +179,39 @@ export class LoginComponent {
 
   listaUsuarios: any = [
     {
-      correo: 'posate6372@onlcool.com',
-      clave: '111111'
+      correo: 'sayelef832@onlcool.com',
+      clave: '111111',
+      imagen : '../assets/fotosPerfil/u1.jpg'
     },
     {
-      correo: 'dedor27772@pyadu.com',
-      clave: '111111'
+      correo: 'dofihip268@peogi.com',
+      clave: '111111',
+      imagen : '../assets/fotosPerfil/u2.jpg'
     },
     {
-      correo: 'vifat71287@peogi.com',
-      clave: '111111'
+      correo: 'fovof96689@onlcool.com',
+      clave: '111111',
+      imagen : '../assets/fotosPerfil/u3.jpg'
+    },
+    {
+      correo: 'fiwobiy306@peogi.com',
+      clave: '111111',
+      imagen : '../assets/fotosPerfil/m1.jpg'
+    },
+    {
+      correo: 'jinove3065@onlcool.com',
+      clave: '111111',
+      imagen : '../assets/fotosPerfil/m2.jpg'
+    },
+    {
+      correo: 'wafisep178@onlcool.com',
+      clave: '111111',
+      imagen : '../assets/fotosPerfil/a1.png'
     }
   ];
 
-  cargarUsuarioDefault(index: number) {
-    this.correo?.setValue(this.listaUsuarios[index].correo);
-    this.clave?.setValue(this.listaUsuarios[index].clave);
+  cargarUsuarioDefault(usuario: any) {
+    this.correo?.setValue(usuario.correo);
+    this.clave?.setValue(usuario.clave);
   }
 }

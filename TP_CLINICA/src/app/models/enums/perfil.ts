@@ -1,5 +1,5 @@
 export enum Perfil {
     administrador,
-    usuario,
+    paciente,
     especialista
 }

@@ -9,9 +9,10 @@
             <ng-container *ngIf="especialistas">
                 <div *ngIf="especialistas.length > 0; else sinEspecialistas">
                     <div *ngFor="let especialista of especialistas">
-                        <div class="d-flex justify-content-between mx-0 border bg-light text-dark"
-                        (click)="seleccionEspecialista(especialista)">
-                        <p class="m-2">{{especialista | especialistas}}</p>
+                        <div class="d-flex justify-content-between custom-pointer mx-0 border bg-light text-dark"
+                        (click)="seleccionEspecialista(especialista)" 
+                        [class.fila-seleccionada]="filaSeleccionada != null && especialista.id === filaSeleccionada.id">
+                        <p class="m-2 custom-font-data">{{especialista | especialistas}}</p>
                     </div>
                 </div>
             </div>

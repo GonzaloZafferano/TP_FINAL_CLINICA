@@ -10,7 +10,7 @@ export class TipoUsuarioPipe implements PipeTransform {
       return 'Administrador';
     else if (perfil == Perfil.especialista)
       return 'Especialista';
-    else if (perfil == Perfil.usuario)
+    else if (perfil == Perfil.paciente)
       return 'Paciente';
     return '';
   }

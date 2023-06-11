@@ -50,7 +50,7 @@ export class ListadoUsuariosComponent {
   }
 
   obtenerUrlImagen(usuario: any) {
-    if (usuario.perfil != Perfil.usuario)
+    if (usuario.perfil != Perfil.paciente)
       return usuario.imagen;
     return usuario.imagen1;
   }

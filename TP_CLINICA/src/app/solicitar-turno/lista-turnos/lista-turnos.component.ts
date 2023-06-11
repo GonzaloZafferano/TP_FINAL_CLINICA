@@ -1,4 +1,5 @@
-import { Component, ElementRef, EventEmitter, Input, Output } from '@angular/core';
+import { NgPlural } from '@angular/common';
+import { Component, ElementRef, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'app-lista-turnos',
@@ -6,11 +7,19 @@ import { Component, ElementRef, EventEmitter, Input, Output } from '@angular/cor
   styleUrls: ['./lista-turnos.component.css']
 })
 export class ListaTurnosComponent {
- @Input() spinner : boolean = false;
- @Input() turnos : any; 
- @Output() OnSeleccionTurno = new EventEmitter<any>();
- 
- seleccionTurno(turno : any){
-   this.OnSeleccionTurno.emit(turno);   
- }
+  filaSeleccionada: any;
+  @Input() spinner: boolean = false;
+  @Input() turnos: any = null;
+  @Output() OnSeleccionTurno = new EventEmitter<any>();
+
+  seleccionTurno(turno: any) {
+    this.OnSeleccionTurno.emit(turno);
+  }
+  seleccionFila(turno: any) {
+    this.filaSeleccionada = turno;
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    this.filaSeleccionada = null;
+  }
 }

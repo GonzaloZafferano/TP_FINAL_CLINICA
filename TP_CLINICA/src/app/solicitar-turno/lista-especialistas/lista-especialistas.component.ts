@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'app-lista-especialistas',
@@ -6,12 +6,18 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   styleUrls: ['./lista-especialistas.component.css']
 })
 export class ListaEspecialistasComponent {
-  @Input() spinner : boolean = false;
-  @Input() especialistas : any; 
-  @Input() titulo : any ='Lista de Especialistas'; 
+  filaSeleccionada: any;
+  @Input() spinner: boolean = false;
+  @Input() especialistas: any;
+  @Input() titulo: any = 'Lista de Especialistas';
   @Output() OnSeleccionEspecialista = new EventEmitter<any>();
-  
-  seleccionEspecialista(especialista : any){
-    this.OnSeleccionEspecialista.emit(especialista);   
+
+  seleccionEspecialista(especialista: any) {
+    this.filaSeleccionada = especialista;
+    this.OnSeleccionEspecialista.emit(especialista);
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    this.filaSeleccionada = null;
   }
 }

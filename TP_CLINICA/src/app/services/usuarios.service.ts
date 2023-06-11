@@ -12,6 +12,7 @@ import { LocalstorageService } from './localstorage.service';
 export class UsuarioService {
   private nombreColeccion: string = 'usuarios';
   private usuario: any;
+  public usuarioAuth : any;
   suscripcion: any;
 
   /**
@@ -44,6 +45,7 @@ export class UsuarioService {
         this.traerUsuarioPorId(usuario.uid).then((x: any) => {
           this.localStorage.guardarItem('usuarioClinica', { id: usuario.uid, mail: usuario.email, perfil: x?.perfil });
           this.usuarioEstaLogueado = true;
+          this.usuarioAuth = x;
         });
       }
     });
@@ -124,5 +126,9 @@ export class UsuarioService {
 
   obtenerEspecialistaPorEspecialidad(especialidad: any) {
     return this.firestoreDB.obtenerElementosDeListasConCoincidenciaExacta(this.nombreColeccion, 'especialidades', especialidad);
+  }
+
+  traerListaFiltradaPor_UN_Campo(campo: string, valor: any) {
+    return this.firestoreDB.traerListaDeObjetosFiltrada(this.nombreColeccion, campo, TipoIgualdad.igual, valor);
   }
 }

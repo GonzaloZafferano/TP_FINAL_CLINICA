@@ -1,7 +1,28 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid justify-content-end">
-        <button class="btn btn-warning fs-4 fw-bold p-2 m-2" [hidden]="!usuarioLogueado" routerLink="mi-perfil" (click)="miPerfil()">Mi Perfil</button>        
-        <button class="btn btn-warning fs-4 fw-bold p-2 m-2" [hidden]="!usuarioLogueado || routerUrl == '/home'" (click)="home()">Home</button>
-        <button class="btn btn-danger fs-4 fw-bold p-2 m-2" [hidden]="!usuarioLogueado" (click)="cerrarSesion()">Cerrar Sesión</button>
-    </div>
-</nav>
+<ng-container *ngIf="usuarioLogueado">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark m-0 p-0">
+        <div class="row w-100">
+            <div class="col col-12 col-md-6 d-flex" style="align-items: center !important;">
+                <div *ngIf="!usuarioActual; else user" class="d-flex justify-content-start"
+                    style="align-items: center; height: 100% !important;">
+                    <div class="spinner-border text-light" style="align-self: center; scale: 1;">
+                    </div>
+                </div>
+                <ng-template #user>
+                    <h3 class="fs-3 fw-bold text-light p-2 m-0">{{usuarioActual?.perfil | tipoUsuario}}:
+                        {{usuarioActual?.nombre}}
+                        {{usuarioActual?.apellido}}</h3>
+                </ng-template>
+            </div>
+            <div class="col col-12 col-md-6 justify-content-end">
+                <div class="d-flex justify-content-end">
+                    <button class="btn btn-warning fs-4 fw-bold p-2 m-2" [hidden]="!usuarioLogueado || ocultarBotonMiPerfil"
+                        routerLink="mi-perfil" (click)="miPerfil()">Mi Perfil</button>
+                    <button class="btn btn-warning fs-4 fw-bold p-2 m-2"
+                        [hidden]="!usuarioLogueado || routerUrl == '/home'" (click)="home()">Home</button>
+                    <button class="btn btn-danger fs-4 fw-bold p-2 m-2" [hidden]="!usuarioLogueado"
+                        (click)="cerrarSesion()">Cerrar Sesión</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+</ng-container>

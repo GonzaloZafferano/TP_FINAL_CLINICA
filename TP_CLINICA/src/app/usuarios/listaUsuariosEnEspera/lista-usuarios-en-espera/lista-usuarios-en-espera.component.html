@@ -41,7 +41,7 @@
         <div class="spinner-border text-danger" style="align-self: center; scale: 1.2;"></div>
     </div>
     <ng-template #lista>
-        <div *ngFor="let item of listado" class="row custom-pointer" (click)="seleccionDeFila(item)"
+        <div *ngFor="let item of listado" class="row custom-pointer bg-light" (click)="seleccionDeFila(item)"
             [class.fila-seleccionada]="filaSeleccionada != null && item.id === filaSeleccionada.id">
             <div class="col-sm border d-none">
                 {{item.id}}

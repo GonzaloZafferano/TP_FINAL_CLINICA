@@ -1,14 +1,20 @@
-<div class="d-flex justify-content-around w-100">
+<div class="bg-dark text-light fw-bold p-2 text-center">
+    <h3 class="fs-1 fw-bold">Carga de Horarios</h3>
+</div>
+<div class="d-flex justify-content-around w-100" >
     <div class="w-50">
+        <div style="margin-left: 10px; " class="bg-light p-2">
         <form [formGroup]="form">
             <div>
                 <div class="mt-3">
-                    <select *ngIf="usuarioObservable?.especialidades" class="w-100 form-select" name="selectEspecialidades"
-                        id="selectEspecialidades" formControlName="selectEspecialidades">
+                    <label for="selectEspecialidades" class="form-label">Seleccione especialidad</label>
+                    <select *ngIf="usuarioObservable?.especialidades" class="w-100 form-select"
+                        name="selectEspecialidades" id="selectEspecialidades" formControlName="selectEspecialidades">
                         <optgroup>
                             <option selected disabled value="-1">Seleccione especialidad...</option>
                             <option selected value="0"></option>
-                            <option *ngFor="let especialidad of usuarioObservable?.especialidades" [value]="especialidad?.id">
+                            <option *ngFor="let especialidad of usuarioObservable?.especialidades"
+                                [value]="especialidad?.id">
                                 {{especialidad?.nombre | titlecase }}
                             </option>
                         </optgroup>
@@ -21,9 +27,10 @@
                 </ng-container>
             </div>
 
-            <div class="d-flex justify-content-around">
+            <div class="d-flex" style="flex-direction: column;">
                 <div>
                     <div>
+                        <label for="dia" class="form-label">Seleccione día</label>
                         <select class="w-100 form-select" name="dia" id="dia" formControlName="dia"
                             (change)="seleccion($event)">
                             <optgroup>
@@ -40,8 +47,10 @@
                         </small>
                     </ng-container>
                 </div>
+
                 <div>
                     <div>
+                        <label for="horaInicio" class="form-label">Seleccione hora inicial</label>
                         <select class="w-100 form-select" name="horaInicio" id="horaInicio"
                             formControlName="horaInicio">
                             <optgroup>
@@ -60,6 +69,7 @@
                 </div>
 
                 <div>
+                    <label for="horaFin" class="form-label">Seleccione hora final</label>
                     <select class="w-100 form-select" name="horaFin" id="horaFin" formControlName="horaFin">
                         <optgroup>
                             <option selected disabled value="-1">Seleccione hora final...</option>
@@ -75,9 +85,10 @@
                     </ng-container>
                 </div>
 
-                
                 <div>
-                    <select class="w-100 form-select" name="duracionAtencion" id="duracionAtencion" formControlName="duracionAtencion">
+                    <label for="duracionAtencion" class="form-label">Seleccione duración</label>
+                    <select class="w-100 form-select" name="duracionAtencion" id="duracionAtencion"
+                        formControlName="duracionAtencion">
                         <optgroup>
                             <option selected disabled value="-1">Seleccione duración...</option>
                             <option *ngFor="let duracion of  duraciones">
@@ -91,21 +102,13 @@
                         </small>
                     </ng-container>
                 </div>
-
-
-                
-
-
-
-
-
-                <div>
+                <div style="display: flex; justify-content: end;">
                     <button [disabled]="form.invalid" class="btn btn-success fs-4 fw-bold p-2 m-2"
                         (click)="guardar()">Cargar</button>
                 </div>
-
             </div>
         </form>
+        </div>
     </div>
     <div class="w-50">
         <div class="border p-2 w-75 mx-5 bg-dark text-light">
@@ -128,6 +131,4 @@
         </div>
     </div>
 </div>
-
-
 <app-loader *ngIf="cargando" [texto]="titulo"></app-loader>

@@ -9,11 +9,12 @@
             <ng-container *ngIf="turnos">
                 <div *ngIf="turnos.length > 0; else sinTurnos">
                     <div *ngFor="let turno of turnos | sortBySeconds">
-                        <div class="d-flex justify-content-between mx-0 border bg-light text-dark"
-                        style="align-items: center;"
-                            (click)="seleccionTurno(turno)">
+                        <div class="d-flex justify-content-between custom-pointer mx-0 border bg-light text-dark"
+                        [class.fila-seleccionada]="filaSeleccionada != null && turno.id === filaSeleccionada.id"
+                        (click)="seleccionFila(turno)"
+                        style="align-items: center;">
                             <p class="m-2">{{turno | turnos : false}}</p>
-                            <button class="btn btn-success fs-4 fw-bold p-2 m-2"
+                            <button class="btn btn-primary fs-4 fw-bold p-2 m-2 custom-font-data"
                                 (click)="seleccionTurno(turno)">Solicitar Turno</button>
                         </div>
                     </div>

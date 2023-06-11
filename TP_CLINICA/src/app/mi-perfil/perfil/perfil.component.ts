@@ -27,7 +27,7 @@ export class PerfilComponent {
     if (this.usuario) {
       this.esAdmin = this.usuario.perfil == Perfil.administrador;
       this.esEspecialista = this.usuario.perfil == Perfil.especialista;
-      this.esUsuario = this.usuario.perfil == Perfil.usuario;
+      this.esUsuario = this.usuario.perfil == Perfil.paciente;
     }
     this.suscripcion = this.usuarioService.traerUsuarioPorId_Observable(this.usuario.id).subscribe(x => {
       if (x && x.length > 0) {

@@ -296,6 +296,7 @@ export class CargarHorariosComponent {
         horario.idEspecialidad = this.selectEspecialidades?.value;
         horario.especialidad = especialidad;
         horario.nombreEspecialista = this.usuarioObservable?.apellido + ' ' + this.usuarioObservable?.nombre;
+        horario.medico = this.usuarioObservable;
         horario.idMedico = this.usuarioObservable.id;
         horario.estadoTurno = 'Libre';
         horario.duracion = duracion;
@@ -323,14 +324,16 @@ export class CargarHorariosComponent {
     this.titulo = 'Eliminando...';
 
     let horariosABorrar = this.horariosActuales.filter((x: any) => x.dia == turno.dia && x.horaFin == turno.horaFin && x.horaInicio == turno.horaInicio);
-    let hayTurnosOcupados = horariosABorrar.filter((x: any) => x.ocupado == true);
+    let hayTurnosOcupados = horariosABorrar.filter((x: any) => x.ocupado == true && (x.estadoTurno == 'Aceptado' || x.estadoTurno == 'Solicitado'));
 
     if (hayTurnosOcupados.length > 0) {
-      this.swalService.error('Tiene turnos ocupados en el horario que quiere borrar. Primero, cancele o rechace los turnos y vuelva a intentar.', 'Aviso');
+      this.swalService.error('Tiene turnos Aceptados o Solicitados en el horario que quiere borrar. Primero, cancele, rechace o finalice los turnos y vuelva a intentar.', 'Aviso');
       this.cargando = false;
     } else {
       for (let i = 0; i < horariosABorrar.length; i++) {
-        await this.horarioService.eliminarItem(horariosABorrar[i].id);
+        if (!horariosABorrar[i].ocupado) {
+          await this.horarioService.eliminarItem(horariosABorrar[i].id);
+        }
       }
 
       this.usuarioObservable.horarios = this.usuarioObservable.horarios.filter((x: any) => x != turno);

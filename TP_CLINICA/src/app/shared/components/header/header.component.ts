@@ -10,14 +10,19 @@ import { UsuarioService } from 'src/app/services/usuarios.service';
 })
 export class HeaderComponent {
   ocultarBotonHome: boolean = false;
-  constructor(private authService: AuthService, private usuarioService: UsuarioService, private router: Router,) { }
+  ocultarBotonMiPerfil: boolean = false;
+  constructor(private usuarioService: UsuarioService, private router: Router,) { }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.ocultarBotones();
   }
 
   get usuarioLogueado() {
     return this.usuarioService.usuarioEstaLogueado;
+  }
+
+  get usuarioActual() {
+    return this.usuarioService.usuarioAuth;
   }
 
   get routerUrl() {
@@ -26,6 +31,7 @@ export class HeaderComponent {
 
   ocultarBotones(home: boolean = false) {
     this.ocultarBotonHome = this.router.url == '/home';
+    //this.ocultarBotonMiPerfil = this.router.url == '/mi-perfil';
     if (home)
       this.router.navigate(['/home']);
   }
@@ -35,11 +41,15 @@ export class HeaderComponent {
   }
 
   miPerfil() {
+    //this.ocultarBotonMiPerfil = this.router.url == '/mi-perfil';
     this.router.navigate(['mi-perfil']);
   }
 
-  
   home() {
     this.router.navigate(['home']);
+  }
+
+  NavigationEnd() {
+    debugger;
   }
 }

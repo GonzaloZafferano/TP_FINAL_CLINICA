@@ -108,7 +108,7 @@ export class FirestoreService {
       case TipoIgualdad.igual:
         q = query(coleccion, where(columna, '==', valorBuscado));
         break;
-      case TipoIgualdad.distinto:
+      case TipoIgualdad.distinto:  
         q = query(coleccion, where(columna, '!=', valorBuscado));
         break;
       case TipoIgualdad.mayor:
@@ -176,10 +176,20 @@ export class FirestoreService {
     const coleccion: CollectionReference<DocumentData> = collection(this.firestore, nombreColeccion);
     return collectionData(query(coleccion, where(columna1, '==', valorBuscado1), where(columna2, '==', valorBuscado2)));
   }
+  
+  traerListaDeObjetosCon_DOS_FiltrosDe_D_I_ConObservable(nombreColeccion: string, columna1: string, valorBuscado1: any, columna2: string, valorBuscado2: any) {
+    const coleccion: CollectionReference<DocumentData> = collection(this.firestore, nombreColeccion);
+    return collectionData(query(coleccion, where(columna1, '!=', valorBuscado1), where(columna2, '==', valorBuscado2)));
+  }
 
   traerListaDeObjetosCon_TRES_FiltrosDe_IGUALDAD_ConObservable(nombreColeccion: string, columna1: string, valorBuscado1: any, columna2: string, valorBuscado2: any, columna3: string, valorBuscado3: any) {
     const coleccion: CollectionReference<DocumentData> = collection(this.firestore, nombreColeccion);
     return collectionData(query(coleccion, where(columna1, '==', valorBuscado1), where(columna2, '==', valorBuscado2), where(columna3, '==', valorBuscado3)));
+  }
+
+  traerListaDeObjetosCon_TRES_Filtros_I_I_D_ConObservable(nombreColeccion: string, columna1: string, valorBuscado1: any, columna2: string, valorBuscado2: any, columna3: string, valorBuscado3: any) {
+    const coleccion: CollectionReference<DocumentData> = collection(this.firestore, nombreColeccion);
+    return collectionData(query(coleccion, where(columna1, '==', valorBuscado1), where(columna2, '==', valorBuscado2), where(columna3, '!=', valorBuscado3)));
   }
 
   async traerListaDeObjetosOrdenada(nombreColeccion: string, columna: string, orden: Orden = Orden.asc) {
@@ -242,4 +252,47 @@ export class FirestoreService {
     const coleccion: CollectionReference<DocumentData> = collection(this.firestore, nombreColeccion);
     return collectionData(query(coleccion, where(campo, 'array-contains-any', listaConElementosExactosQueSeBuscan)));
   }
+
+  async traerListaDeObjetosCon_DOS_FiltrosDe_IGUALDAD(nombreColeccion: string, columna1: string, valorBuscado1: any, columna2: string, valorBuscado2: any) {
+    const coleccion: CollectionReference<DocumentData> = collection(this.firestore, nombreColeccion);
+    let q = query(coleccion, where(columna1, '==', valorBuscado1), where(columna2, '==', valorBuscado2));
+    const docs = await getDocs(q).then((docs) => {
+      return docs;
+    });
+    const listaDeObjetos: DocumentData[] = [];
+    docs.forEach((item) => {
+      listaDeObjetos.push(item.data());
+    });
+    return listaDeObjetos;
+  }
+
+  async traerListaDeObjetosCon_UnFiltro_IGUALDAD_YUNO_DESIGUALDAD(nombreColeccion: string, columna1: string, valorBuscado1: any, columna2: string, valorBuscado2: any) {
+    const coleccion: CollectionReference<DocumentData> = collection(this.firestore, nombreColeccion);
+    let q = query(coleccion, where(columna1, '==', valorBuscado1), where(columna2, '!=', valorBuscado2));
+    const docs = await getDocs(q).then((docs) => {
+      return docs;
+    });
+    const listaDeObjetos: DocumentData[] = [];
+    docs.forEach((item) => {
+      listaDeObjetos.push(item.data());
+    });
+    return listaDeObjetos;
+  }
+
+  async traerListaDeObjetosCon_TRES_FiltrosDe_IGUALDAD(nombreColeccion: string, columna1: string, valorBuscado1: any, columna2: string, valorBuscado2: any, columna3: string, valorBuscado3: any) {
+    const coleccion: CollectionReference<DocumentData> = collection(this.firestore, nombreColeccion);
+    let q = query(coleccion, where(columna1, '==', valorBuscado1), where(columna2, '==', valorBuscado2), where(columna3, '==', valorBuscado3));
+    const docs = await getDocs(q).then((docs) => {
+      return docs;
+    });
+    const listaDeObjetos: DocumentData[] = [];
+    docs.forEach((item) => {
+      listaDeObjetos.push(item.data());
+    });
+    return listaDeObjetos;
+  }
 }
+
+
+
+

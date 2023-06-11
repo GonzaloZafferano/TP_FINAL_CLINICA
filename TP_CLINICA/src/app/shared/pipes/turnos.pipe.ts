@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class TurnosPipe implements PipeTransform {
 
-  transform(turno: any, mostrarTurnosSegunEspecialista: boolean = true): string {
+  transform(turno: any, mostrarTurnosSegunEspecialista: boolean = true, mostrarEspecialidad : boolean = true): string {
     if (mostrarTurnosSegunEspecialista) {
       let horaInicio = turno.horaInicio < 10 ? ('0' + turno.horaInicio) : turno.horaInicio;
       let horaFin = turno.horaFin < 10 ? ('0' + turno.horaFin) : turno.horaFin;
@@ -18,7 +18,10 @@ export class TurnosPipe implements PipeTransform {
       let horaFin = fechaDate.getHours() < 10 ? ('0' + fechaDate.getHours()) : fechaDate.getHours();
       let minutosFin = fechaDate.getMinutes() < 10 ? ('0' + fechaDate.getMinutes()) : fechaDate.getMinutes();
 
+      if(mostrarEspecialidad)
       return turno.dia + ' - ' + turno.fechaString + ' - ' + horaInicio + ':' + minutos + ' a ' + horaFin + ':' + minutosFin + ' - ' + turno.especialidad;
+      else
+      return turno.dia + ' - ' + turno.fechaString + ' - ' + horaInicio + ':' + minutos + ' a ' + horaFin + ':' + minutosFin;
     }
   }
 }
