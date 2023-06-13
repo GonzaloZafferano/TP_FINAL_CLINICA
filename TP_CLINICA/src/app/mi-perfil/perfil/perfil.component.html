@@ -1,9 +1,9 @@
 <div class="bg-dark">
     <h3 class="text-center text-light custom-font">Mi Perfil</h3>
 </div>
-<div class="row w-100">
+<div class="row w-100 mx-auto">
     <div class="col col-12 col-md-8 mt-5 mx-auto p-0 m-0">
-        <div class="card">
+        <div class="card mx-auto">
             <div class="card-body text-start fondo">
                 <div *ngIf="!usuario; else user" class="d-flex justify-content-center"
                     style="align-items: center; height: 100% !important;">
@@ -14,65 +14,77 @@
                     </div>
                 </div>
                 <ng-template #user>
-                <div class="row w-100">
-                    <div class="col col-12 col-md-6">
-                        <div class="d-flex justify-content-around imagen-centrada" *ngIf="usuario != null">
-                            <div class="text-center p-2" *ngIf="esUsuario">
-                                <img [src]="usuario?.imagen1" class="imagen" height="250" width="300px" alt="imagen 1 del usuario">
-                            </div>
-                            <div class="text-center p-2" *ngIf="esUsuario">
-                                <img [src]="usuario?.imagen2" class="imagen" height="250" width="300px" alt="imagen 2 del usuario">
-                            </div>
-                            <div class="col-md-12 mx-auto mt-2 text-center" style="" *ngIf="!esUsuario">
-                                <img [src]="usuario?.imagen" class="imagen" height="200" width="400px" alt="imagen 1 del usuario">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col col-12 col-md-6">
-                        <div style="padding-left: 10px;"> 
-                            <div class="text-start">
-                                <h4 class="card-title">Nombre: {{usuario?.nombre}}</h4>
-                            </div>
-                            <div class="text-start">
-                                <h4>Apellido: {{usuario?.apellido}}</h4>
-                            </div>
-                            <div class="text-start">
-                                <h4>Edad: {{usuario?.edad}}</h4>
-                            </div>
-
-                            <div class="text-start">
-                                <h4>Email: {{usuario?.correo}}</h4>
-                            </div>
-                            <div class="text-start">
-                                <h4>DNI: {{usuario?.dni}}</h4>
-                            </div>
-                            <div class="text-start">
-                                <h4>Tipo de usuario: {{usuario?.perfil | tipoUsuario}}</h4>
-                                <div *ngIf="esEspecialista" class="text-start">
-                                    <h4>Especialidades:</h4>
-                                    <ng-container *ngIf="usuario?.especialidades">
-                                        <h5 *ngFor="let espe of usuario?.especialidades"> {{espe.nombre | titlecase}}
-                                        </h5>
-                                    </ng-container>
+                    <div class="row w-100">
+                        <div class="col col-12 col-md-6">
+                            <div class="d-flex justify-content-around imagen-centrada" *ngIf="usuario != null">
+                                <ng-container *ngIf="esUsuario">
+                                    <div class="row">
+                                        <div class="col col-12 col-md-6">
+                                            <div class="text-center p-2" *ngIf="esUsuario">
+                                                <img [src]="usuario?.imagen1" class="imagen" height="250" width="300px"
+                                                alt="imagen 1 del usuario">
+                                            </div>
+                                        </div>
+                                        <div class="col col-12 col-md-6">
+                                            <div class="text-center p-2" *ngIf="esUsuario">
+                                                <img [src]="usuario?.imagen2" class="imagen" height="250" width="300px"
+                                                alt="imagen 2 del usuario">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                                <div class="col-md-12 mx-auto mt-2 text-center" style="" *ngIf="!esUsuario">
+                                    <img [src]="usuario?.imagen" class="imagen" height="200" width="400px"
+                                        alt="imagen 1 del usuario">
                                 </div>
                             </div>
-                            <div *ngIf="usuario && esEspecialista">
-                                <div *ngIf="usuarioObservable?.horarios && usuarioObservable?.horarios.length > 0">
-                                    <h4 class="fw-bold">Horarios de atención</h4>
-                                    <div *ngFor="let horario of usuarioObservable?.horarios | sortdiashorarios">
-                                        <h5> {{horario | turnos}} </h5>
+                        </div>
+                        <div class="col col-12 col-md-6">
+                            <div style="padding-left: 10px;">
+                                <div class="text-start">
+                                    <h4 class="card-title">Nombre: {{usuario?.nombre}}</h4>
+                                </div>
+                                <div class="text-start">
+                                    <h4>Apellido: {{usuario?.apellido}}</h4>
+                                </div>
+                                <div class="text-start">
+                                    <h4>Edad: {{usuario?.edad}}</h4>
+                                </div>
+
+                                <div class="text-start">
+                                    <h4>Email: {{usuario?.correo}}</h4>
+                                </div>
+                                <div class="text-start">
+                                    <h4>DNI: {{usuario?.dni}}</h4>
+                                </div>
+                                <div class="text-start">
+                                    <h4>Tipo de usuario: {{usuario?.perfil | tipoUsuario}}</h4>
+                                    <div *ngIf="esEspecialista" class="text-start">
+                                        <h4>Especialidades:</h4>
+                                        <ng-container *ngIf="usuario?.especialidades">
+                                            <h5 *ngFor="let espe of usuario?.especialidades"> {{espe.nombre |
+                                                titlecase}}
+                                            </h5>
+                                        </ng-container>
                                     </div>
                                 </div>
-                                <div>
-                                    <button class="btn btn-warning fw-bold fs-4" routerLink="mis-horarios"
-                                        (click)="cargarHorarios()">Cargar
-                                        horarios</button>
+                                <div *ngIf="usuario && esEspecialista">
+                                    <div *ngIf="usuarioObservable?.horarios && usuarioObservable?.horarios.length > 0">
+                                        <h4 class="fw-bold">Horarios de atención</h4>
+                                        <div *ngFor="let horario of usuarioObservable?.horarios | sortdiashorarios">
+                                            <h5> {{horario | turnos}} </h5>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <button class="btn btn-warning fw-bold fs-4" routerLink="mis-horarios"
+                                            (click)="cargarHorarios()">Cargar
+                                            horarios</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </ng-template>
+                </ng-template>
             </div>
         </div>
     </div>
