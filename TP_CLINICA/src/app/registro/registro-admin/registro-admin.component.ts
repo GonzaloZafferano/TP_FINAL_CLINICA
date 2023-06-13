@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { FormGroup, FormControl, Validators } from "@angular/forms";
+import { FormGroup, FormControl, Validators, FormBuilder } from "@angular/forms";
 import { Router } from "@angular/router";
 import { forkJoin } from "rxjs";
 import { Administrador } from "src/app/models/class/administrador";
@@ -26,6 +26,8 @@ export class RegistroAdminComponent {
   archivos: any = [];
   validarDni: ValidacionAsync;
   validarCorreo: ValidacionAsync;
+  protected aFormGroup!: FormGroup;
+  siteKey: string = '6LfKPZEmAAAAAGDBK0uVurfxhxuQGydWQI2jjlBe';
 
   //Propiedades
   get nombre() {
@@ -88,7 +90,8 @@ export class RegistroAdminComponent {
     private authService: AuthService,
     private formato: FormatoService,
     private usuarioService: UsuarioService,
-    private swalService : SwalService,
+    private swalService: SwalService,
+    private formBuilder: FormBuilder,
     private firestorageService: FirestorageService,
     private toastService: ToastService) {
     this.validarCorreo = new ValidacionAsync();
@@ -96,6 +99,10 @@ export class RegistroAdminComponent {
   }
 
   ngOnInit(): void {
+    this.aFormGroup = this.formBuilder.group({
+      recaptcha: ['', Validators.required]
+    });
+
     this.form = new FormGroup
       (
         {
@@ -129,8 +136,12 @@ export class RegistroAdminComponent {
   }
 
   registrarUsuario() {
-    if (this.formEsValido())
-      this.registrarUsuarioEnFirestore();
+    if (this.formEsValido()) {
+      if (!this.aFormGroup.invalid)
+        this.registrarUsuarioEnFirestore();
+      else
+        this.toastService.error('Falta validar Captcha', 'Registro inválido.');
+    }
     else
       this.toastService.error('Hay campos con errores. <br>Por favor corrijalos y vuelva a intentar', 'Registro inválido.');
   }
@@ -187,7 +198,7 @@ export class RegistroAdminComponent {
               administrador.fechaRegistro = new Date();
 
               this.usuarioService.cargarUsuarioConIdAsignado(administrador)
-                .then(x => {              
+                .then(x => {
                   this.limpiarFormulario();
                   this.cargando = false;
                   this.toastService.exito('El registro se ha completado exitosamente!.', 'Registro exitoso');

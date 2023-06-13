@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { FormGroup, FormControl } from "@angular/forms";
+import { FormGroup, FormControl, FormBuilder, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { forkJoin } from "rxjs";
 import { Especialista } from "src/app/models/class/especialista";
@@ -36,6 +36,9 @@ export class RegistroEspecialistaComponent {
   textoCarga: string = 'Cargando...';
   suscripcion: any;
   usuarioActual: any;
+  protected aFormGroup!: FormGroup;
+  siteKey: string = '6LfKPZEmAAAAAGDBK0uVurfxhxuQGydWQI2jjlBe';
+
   //Propiedades
   get nombre() {
     return this.form?.get('nombre');
@@ -129,6 +132,7 @@ export class RegistroEspecialistaComponent {
     private formato: FormatoService,
     private usuarioService: UsuarioService,
     private firestorageService: FirestorageService,
+    private formBuilder: FormBuilder,
     private solicitudService: SolicitudesService,
     private especialidadesServices: EspecialidadService,
     private toastService: ToastService) {
@@ -139,6 +143,10 @@ export class RegistroEspecialistaComponent {
   }
 
   ngOnInit(): void {
+    this.aFormGroup = this.formBuilder.group({
+      recaptcha: ['', Validators.required]
+    });
+
     this.usuarioService.obtenerUsuarioActual().then(x => {
       this.usuarioActual = x;
     });
@@ -194,8 +202,12 @@ export class RegistroEspecialistaComponent {
   }
 
   registrarUsuario() {
-    if (this.formEsValido())
-      this.realizarSolicitud();
+    if (this.formEsValido()) {
+      if (!this.aFormGroup.invalid)
+        this.realizarSolicitud();
+      else
+        this.toastService.error('Falta validar Captcha', 'Registro inválido.');
+    }
     else
       this.toastService.error('Hay campos con errores. <br>Por favor corrijalos y vuelva a intentar', 'Registro inválido.');
   }

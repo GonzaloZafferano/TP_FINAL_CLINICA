@@ -9,6 +9,7 @@ import { SharedModule } from '../shared/shared.module';
 import { LoaderComponent } from '../shared/components/loader/loader.component';
 import { RegistroAdminComponent } from './registro-admin/registro-admin.component';
 import { RegistroEspecialistaComponent } from './registro-especialista/registro-especialista.component';
+import { NgxCaptchaModule } from 'ngx-captcha';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { RegistroEspecialistaComponent } from './registro-especialista/registro-
     RegistroRoutingModule,
     FormsModule,   
     ReactiveFormsModule,   
-    SharedModule
+    SharedModule, 
+    NgxCaptchaModule,
   ]
 })
 export class RegistroModule { }
