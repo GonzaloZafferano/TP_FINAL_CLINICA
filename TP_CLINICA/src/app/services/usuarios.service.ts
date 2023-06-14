@@ -12,7 +12,7 @@ import { LocalstorageService } from './localstorage.service';
 export class UsuarioService {
   private nombreColeccion: string = 'usuarios';
   private usuario: any;
-  public usuarioAuth : any;
+  public usuarioAuth: any;
   suscripcion: any;
 
   /**
@@ -40,12 +40,15 @@ export class UsuarioService {
     private localStorage: LocalstorageService,
     private authService: AuthService,
     private router: Router) {
-    this.suscripcion = this.authService.ObtenerCambiosDeEstado().subscribe(usuario => {
+    this.suscripcion = this.authService.ObtenerCambiosDeEstado().subscribe(async usuario => {
+      let currentUser = await this.authService.ObtenerFireAuthCurrentUser();
       if (usuario) {
         this.traerUsuarioPorId(usuario.uid).then((x: any) => {
-          this.localStorage.guardarItem('usuarioClinica', { id: usuario.uid, mail: usuario.email, perfil: x?.perfil });
-          this.usuarioEstaLogueado = true;
-          this.usuarioAuth = x;
+          if (x && currentUser) {
+            this.localStorage.guardarItem('usuarioClinica', { id: usuario.uid, mail: usuario.email, perfil: x?.perfil });
+            this.usuarioEstaLogueado = true;
+            this.usuarioAuth = x;
+          }
         });
       }
     });

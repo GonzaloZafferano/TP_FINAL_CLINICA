@@ -179,32 +179,32 @@ export class LoginComponent {
 
   listaUsuarios: any = [
     {
-      correo: 'sayelef832@onlcool.com',
+      correo: 'takak82746@aaorsi.com',
       clave: '111111',
       imagen : '../assets/fotosPerfil/u1.jpg'
     },
     {
-      correo: 'dofihip268@peogi.com',
+      correo: 'jiyivo3885@aaorsi.com',
       clave: '111111',
       imagen : '../assets/fotosPerfil/u2.jpg'
     },
     {
-      correo: 'fovof96689@onlcool.com',
+      correo: 'kecon57023@aaorsi.com',
       clave: '111111',
       imagen : '../assets/fotosPerfil/u3.jpg'
     },
     {
-      correo: 'fiwobiy306@peogi.com',
+      correo: 'yosadoj637@aaorsi.com',
       clave: '111111',
       imagen : '../assets/fotosPerfil/m1.jpg'
     },
     {
-      correo: 'jinove3065@onlcool.com',
+      correo: 'fowibis816@aaorsi.com',
       clave: '111111',
       imagen : '../assets/fotosPerfil/m2.jpg'
     },
     {
-      correo: 'wafisep178@onlcool.com',
+      correo: 'ritakoh205@akoption.com',
       clave: '111111',
       imagen : '../assets/fotosPerfil/a1.png'
     }

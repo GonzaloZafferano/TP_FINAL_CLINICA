@@ -176,7 +176,11 @@ export class CargarHorariosComponent {
                 (horarioActual.horaFin < horaFin &&
                   horarioActual.horaFin > horaInicio) ||
                 (horarioActual.horaFin == horaFin &&
-                  horarioActual.horaInicio == horaInicio))) {
+                  horarioActual.horaInicio == horaInicio) ||
+                (horaInicio < horarioActual.horaFin &&
+                  horaInicio > horarioActual.horaInicio) ||
+                (horaFin < horarioActual.horaFin &&
+                  horaFin > horarioActual.horaInicio))) {
 
               let horarioExistente = `${horarioActual.dia} - ${horarioActual.horaInicio}:00 - ${horarioActual.horaFin}:00`;
               this.toastService.error('Error. Conflicto con el horario. <br> Ya existe un horario:<br>' + horarioExistente + '<br>Un horario no puede incluir a otro existente.', 'Aviso.', 4000);

@@ -74,6 +74,10 @@ export class AuthService {
     return this.auth.authState;
   }
 
+  async ObtenerFireAuthCurrentUser(){
+    return await this.auth.currentUser;
+  }
+
   async enviarCorreoDeVerificacion_2() {
     let auth = getAuth();
     sendEmailVerification(auth?.currentUser!)
