@@ -137,6 +137,7 @@ export class TurnosEspecialistaComponent {
   buscarPacienteOEspecialidad = async (dato: any) => {
     this.eliminarSuscripcion();
     dato = dato.trim();
+    dato = dato.toLowerCase();
     let turnos = await this.horariosService.traerListaFiltradaPor_DOS_Campos_IGUALDAD_DESIGUALDAD('idMedico', this.usuarioActual.id, 'estadoTurno', 'Libre');
 
     //Especialistas

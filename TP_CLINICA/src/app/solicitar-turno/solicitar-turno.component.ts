@@ -171,8 +171,9 @@ export class SolicitarTurnoComponent {
   //LO DECLARO DE ESTA FORMA PARA QUE EL COMPONENTE 
   //QUE LLAME A ESTA FUNCION PUEDA ACCEDER A LAS VARIABLES DE ESTE COMPONENTE
   buscarPaciente = async (dato: any) => {
+    dato = dato.trim();
     let usuarios = await this.usuarioService.traerListaFiltradaPor_UN_Campo('perfil', 1);
-    usuarios = usuarios.filter((x: any) => x?.nombre?.toLowerCase().includes(dato) || x?.apellido?.toLowerCase().includes(dato) || x?.dni?.toString().includes(dato));
+    usuarios = usuarios.filter((x: any) => x?.nombre?.toLowerCase().includes(dato.toLowerCase()) || x?.apellido?.toLowerCase().includes(dato.toLowerCase()) || x?.dni?.toString().includes(dato));
 
     usuarios = this.ordenarPorNombreYApellidoPipe.transform(usuarios);
 

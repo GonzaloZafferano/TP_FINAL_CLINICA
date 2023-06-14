@@ -98,6 +98,7 @@ export class TurnosComponent {
   buscarEspecialistaOEspecialidad = async (dato: any) => {
     this.eliminarSuscripcion();
     dato = dato.trim();
+    dato = dato.toLowerCase();
     let turnos = await this.horariosService.traerListaFiltradaPor_UN_Campo_DESIGUALDAD('estadoTurno', 'Libre');
 
     //Especialistas
