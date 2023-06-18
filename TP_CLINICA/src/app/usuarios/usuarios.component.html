@@ -1,22 +1,30 @@
 <div class="container-fluid p-0 m-0">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <!-- <div *ngIf="!usuario || cargando; else user" class="d-flex justify-content-start"
-            style="align-items: center; height: 100% !important;">
-            <div class="spinner-border text-light" style="align-self: center; scale: 1;">
+        <div class="row w-100">
+            <div class="col col-12 col-md-6">
+                <h3 class="text-center text-light custom-font">{{!ocultarBotonUsuarios ? 'Listado de Usuarios en espera de habilitación' : 'Listado de Usuarios' }} </h3>
             </div>
-        </div> -->
-        <!-- <ng-template #user>
-            <h3 class="fs-3 fw-bold text-light w-50">Administrador: {{usuario?.nombre}} {{usuario?.apellido}}</h3>
-        </ng-template> -->
-        <div class="container-fluid justify-content-end">
-            <button [hidden]="ocultarBotonUsuariosEnEspera" (click)="ocultarBotones('/usuarios/usuarios-en-espera')"
-                class="btn btn-warning p-2 m-2 fs-4 fw-bold" routerLink="usuarios-en-espera">Usuarios en espera
-                ({{getUsuarioEnEspera() == -1 ? '0' : getUsuarioEnEspera()}})</button>
-            <button [hidden]="ocultarBotonUsuarios" (click)="ocultarBotones('/usuarios')"
-                class="btn btn-primary fs-4 fw-bold p-2 m-2" routerLink="./">Usuarios</button>
-            <!-- <button [hidden]="ocultarBotonRegistro" (click)="ocultarBotones('/registro')" routerLink="registro"
-                class="btn btn-primary p-2 m-2 fs-4 fw-bold">Registro</button> -->
+            <!-- <div *ngIf="!usuario || cargando; else user" class="d-flex justify-content-start"
+                style="align-items: center; height: 100% !important;">
+                <div class="spinner-border text-light" style="align-self: center; scale: 1;">
+                </div>
+            </div> -->
+            <!-- <ng-template #user>
+                <h3 class="fs-3 fw-bold text-light w-50">Administrador: {{usuario?.nombre}} {{usuario?.apellido}}</h3>
+            </ng-template> -->
+            <div class="col col-12 col-md-6 d-flex justify-content-end">
+                <button (click)="descargarExcel()" [hidden]="!ocultarBotonUsuarios"
+                class="btn btn-success fs-4 fw-bold p-2 m-2">Descargar Excel</button>
+                <button [hidden]="ocultarBotonUsuariosEnEspera" (click)="ocultarBotones('/usuarios/usuarios-en-espera')"
+                    class="btn btn-warning p-2 m-2 fs-4 fw-bold" routerLink="usuarios-en-espera">Usuarios en espera
+                    ({{getUsuarioEnEspera() == -1 ? '0' : getUsuarioEnEspera()}})</button>
+                <button [hidden]="ocultarBotonUsuarios" (click)="ocultarBotones('/usuarios')"
+                    class="btn btn-primary fs-4 fw-bold p-2 m-2" routerLink="./">Usuarios</button>
+                <!-- <button [hidden]="ocultarBotonRegistro" (click)="ocultarBotones('/registro')" routerLink="registro"
+                    class="btn btn-primary p-2 m-2 fs-4 fw-bold">Registro</button> -->
+            </div> 
         </div>
     </nav>
     <router-outlet></router-outlet>
 </div>
+<app-loader *ngIf="cargando"></app-loader>
