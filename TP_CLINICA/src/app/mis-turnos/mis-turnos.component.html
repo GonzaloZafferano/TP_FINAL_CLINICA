@@ -1,3 +1,6 @@
-<app-turnos-paciente *ngIf="esPaciente()"></app-turnos-paciente>
-<app-turnos-especialista *ngIf="esEspecialista()"></app-turnos-especialista>
-<!-- <app-turnos *ngIf="esEsAdmin()"></app-turnos> -->
+<div class="p-0 m-0" [@fadeAnimation]>
+
+    <app-turnos-paciente *ngIf="esPaciente()"></app-turnos-paciente>
+    <app-turnos-especialista *ngIf="esEspecialista()"></app-turnos-especialista>
+    <!-- <app-turnos *ngIf="esEsAdmin()"></app-turnos> -->
+</div>

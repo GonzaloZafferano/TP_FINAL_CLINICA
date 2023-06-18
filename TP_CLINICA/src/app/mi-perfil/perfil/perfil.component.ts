@@ -5,11 +5,23 @@ import { PdfService } from 'src/app/services/pdf.service';
 import { SwalService } from 'src/app/services/swal.service';
 import { UsuarioService } from 'src/app/services/usuarios.service';
 import { SortBySecondsPipe } from 'src/app/shared/pipes/sort-by-seconds.pipe';
+import { trigger, transition, style, animate, state } from '@angular/animations';
 
 @Component({
   selector: 'app-perfil',
   templateUrl: './perfil.component.html',
-  styleUrls: ['./perfil.component.css']
+  styleUrls: ['./perfil.component.css'],
+  // animations: [
+  //   trigger('fadeAnimation', [
+  //     transition(':enter', [
+  //       style({ opacity: 0 }),
+  //       animate('1000ms', style({ opacity: 1 }))
+  //     ]),
+  //     transition(':leave', [
+  //       animate('1000ms', style({ opacity: 0 }))
+  //     ])
+  //   ])
+  // ]
 })
 export class PerfilComponent {
   usuario: any;

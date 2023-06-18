@@ -19,6 +19,7 @@ export class UsuariosComponent {
   ocultarBotonUsuarios: boolean = false;
   //ocultarBotonRegistro: boolean = false;
   ocultarBotonUsuariosEnEspera: boolean = false;
+  ocultarNav: boolean = false;
   filaSeleccionada: any;
   listadoUsuarios: any[] = [];
   usuariosEnEspera: number = -1;
@@ -70,6 +71,7 @@ export class UsuariosComponent {
     else
       rutaAEvaluar = this.router.url;
 
+    this.ocultarNav = rutaAEvaluar.includes('/registro');
     this.ocultarBotonUsuarios = rutaAEvaluar == '/usuarios' || rutaAEvaluar.includes('/registro');
     this.ocultarBotonUsuariosEnEspera = rutaAEvaluar.includes('/usuarios/usuarios-en-espera');
     //this.ocultarBotonRegistro = rutaAEvaluar.includes('/registro');
@@ -125,9 +127,9 @@ export class UsuariosComponent {
 
 
     this.excelService.obtenerExcelDeVariasHojas(
-      [pacientesEx, especialistasEx, adminsEx], 
+      [pacientesEx, especialistasEx, adminsEx],
       'Usuarios', ['Pacientes', 'Especialistas', 'Administradores'],
-      [40,20,20,30,10,5,15]);
+      [40, 20, 20, 30, 10, 5, 15]);
 
     this.cargando = false;
   }

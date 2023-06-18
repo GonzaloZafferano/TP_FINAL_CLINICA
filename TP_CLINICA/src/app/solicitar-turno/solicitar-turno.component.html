@@ -1,51 +1,49 @@
-<div class="bg-dark">
-    <h3 class="text-center text-light custom-font">SOLICITUD DE TURNOS</h3>
-</div>
-<div class="d-flex justify-content-between">
-    <div class="row w-50 m-2">
-        <div class="col border p-2 w-50 bg-dark text-light" *ngIf="esAdmin()">        
-            <app-buscador 
-             [funcionBuscador]="buscarPaciente" 
-             [titulo]="tituloBuscador" 
-             [funcionPipe]="transformarTexto" 
-             [limpiarDesdeExterior]="limpiarAutocomplete"
-             (OnLimpiarBuscador)="limpiarDatos()"
-             (OnSeleccionElemento)="obtenerUsuario($event)" ></app-buscador>
+<div class="entrada p-0 m-0">
+    <div class="bg-dark">
+        <h3 class="text-center text-light custom-font">SOLICITUD DE TURNOS</h3>
+    </div>
+    <div class="d-flex justify-content-between">
+        <div class="row w-50 m-2">
+            <div class="col border p-2 w-50 bg-dark text-light" *ngIf="esAdmin()">
+                <app-buscador [funcionBuscador]="buscarPaciente" [titulo]="tituloBuscador"
+                    [funcionPipe]="transformarTexto" [limpiarDesdeExterior]="limpiarAutocomplete"
+                    (OnLimpiarBuscador)="limpiarDatos()" (OnSeleccionElemento)="obtenerUsuario($event)"></app-buscador>
+            </div>
+        </div>
+        <div class="m-2">
+            <button class="btn btn-warning fw-bold fs-4" (click)="limpiarDatos()">Limpiar</button>
         </div>
     </div>
-    <div class="m-2">
-        <button class="btn btn-warning fw-bold fs-4" (click)="limpiarDatos()">Limpiar</button>
-    </div>
-</div>
-<div class="row w-100 p-0 m-0">
-    <div class="col col-12 col-md-4">
-        <div class="border p-2 w-100 bg-dark text-light">
-            <h3>Seleccione Especialidad</h3>
-            <div *ngIf="spinner; else lista" class="d-flex justify-content-around">
-                <span class="fs-3 fw-bold">Cargando...</span>
-                <div class="spinner-border text-danger text-center" style="align-self: center; scale: 1.2;"></div>
-            </div>
-            <ng-template #lista>
-                <!-- <div style="height: 500px !important; width: 270px; overflow-y: scroll;"> -->
-                <div>
-                    <div *ngFor="let especialidad of especialidades | sortByName">
-                        <div class="d-flex justify-content-between custom-pointer mx-0 border bg-light text-dark"
-                            [class.fila-seleccionada]="filaSeleccionada != null && especialidad.id === filaSeleccionada.id"
-                            (click)="seleccionEspecialidad(especialidad)">
-                            <p class="m-2 custom-pointer">{{especialidad.nombre | titlecase}}</p>
+    <div class="row w-100 p-0 m-0">
+        <div class="col col-12 col-md-4">
+            <div class="border p-2 w-100 bg-dark text-light">
+                <h3>Seleccione Especialidad</h3>
+                <div *ngIf="spinner; else lista" class="d-flex justify-content-around">
+                    <span class="fs-3 fw-bold">Cargando...</span>
+                    <div class="spinner-border text-danger text-center" style="align-self: center; scale: 1.2;"></div>
+                </div>
+                <ng-template #lista>
+                    <!-- <div style="height: 500px !important; width: 270px; overflow-y: scroll;"> -->
+                    <div>
+                        <div *ngFor="let especialidad of especialidades | sortByName">
+                            <div class="d-flex justify-content-between custom-pointer mx-0 border bg-light text-dark"
+                                [class.fila-seleccionada]="filaSeleccionada != null && especialidad.id === filaSeleccionada.id"
+                                (click)="seleccionEspecialidad(especialidad)">
+                                <p class="m-2 custom-pointer">{{especialidad.nombre | titlecase}}</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </ng-template>
+                </ng-template>
+            </div>
         </div>
-    </div>
-    <div class="col col-12 col-md-4">
-        <app-lista-especialistas [spinner]="spinnerEspecialistas" [especialistas]="especialistas"
-            (OnSeleccionEspecialista)="seleccionEspecialista($event)"></app-lista-especialistas>
-    </div>
-    <div class="col col-12 col-md-4">
-        <app-lista-turnos [spinner]="spinnerTurnos" [turnos]="turnos"
-            (OnSeleccionTurno)="seleccionTurno($event)"></app-lista-turnos>
+        <div class="col col-12 col-md-4">
+            <app-lista-especialistas [spinner]="spinnerEspecialistas" [especialistas]="especialistas"
+                (OnSeleccionEspecialista)="seleccionEspecialista($event)"></app-lista-especialistas>
+        </div>
+        <div class="col col-12 col-md-4">
+            <app-lista-turnos [spinner]="spinnerTurnos" [turnos]="turnos"
+                (OnSeleccionTurno)="seleccionTurno($event)"></app-lista-turnos>
+        </div>
     </div>
 </div>
 

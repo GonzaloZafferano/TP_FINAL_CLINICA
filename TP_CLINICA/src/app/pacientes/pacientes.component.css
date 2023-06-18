@@ -53,3 +53,9 @@ img {
     flex-direction: row;
     align-items: center !important;
 }
+
+
+@-webkit-keyframes scale-in-tl{0%{-webkit-transform:scale(0);transform:scale(0);-webkit-transform-origin:0 0;transform-origin:0 0;opacity:1}100%{-webkit-transform:scale(1);transform:scale(1);-webkit-transform-origin:0 0;transform-origin:0 0;opacity:1}}@keyframes scale-in-tl{0%{-webkit-transform:scale(0);transform:scale(0);-webkit-transform-origin:0 0;transform-origin:0 0;opacity:1}100%{-webkit-transform:scale(1);transform:scale(1);-webkit-transform-origin:0 0;transform-origin:0 0;opacity:1}}
+.entrada{
+    -webkit-animation:scale-in-tl 1.5s cubic-bezier(.25,.46,.45,.94) both;animation:scale-in-tl .5s cubic-bezier(.25,.46,.45,.94) both
+}
