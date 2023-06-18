@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
 import { Perfil } from 'src/app/models/enums/perfil';
 import { HcService } from 'src/app/services/hc.service';
+import { PdfService } from 'src/app/services/pdf.service';
 import { SwalService } from 'src/app/services/swal.service';
 import { UsuarioService } from 'src/app/services/usuarios.service';
+import { SortBySecondsPipe } from 'src/app/shared/pipes/sort-by-seconds.pipe';
 
 @Component({
   selector: 'app-perfil',
@@ -21,14 +23,16 @@ export class PerfilComponent {
   suscripcion: any;
   mostrarHC: boolean = false;
   historiaClinica: any;
+  ordenPipe : any;
   constructor(
     private usuarioService: UsuarioService,
+    private pdfService : PdfService,
     private historiaService: HcService, private swalService: SwalService
   ) { }
 
   async ngOnInit() {
     this.usuario = await this.usuarioService.obtenerUsuarioActual();
-
+    this.ordenPipe = new SortBySecondsPipe();
     if (this.usuario) {
       this.esAdmin = this.usuario.perfil == Perfil.administrador;
       this.esEspecialista = this.usuario.perfil == Perfil.especialista;
@@ -42,7 +46,6 @@ export class PerfilComponent {
   }
 
   cargarHorarios() {
-
   }
 
   //public usuario: any = null;
@@ -129,5 +132,61 @@ export class PerfilComponent {
 
   cerrarHC(){
     this.mostrarHC = false;
+  }
+
+  async descargarPDF(){
+    this.cargando = true;
+    if(this.usuario.tieneHC){
+      let hc = await this.historiaService.traerItemPorId(this.usuario.HCId);    
+      if (hc) {     
+        let contenido : string [] = [];
+        let titulo = `Historia Clínica: ${this.usuario.apellido}, ${this.usuario.nombre}`;
+
+        let sub1 = "Datos Actuales:";
+        let sub2 = "Historial:";
+        let altura = 'Altura: ' + hc['altura'] + ' mt. ';
+        let peso = 'Peso: ' + hc['peso'] + 'kg. ';
+        let temperatura = 'Temperatura: ' + hc['temperatura'] + '°C. ';
+        let presion = 'Presión: ' + `${hc['presion1']}/${hc['presion2']}mmHg. `;
+        
+        let datosFijos = altura + peso + temperatura + presion;
+
+        contenido.push(sub1);
+        contenido.push(datosFijos);
+        contenido.push(sub2);
+
+        let datos = this.ordenPipe.transform(hc['datos'], true);
+        for(let i = 0; i < datos.length; i++){
+          let dato = datos[i];
+          let fecha = new Date(dato.fechaHC).toLocaleString();
+          let texto =
+          `Fecha: ${fecha}. Especialista: ${dato.medico.apellido}, ${dato.medico.nombre}. Especialidad: ${dato.especialidad}. Altura: ${dato.altura} mt. Peso: ${dato.peso} kg. Temperatura: ${dato.temperatura} °C. Presión: ${dato.presion1}/${dato.presion2}mmHg. Datos Adicionales: `;
+
+          if (dato.hayDatos) {
+            for (let prop in dato) {
+              if (prop != 'medico' && prop != 'altura' &&
+                prop != 'especialidad' && prop != 'fechaHC' &&
+                prop != 'hayDatos' && prop != 'presion1' &&
+                prop != 'presion2' && prop != 'peso' && prop != 'temperatura'
+              ) {
+                texto += `${prop} : ${dato[prop]}. `;
+              }
+            }
+          } else {
+            texto += ' - : -';
+          }
+
+          contenido.push(texto);
+        }  
+
+        this.pdfService.generatePDF(titulo, contenido);
+        
+        this.cargando = false;
+      }
+    }
+    else {
+      this.cargando = false;
+      this.swalService.info('No posee historia clínica aún.');
+    }
   }
 }

@@ -81,9 +81,13 @@
                                             horarios</button>
                                     </div>
                                 </div>
-                                <button class="btn btn-primary fs-4 fw-bold p-2 m-2" *ngIf="esUsuario"
-                                    (click)="verHC()">Ver mi Historia Clínica</button>
+                                <div class="d-flex justify-content-around">
+                                    <button class="btn btn-danger fs-4 fw-bold p-2 m-2" *ngIf="esUsuario"
+                                    (click)="descargarPDF()">Descargar PDF</button>
 
+                                    <button class="btn btn-primary fs-4 fw-bold p-2 m-2" *ngIf="esUsuario"
+                                    (click)="verHC()">Historia Clínica</button>
+                                </div>
                             </div>
                         </div>
                     </div>

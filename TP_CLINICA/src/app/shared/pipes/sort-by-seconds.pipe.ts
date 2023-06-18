@@ -20,10 +20,10 @@ export class SortBySecondsPipe implements PipeTransform {
       });
     }else{
       array.sort((a, b) => {
-        if (a.fechaHc < b.fechaHc) {
+        if (a.fechaHC > b.fechaHC) {
           return -1;
         }
-        else if (a.fechaHc > b.fechaHc) {
+        else if (a.fechaHC < b.fechaHC) {
           return 1;
         }
         return 0;

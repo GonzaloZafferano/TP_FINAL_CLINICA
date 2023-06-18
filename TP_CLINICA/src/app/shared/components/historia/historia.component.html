@@ -1,11 +1,11 @@
 <div class="loader-fondo">
-    <div class="row w-100">
+    <div class="row w-100" >
         <div class="col col-12 d-flex justify-content-center">
             <div class="card w-75 d-flex justify-content-center">
                 <div class=" d-flex justify-content-center m-3">
                     <img class="card-img-top foto" [src]="historia?.paciente?.imagen1" alt="Imagen paciente">
                 </div>
-                <div class="card-body">
+                <div class="card-body" style="overflow-y: auto; max-height: 600px;">
                     <h3 class="card-title text-center">Historia Clínica de {{historia?.paciente?.apellido}},
                         {{historia?.paciente?.nombre}}</h3>
                     <h5 class="card-subtitle mb-2 text-muted">Datos Actuales</h5>
@@ -16,7 +16,7 @@
                     <ng-container *ngIf="historia?.datos && historia?.datos?.length > 0">
                         <h5 class="card-subtitle mb-2 text-muted">Datos Historicos</h5>
                         <div *ngFor="let dato of historia?.datos | sortBySeconds : true">
-                            <p class="card-text">{{dato | datosTurno}}</p>
+                            <p class="card-text my-3">{{dato | datosTurno}}</p>
                         </div>
                     </ng-container>
                 </div>
