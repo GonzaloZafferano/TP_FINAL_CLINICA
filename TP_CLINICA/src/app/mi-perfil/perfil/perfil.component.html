@@ -22,13 +22,13 @@
                                         <div class="col col-12 col-md-6">
                                             <div class="text-center p-2" *ngIf="esUsuario">
                                                 <img [src]="usuario?.imagen1" class="imagen" height="250" width="300px"
-                                                alt="imagen 1 del usuario">
+                                                    alt="imagen 1 del usuario">
                                             </div>
                                         </div>
                                         <div class="col col-12 col-md-6">
                                             <div class="text-center p-2" *ngIf="esUsuario">
                                                 <img [src]="usuario?.imagen2" class="imagen" height="250" width="300px"
-                                                alt="imagen 2 del usuario">
+                                                    alt="imagen 2 del usuario">
                                             </div>
                                         </div>
                                     </div>
@@ -81,6 +81,9 @@
                                             horarios</button>
                                     </div>
                                 </div>
+                                <button class="btn btn-primary fs-4 fw-bold p-2 m-2" *ngIf="esUsuario"
+                                    (click)="verHC()">Ver mi Historia Clínica</button>
+
                             </div>
                         </div>
                     </div>
@@ -89,3 +92,5 @@
         </div>
     </div>
 </div>
+<app-loader *ngIf="cargando"></app-loader>
+<app-historia (OnCerrar)="cerrarHC()" [historia]="historiaClinica" *ngIf="mostrarHC"></app-historia>

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Acceso } from 'src/app/models/enums/acceso';
 import { Perfil } from 'src/app/models/enums/perfil';
 import { FormatoService } from 'src/app/services/formato.service';
+import { HcService } from 'src/app/services/hc.service';
 import { SolicitudesService } from 'src/app/services/solicitudes.service';
 import { ToastService } from 'src/app/services/toast.service';
 import { UsuarioService } from 'src/app/services/usuarios.service';
@@ -17,8 +18,10 @@ export class ListadoUsuariosComponent {
   spinner: boolean = false;
   suscripcion: any;
   suscripcionEnEspera: any;
-
-  constructor(private usuarioService: UsuarioService) { }
+  cargando: boolean = false;
+  historiaClinica: any;
+  mostrarHC: boolean = false;
+  constructor(private usuarioService: UsuarioService, private historiaService: HcService) { }
 
   ngOnInit(): void {
     this.obtenerUsuarios();
@@ -53,5 +56,24 @@ export class ListadoUsuariosComponent {
     if (usuario.perfil != Perfil.paciente)
       return usuario.imagen;
     return usuario.imagen1;
+  }
+
+  cerrarHC() {
+    this.cargando = false;
+    this.mostrarHC = false;
+  }
+
+  async mostrarHistoria(item: any) {
+    if (item.tieneHC) {
+      this.cargando = true;
+      let hc = await this.historiaService.traerItemPorId(item.HCId);
+
+      if (hc) {
+        this.historiaClinica = hc;
+        this.mostrarHC = true;
+      } else {
+        this.cerrarHC();
+      }
+    }
   }
 }

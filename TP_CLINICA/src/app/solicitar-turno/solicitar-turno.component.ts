@@ -145,7 +145,7 @@ export class SolicitarTurnoComponent {
     this.cargando = true;
     turno.ocupado = true;
     turno.estadoTurno = 'Solicitado';
-
+    turno.fechaSolicitud = new Date().getTime();
     let paciente;
 
     if (this.esAdmin()) {

@@ -1,0 +1,226 @@
+<div class="loader-fondo">
+    <div class="container">
+        <div class="row w-100 d-flex justify-content-center ml-0">
+            <div class="col col-12 justify-content-center col-lg-12">
+                <div class="card p-4 mt-4 centrar bg-dark text-light fw-bold">
+                    <form [formGroup]="form">
+                        <fieldset>
+                            <legend>
+                                Complete los siguientes datos registrar en la Historia Clínica
+                            </legend>
+                            <div class="display justify-content-between w-100">
+
+                                <!--PRIMER BLOQUE-->
+                                <div class="width p-3">
+                                    <!--altura-->
+                                    <div>
+                                        <label class="form-label" for="altura">Altura</label>
+                                        <input type="number" class="form-control" id="altura" formControlName="altura">
+                                        <ng-container *ngIf="altura?.errors">
+                                            <small class="d-block error"
+                                                *ngFor="let error of obtenerErrores(altura?.errors)">
+                                                {{altura?.getError(error).mensaje}}
+                                            </small>
+                                        </ng-container>
+                                    </div>
+
+                                    <!--peso-->
+                                    <div>
+                                        <label class="form-label" for="peso">Peso</label>
+                                        <input type="number" class="form-control" id="peso" formControlName="peso">
+                                        <ng-container *ngIf="peso?.errors">
+                                            <small class="d-block error"
+                                                *ngFor="let error of obtenerErrores(peso?.errors)">
+                                                {{peso?.getError(error).mensaje}}
+                                            </small>
+                                        </ng-container>
+                                    </div>
+
+                                    <!--temperatura-->
+                                    <div>
+                                        <label class="form-label" for="temperatura">Temperatura</label>
+                                        <input type="number" class="form-control" id="temperatura"
+                                            formControlName="temperatura">
+                                        <ng-container *ngIf="temperatura?.errors">
+                                            <small class="d-block error"
+                                                *ngFor="let error of obtenerErrores(temperatura?.errors)">
+                                                {{temperatura?.getError(error).mensaje}}
+                                            </small>
+                                        </ng-container>
+                                    </div>
+
+                                    <!--DNI-->
+                                    <!-- <div>
+                                    <label class="form-label" for="dni">Presión</label>
+                                    <input type="text" class="form-control" id="dni" formControlName="dni">
+                                    <ng-container *ngIf="validarDni.validando">
+                                        <div class="d-flex justify-content-start"
+                                            style="align-items: center; height: 100% !important;">
+                                            <span class="m-0 fs-6 fw-bold text-primary">Validando...</span>
+                                            <div class="spinner-border text-primary"
+                                                style="align-self: center; scale: 0.5;">
+                                            </div>
+                                        </div>
+                                    </ng-container>
+                                    <ng-container *ngIf="dni?.errors">
+                                        <small class="d-block error" *ngFor="let error of obtenerErrores(dni?.errors)">
+                                            {{dni?.getError(error).mensaje}}
+                                        </small>
+                                    </ng-container>
+                                </div> -->
+
+                                    <!--Presion-->
+                                    <label class="form-label" for="presion1">Presión</label>
+                                    <div class="row">
+                                        <div class="col col-5">
+                                            <input type="text" class="form-control" id="presion1"
+                                                formControlName="presion1">
+                                            <ng-container *ngIf="presion1?.errors">
+                                                <small class="d-block error"
+                                                    *ngFor="let error of obtenerErrores(presion1?.errors)">
+                                                    {{presion1?.getError(error).mensaje}}
+                                                </small>
+                                            </ng-container>
+                                        </div>
+                                        <div class="col col-1 d-flex justify-content-center">
+                                            <label class="form-label fs-3">/</label>
+                                        </div>
+                                        <div class="col col-5">
+                                            <input type="text" class="form-control" id="presion2"
+                                                formControlName="presion2">
+                                            <ng-container *ngIf="presion2?.errors">
+                                                <small class="d-block error"
+                                                    *ngFor="let error of obtenerErrores(presion2?.errors)">
+                                                    {{presion2?.getError(error).mensaje}}
+                                                </small>
+                                            </ng-container>
+                                        </div>
+                                        <div class="col col-1">
+                                            <label class="form-label">mmHg</label>
+                                        </div>
+                                    </div>
+
+
+
+
+
+
+
+
+                                    <div class="d-flex justify-content-center m-3">
+                                        <h4 class="form-label text-center">Datos Opcionales</h4>
+                                    </div>
+
+                                    <div>
+
+                                        <!--Opc1-->
+                                        <div class="row">
+                                            <div class="col">
+                                                <label class="form-label" for="opcionalNombre1">Nombre del dato</label>
+                                                <input type="text" class="form-control" id="opcionalNombre1"
+                                                    formControlName="opcionalNombre1">
+                                                <ng-container *ngIf="opcionalNombre1?.errors">
+                                                    <small class="d-block error"
+                                                        *ngFor="let error of obtenerErrores(opcionalNombre1?.errors)">
+                                                        {{opcionalNombre1?.getError(error).mensaje}}
+                                                    </small>
+                                                </ng-container>
+                                            </div>
+
+                                            <div class="col">
+                                                <label class="form-label" for="opcionalValor1">Valor del dato</label>
+                                                <input type="text" class="form-control" id="opcionalValor1"
+                                                    formControlName="opcionalValor1">
+                                                <ng-container *ngIf="opcionalValor1?.errors">
+                                                    <small class="d-block error"
+                                                        *ngFor="let error of obtenerErrores(opcionalValor1?.errors)">
+                                                        {{opcionalValor1?.getError(error).mensaje}}
+                                                    </small>
+                                                </ng-container>
+                                            </div>
+                                        </div>
+
+
+                                        <!--Opc2-->
+                                        <div class="row">
+                                            <div class="col">
+                                                <label class="form-label" for="opcionalNombre2">Nombre del dato</label>
+                                                <input type="text" class="form-control" id="opcionalNombre2"
+                                                    formControlName="opcionalNombre2">
+                                                <ng-container *ngIf="opcionalNombre2?.errors">
+                                                    <small class="d-block error"
+                                                        *ngFor="let error of obtenerErrores(opcionalNombre2?.errors)">
+                                                        {{opcionalNombre2?.getError(error).mensaje}}
+                                                    </small>
+                                                </ng-container>
+                                            </div>
+
+                                            <div class="col">
+                                                <label class="form-label" for="opcionalValor2">Valor del dato</label>
+                                                <input type="text" class="form-control" id="opcionalValor2"
+                                                    formControlName="opcionalValor2">
+                                                <ng-container *ngIf="opcionalValor2?.errors">
+                                                    <small class="d-block error"
+                                                        *ngFor="let error of obtenerErrores(opcionalValor2?.errors)">
+                                                        {{opcionalValor2?.getError(error).mensaje}}
+                                                    </small>
+                                                </ng-container>
+                                            </div>
+                                        </div>
+
+
+                                        <!--Opc3-->
+                                        <div class="row">
+                                            <div class="col">
+                                                <label class="form-label" for="opcionalNombre3">Nombre del dato</label>
+                                                <input type="text" class="form-control" id="opcionalNombre3"
+                                                    formControlName="opcionalNombre3">
+                                                <ng-container *ngIf="opcionalNombre3?.errors">
+                                                    <small class="d-block error"
+                                                        *ngFor="let error of obtenerErrores(opcionalNombre3?.errors)">
+                                                        {{opcionalNombre3?.getError(error).mensaje}}
+                                                    </small>
+                                                </ng-container>
+                                            </div>
+
+                                            <div class="col">
+                                                <label class="form-label" for="opcionalValor3">Valor del dato</label>
+                                                <input type="text" class="form-control" id="opcionalValor3"
+                                                    formControlName="opcionalValor3">
+                                                <ng-container *ngIf="opcionalValor3?.errors">
+                                                    <small class="d-block error"
+                                                        *ngFor="let error of obtenerErrores(opcionalValor3?.errors)">
+                                                        {{opcionalValor3?.getError(error).mensaje}}
+                                                    </small>
+                                                </ng-container>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+
+
+
+
+
+
+
+                                </div>
+                            </div>
+                            <!--BOTONES-->
+                            <div class="d-flex justify-content-between">
+                                <button type="button" (click)="cancelaHC()" class="btn btn-secondary mt-2 fw-bold">
+                                    Cancelar
+                                </button>
+                                <button type="button" (click)="cargarHC()" class="btn btn-primary mt-2 fw-bold">
+                                    Guardar
+                                </button>
+                            </div>
+                        </fieldset>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

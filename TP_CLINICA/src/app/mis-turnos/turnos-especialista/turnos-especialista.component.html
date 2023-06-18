@@ -145,3 +145,4 @@
 </div>
 
 <app-loader *ngIf="cargando"></app-loader>
+<app-cargar-historia *ngIf="cargandoHC" [paciente]="pacienteHc" (onHCCancelada)="cancelaHC()" (onHCCompleta)="hcCargada($event)"></app-cargar-historia>

@@ -8,6 +8,8 @@ import { TurnosEspecialistaComponent } from './turnos-especialista/turnos-especi
 import { SharedModule } from '../shared/shared.module';
 import { TurnosComponent } from './turnos/turnos.component';
 import { EncuestaComponent } from './encuesta/encuesta.component';
+import { CargarHistoriaComponent } from './cargar-historia/cargar-historia.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -16,12 +18,15 @@ import { EncuestaComponent } from './encuesta/encuesta.component';
     TurnosPacienteComponent,
     TurnosEspecialistaComponent,
     TurnosComponent,
-    EncuestaComponent
+    EncuestaComponent,
+    CargarHistoriaComponent
   ],
   imports: [
     CommonModule,
     MisTurnosRoutingModule,
-    SharedModule
+    SharedModule,
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class MisTurnosModule { }

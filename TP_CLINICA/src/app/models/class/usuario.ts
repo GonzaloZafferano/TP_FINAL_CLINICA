@@ -15,4 +15,5 @@ export class Usuario {
   correoRegistrado: boolean = false;
   perfil : Perfil = Perfil.paciente;
   fechaRegistro : Date = new Date();
+  tieneHC : boolean = false;
 }

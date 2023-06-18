@@ -10,6 +10,8 @@ import { UsuarioService } from 'src/app/services/usuarios.service';
 })
 export class TurnosEspecialistaComponent {
   spinner: boolean = false;
+  cargandoHC : boolean = false;
+  pacienteHc : any;
   cargando: boolean = false;
   filaSeleccionada: any = null;
   listado: any = null;
@@ -97,19 +99,65 @@ export class TurnosEspecialistaComponent {
   realizado(item: any, indice: number) {
     const input = document.getElementById('realizado' + indice) as HTMLInputElement;
     if (input.value && input.value != '') {
-      this.cargando = true;
-      item.estadoTurno = 'Realizado';
-      item.comentarioMedico = input.value;
-      delete item['mostrarDetalle'];
-      delete item['mostrarComentario'];
-      this.horariosService.modificarItem(item).then(x => {
-        this.swalService.exito('Turno Finalizado!', 'Aviso.');
-      }).finally(() => this.cargando = false);
+      this.item  = item;
+      this.indice = indice;
+      this.inputActual = input;
+      item.paciente.especialidad = item.especialidad; 
+      this.pacienteHc = item.paciente;
+      this.cargandoHC = true;
+      // this.cargando = true;
+      // item.estadoTurno = 'Realizado';
+      // item.comentarioMedico = input.value;
+      // item.fechaFinalizacion = new Date().getTime();
+      // delete item['mostrarDetalle'];
+      // delete item['mostrarComentario'];
+      // this.horariosService.modificarItem(item).then(x => {
+      //   this.swalService.exito('Turno Finalizado!', 'Aviso.');
+      // }).finally(() => this.cargando = false);
     } else {
       this.swalService.warning('Debe ingresar una reseña/comentario y diagnóstico realizado.', 'Aviso.');
     }
   }
 
+  item : any;
+  indice : any;
+  inputActual : any;
+
+  finalizarTurno(evento : any){
+    this.cargandoHC = false;
+    this.cargando = true;   
+    this.item.estadoTurno = 'Realizado';
+    this.item.comentarioMedico = this.inputActual.value;
+    this.item.fechaFinalizacion = new Date().getTime();
+    delete this.item['mostrarDetalle'];
+    delete this.item['mostrarComentario'];
+
+    if(evento.cargo){
+      this.item.datos = evento.datos;
+    }
+
+    this.horariosService.modificarItem(this.item).then(x => {
+      delete this.pacienteHc['especialidad'];
+      this.pacienteHc.tieneHC = true;
+      this.usuarioService.modificarUsuario(this.pacienteHc).finally(()=>{
+        this.swalService.exito('Turno Finalizado!', 'Aviso.');
+        this.cargando = false
+      })
+    }).finally(() => {
+
+      //this.cargando = false
+    }
+    );
+  }
+
+  hcCargada(evento : any){
+    //{paciente : this.paciente, datos: datos, cargo : hayDatos}
+    this.finalizarTurno(evento);
+  }
+
+  cancelaHC(){
+    this.cargandoHC = false;   
+  }
   rechazar(item: any, input: HTMLTextAreaElement) {
     if (input?.value?.trim() != '') {
       this.cargando = true;

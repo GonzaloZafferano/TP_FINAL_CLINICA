@@ -9,6 +9,7 @@ import { ToastService } from '../services/toast.service';
 import Swal from 'sweetalert2';
 import { SwalService } from '../services/swal.service';
 import { Acceso } from '../models/enums/acceso';
+import { LogsService } from '../services/logs.service';
 
 
 @Component({
@@ -25,6 +26,7 @@ export class LoginComponent {
     private authService: AuthService,
     private usuarioService: UsuarioService,
     private swalService: SwalService,
+    private logService : LogsService,
     private toastService: ToastService
   ) { }
 
@@ -109,12 +111,18 @@ export class LoginComponent {
                   let usuario = x as any;
 
                   if (usuario.habilitado == Acceso.habilitado) {
-                    this.toastService.exito(`Bienvenido/a ${usuario.nombre}, ${usuario.apellido} !`, 'Login exitoso!');
-                    this.usuarioService.cargarUsuarioActual(usuario);
-                    setTimeout(() => {
-                      this.router.navigate(['home']);
-                      this.cargando = false;
-                    }, 1000);
+                    let log = {} as any;
+                    log.usuario = usuario;
+                    log.dia = new Date();
+                    log.diaInt = log.dia.getTime();
+                    this.logService.cargarItemSinIdAsignado(log).finally(()=>{
+                      this.toastService.exito(`Bienvenido/a ${usuario.nombre}, ${usuario.apellido} !`, 'Login exitoso!');
+                      this.usuarioService.cargarUsuarioActual(usuario);
+                      setTimeout(() => {
+                        this.router.navigate(['home']);
+                        this.cargando = false;
+                      }, 1000);
+                    })
                   }
                   else {
                     this.authService.logOut();

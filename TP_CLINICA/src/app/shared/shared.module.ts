@@ -15,6 +15,8 @@ import { SortByNamePipe } from './pipes/sort-by-name.pipe';
 import { SortByNameAndLastNamePipe } from './pipes/sort-by-name-and-last-name.pipe';
 import { BuscadorComponent } from './components/buscador/buscador.component';
 import { UsuarioPipe } from './pipes/usuario.pipe';
+import { HistoriaComponent } from './components/historia/historia.component';
+import { DatosTurnoPipe } from './pipes/datos-turno.pipe';
 
 
 @NgModule({
@@ -22,13 +24,13 @@ import { UsuarioPipe } from './pipes/usuario.pipe';
     LoaderComponent, EstadosPipe, EspecialidadesPipe, FechaStringPipe, 
     TipoUsuarioPipe, HeaderComponent, TurnosPipe, SortdiashorariosPipe, DuracionAtencionPipe, 
     EspecialistasPipe, SortBySecondsPipe, SortByNamePipe, 
-    SortByNameAndLastNamePipe, BuscadorComponent, UsuarioPipe
+    SortByNameAndLastNamePipe, BuscadorComponent, UsuarioPipe, HistoriaComponent, DatosTurnoPipe
   ],
   exports : [
     LoaderComponent, EstadosPipe, EspecialidadesPipe, FechaStringPipe, 
     TipoUsuarioPipe, HeaderComponent, TurnosPipe, SortdiashorariosPipe, DuracionAtencionPipe,
     EspecialistasPipe, SortBySecondsPipe, SortByNamePipe, 
-    SortByNameAndLastNamePipe, BuscadorComponent, UsuarioPipe
+    SortByNameAndLastNamePipe, BuscadorComponent, UsuarioPipe, HistoriaComponent
   ],
   imports: [
     CommonModule,    

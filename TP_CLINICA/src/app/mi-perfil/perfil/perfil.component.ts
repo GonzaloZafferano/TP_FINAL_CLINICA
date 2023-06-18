@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { Perfil } from 'src/app/models/enums/perfil';
+import { HcService } from 'src/app/services/hc.service';
+import { SwalService } from 'src/app/services/swal.service';
 import { UsuarioService } from 'src/app/services/usuarios.service';
 
 @Component({
@@ -12,13 +14,16 @@ export class PerfilComponent {
   horarios: any[] = [];
   tieneHorarios: boolean = true;
   esAdmin: boolean = false;
+  cargando: boolean = false;
   esUsuario: boolean = false;
   esEspecialista: boolean = false;
   usuarioObservable: any;
   suscripcion: any;
-
+  mostrarHC: boolean = false;
+  historiaClinica: any;
   constructor(
     private usuarioService: UsuarioService,
+    private historiaService: HcService, private swalService: SwalService
   ) { }
 
   async ngOnInit() {
@@ -104,5 +109,25 @@ export class PerfilComponent {
     //      }  
     //      console.log('hroarios= '+this.tieneHorarios) 
     // })
+  }
+
+  async verHC() {
+    this.cargando = true;
+    if(this.usuario.tieneHC){
+      let hc = await this.historiaService.traerItemPorId(this.usuario.HCId);    
+      if (hc) {
+        this.historiaClinica = hc;
+        this.mostrarHC = true;
+        this.cargando = false;
+      }
+    }
+    else {
+      this.cargando = false;
+      this.swalService.info('No posee historia clínica aún.');
+    }
+  }
+
+  cerrarHC(){
+    this.mostrarHC = false;
   }
 }

@@ -34,6 +34,28 @@ export function validarCampoNumero(minimo: number, maximo: number, mensajes: any
   }
 }
 
+export function validarCampoNumero_V2(minimo: number, maximo: number, mensajes: any = null): ValidatorFn {
+  return (control: AbstractControl): [key: string, value: any] | null => {
+    const campoAValidar = control;
+    const errors: any = {};
+    //CARGO LOS DISTINTOS ERRORES QUE PUEDE TENER.
+    if (campoAValidar?.value == '' || campoAValidar?.value == null || campoAValidar?.value == undefined)
+      errors.campoVacio = { hayError: true, mensaje: mensajes != null && mensajes.campoVacio != null ? mensajes.campoVacio : 'Campo requerido.' };
+    //else if (isNaN(campoAValidar?.value) || campoAValidar?.value?.includes('.') || campoAValidar?.value?.includes(','))
+    //  errors.textoInvalido = { hayError: true, mensaje: mensajes != null && mensajes.textoInvalido != null ? mensajes.textoInvalido : 'Solo se pueden ingresar caracteres numéricos.' };
+    else if (campoAValidar?.value < minimo || campoAValidar?.value > maximo) {
+      errors.valorInvalido = { hayError: true, mensaje: mensajes != null && mensajes.valorInvalido != null ? mensajes.valorInvalido : `Solo se admiten valores entre ${minimo} y ${maximo}.` };
+    }
+    //SI TIENE ERRORES, LOS SETEO AL CONTROL:
+    if (Object.keys(errors).length) {
+      campoAValidar?.setErrors(errors);
+      return errors;
+    }
+    campoAValidar?.setErrors(null);
+    return null;
+  }
+}
+
 /**
 * Aplica al control. Valida campos que deben recibir solo texto (input text/textArea).
 * @param minimo minimo de caracteres.
@@ -278,4 +300,76 @@ export function validarCampoOtro(minimo: number, maximo: number, nombreCampoOtro
     campoAValidar?.setErrors(null);
     return null;
   }
+}
+
+
+export function validarCamposKeyValue(): ValidatorFn {
+  return (formGroup: AbstractControl): { [key: string]: any } | null => {
+    const opcionalNombre1 = formGroup.get('opcionalNombre1');
+    const opcionalNombre2 = formGroup.get('opcionalNombre2');
+    const opcionalNombre3 = formGroup.get('opcionalNombre3');
+    const opcionalValor1 = formGroup.get('opcionalValor1');
+    const opcionalValor2 = formGroup.get('opcionalValor2');
+    const opcionalValor3 = formGroup.get('opcionalValor3');
+
+    const errorN1: any = {};
+    const errorN2: any = {};
+    const errorN3: any = {};
+    const errorV1: any = {};
+    const errorV2: any = {};
+    const errorV3: any = {};
+
+    //PRIMER PAR VALUE KEY
+    if (opcionalNombre1?.value != '' && opcionalValor1?.value == '') {
+      errorV1.campoVacio = { hayError: true, mensaje: 'Campo requerido.' };
+      opcionalValor1?.setErrors(errorV1);
+      return errorV1;
+    } else {
+      opcionalValor1?.setErrors(null);
+    }
+
+    if (opcionalNombre1?.value == '' && opcionalValor1?.value != '') {
+      errorN1.campoVacio = { hayError: true, mensaje: 'Campo requerido.' };
+      opcionalNombre1?.setErrors(errorN1);
+      return errorN1;
+    } else {
+      opcionalNombre1?.setErrors(null);
+    }
+
+    //SEGUNDO PAR VALUE KEY
+    if (opcionalNombre2?.value != '' && opcionalValor2?.value == '') {
+      errorV2.campoVacio = { hayError: true, mensaje: 'Campo requerido.' };
+      opcionalValor2?.setErrors(errorV2);
+      return errorV2;
+    } else {
+      opcionalValor2?.setErrors(null);
+    }
+
+    if (opcionalNombre2?.value == '' && opcionalValor2?.value != '') {
+      errorN2.campoVacio = { hayError: true, mensaje: 'Campo requerido.' };
+      opcionalNombre2?.setErrors(errorN2);
+      return errorN2;
+    } else {
+      opcionalNombre2?.setErrors(null);
+    }
+
+    //TERCER PAR VALUE KEY
+    if (opcionalNombre3?.value != '' && opcionalValor3?.value == '') {
+      errorV3.campoVacio = { hayError: true, mensaje: 'Campo requerido.' };
+      opcionalValor3?.setErrors(errorV3);
+      return errorV3;
+    } else {
+      opcionalValor3?.setErrors(null);
+    }
+
+    if (opcionalNombre3?.value == '' && opcionalValor3?.value != '') {
+      errorN3.campoVacio = { hayError: true, mensaje: 'Campo requerido.' };
+      opcionalNombre3?.setErrors(errorN3);
+      return errorN3;
+    } else {
+      opcionalNombre3?.setErrors(null);
+    }
+
+    return null;
+  };
 }

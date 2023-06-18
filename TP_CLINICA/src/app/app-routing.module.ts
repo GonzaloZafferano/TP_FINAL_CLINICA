@@ -21,6 +21,7 @@ const routes: Routes = [
   { path: 'mi-perfil', loadChildren: () => import('./mi-perfil/mi-perfil.module').then(m => m.MiPerfilModule), canActivate : [MiPerfilGuard]  },
   { path: 'solicitar-turno', loadChildren: () => import('./solicitar-turno/solicitar-turno.module').then(m => m.SolicitarTurnoModule), canActivate : [SolicitarTurnoGuard]  },
   { path: 'turnos', loadChildren: () => import('./turnos/turnos.module').then(m => m.TurnosModule), canActivate : [TurnosGuard]  },
+  { path: 'pacientes', loadChildren: () => import('./pacientes/pacientes.module').then(m => m.PacientesModule) },
 
 ];
 

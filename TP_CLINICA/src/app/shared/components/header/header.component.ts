@@ -50,6 +50,6 @@ export class HeaderComponent {
   }
 
   NavigationEnd() {
-    debugger;
+
   }
 }

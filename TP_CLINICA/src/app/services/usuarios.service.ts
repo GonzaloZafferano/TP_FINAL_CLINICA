@@ -134,4 +134,8 @@ export class UsuarioService {
   traerListaFiltradaPor_UN_Campo(campo: string, valor: any) {
     return this.firestoreDB.traerListaDeObjetosFiltrada(this.nombreColeccion, campo, TipoIgualdad.igual, valor);
   }
+
+  traerListaFiltradaPor_UN_CampoConCondicion_Observable(campo: string, igualdad: TipoIgualdad, valor: any) {
+    return this.firestoreDB.traerListaDeObjetosFiltrada(this.nombreColeccion, campo, igualdad, valor);
+  }
 }
