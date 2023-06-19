@@ -32,53 +32,60 @@
         <div class="spinner-border text-danger" style="align-self: center; scale: 1.2;"></div>
     </div>
     <ng-template #lista>
-        <div *ngFor="let item of listado" class="row custom-pointer bg-light" (click)="seleccionDeFila(item)"
-            [class.fila-seleccionada]="filaSeleccionada != null && item.id === filaSeleccionada.id">
-            <div class="col col border d-none">
-                {{item.id}}
-            </div>
-            <div class="col col-12 col-xl-2 border custom-font-data columna">
-                <p>
-                    {{item.nombre}}
-                </p>
-            </div>
-            <div class="col col-12 col-xl-2 border custom-font-data columna">
-                <p>
-                    {{item.apellido}}
-                </p>
-            </div>
-            <div class="col col-12 col-xl-1 border custom-font-data columna">
-                <p>
-                    {{item.edad}}
-                </p>
-            </div>
-            <div class="col col-12 col-xl-1 border custom-font-data columna">
-                <p>
-                    {{item.dni}}
-                </p>
-            </div>
-            <div class="col col-12 col-xl-2 border custom-font-data text-right columna">
-                <p>
-                    {{item.correo}}
-                </p>
-            </div>
-            <div class="col col-12 col-xl-2 border custom-font-data text-right justify-content-center columna">
-                <div class="d-flex justify-content-center">
-                    <img [src]="obtenerUrlImagen(item)" class="imagen-usuario" alt="imagen usuario">
+        <ng-container *ngIf="listado && listado.length > 0; else sinPac">
+            <div *ngFor="let item of listado" class="row custom-pointer bg-light" (click)="seleccionDeFila(item)"
+                [class.fila-seleccionada]="filaSeleccionada != null && item.id === filaSeleccionada.id">
+                <div class="col col border d-none">
+                    {{item.id}}
+                </div>
+                <div class="col col-12 col-xl-2 border custom-font-data columna">
+                    <p>
+                        {{item.nombre}}
+                    </p>
+                </div>
+                <div class="col col-12 col-xl-2 border custom-font-data columna">
+                    <p>
+                        {{item.apellido}}
+                    </p>
+                </div>
+                <div class="col col-12 col-xl-1 border custom-font-data columna">
+                    <p>
+                        {{item.edad}}
+                    </p>
+                </div>
+                <div class="col col-12 col-xl-1 border custom-font-data columna">
+                    <p>
+                        {{item.dni}}
+                    </p>
+                </div>
+                <div class="col col-12 col-xl-2 border custom-font-data text-right columna">
+                    <p>
+                        {{item.correo}}
+                    </p>
+                </div>
+                <div class="col col-12 col-xl-2 border custom-font-data text-right justify-content-center columna">
+                    <div class="d-flex justify-content-center">
+                        <img [src]="obtenerUrlImagen(item)" class="imagen-usuario" alt="imagen usuario">
+                    </div>
+                </div>
+                <div class="col col-12 col-xl-2 border d-flex"  style="align-items: center;">
+                    <ng-container *ngIf="item.perfil == 1;">
+                        <ng-container *ngIf="item.tieneHC; else pacienteSinHC">
+                            <button class="btn btn-primary fs-4 fw-bold p-2 m-2"
+                            (click)="mostrarHistoria(item)">Ver Historia Clínica</button>
+                        </ng-container>
+                        <ng-template #pacienteSinHC>
+                            <h3 class="custom-font-headers">Sin historia Clínica</h3>
+                        </ng-template>
+                    </ng-container>
                 </div>
             </div>
-            <div class="col col-12 col-xl-2 border d-flex"  style="align-items: center;">
-                <ng-container *ngIf="item.perfil == 1;">
-                    <ng-container *ngIf="item.tieneHC; else pacienteSinHC">
-                        <button class="btn btn-primary fs-4 fw-bold p-2 m-2"
-                        (click)="mostrarHistoria(item)">Ver Historia Clínica</button>
-                    </ng-container>
-                    <ng-template #pacienteSinHC>
-                        <h3 class="custom-font-headers">Sin historia Clínica</h3>
-                    </ng-template>
-                </ng-container>
-            </div>
-        </div>
+        </ng-container>
+        <ng-template #sinPac>
+            <ng-container *ngIf="hizoBusqueda && listado && listado.length == 0">
+                <h3 class="text-center fs-1 fw-bold">Sin Pacientes Atendidos</h3>
+            </ng-container>
+        </ng-template>
     </ng-template>
 </div>
 <app-loader *ngIf="cargando"></app-loader>

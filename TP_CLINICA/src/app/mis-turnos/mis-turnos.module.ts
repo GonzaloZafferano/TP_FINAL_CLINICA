@@ -10,6 +10,7 @@ import { TurnosComponent } from './turnos/turnos.component';
 import { EncuestaComponent } from './encuesta/encuesta.component';
 import { CargarHistoriaComponent } from './cargar-historia/cargar-historia.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DetalleHCComponent } from './detalle-hc/detalle-hc.component';
 
 
 @NgModule({
@@ -19,14 +20,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     TurnosEspecialistaComponent,
     TurnosComponent,
     EncuestaComponent,
-    CargarHistoriaComponent
+    CargarHistoriaComponent,
+    DetalleHCComponent
   ],
   imports: [
     CommonModule,
     MisTurnosRoutingModule,
     SharedModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,  
   ]
 })
 export class MisTurnosModule { }

@@ -66,10 +66,10 @@ export class ListadoUsuariosComponent {
   async mostrarHistoria(item: any) {
     if (item.tieneHC) {
       this.cargando = true;
-      let hc = await this.historiaService.traerItemPorId(item.HCId);
+      let hc = await this.historiaService.traerListaFiltradaPor_UN_Campo('pacienteId', item.id);
 
-      if (hc) {
-        this.historiaClinica = hc;
+      if (hc && hc.length > 0) {
+        this.historiaClinica = hc[0];
         this.mostrarHC = true;
       } else {
         this.cerrarHC();

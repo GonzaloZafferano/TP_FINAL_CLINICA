@@ -30,7 +30,7 @@ import { DatosTurnoPipe } from './pipes/datos-turno.pipe';
     LoaderComponent, EstadosPipe, EspecialidadesPipe, FechaStringPipe, 
     TipoUsuarioPipe, HeaderComponent, TurnosPipe, SortdiashorariosPipe, DuracionAtencionPipe,
     EspecialistasPipe, SortBySecondsPipe, SortByNamePipe, 
-    SortByNameAndLastNamePipe, BuscadorComponent, UsuarioPipe, HistoriaComponent
+    SortByNameAndLastNamePipe, BuscadorComponent, UsuarioPipe, HistoriaComponent,DatosTurnoPipe
   ],
   imports: [
     CommonModule,    

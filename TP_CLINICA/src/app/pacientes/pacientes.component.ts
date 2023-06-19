@@ -19,6 +19,7 @@ export class PacientesComponent {
   cargando: boolean = false;
   historiaClinica: any;
   usuarioActual: any;
+  hizoBusqueda: boolean = false;
   mostrarHC: boolean = false;
   constructor(private usuarioService: UsuarioService, private horarioService: HorariosService, private historiaService: HcService) { }
 
@@ -43,7 +44,7 @@ export class PacientesComponent {
 
     this.suscripcion = this.horarioService.obtenerListadoDeItemsObservable().subscribe(async x => {
       this.spinner = true;
-
+      this.hizoBusqueda = true;
       let todosLosTurnosFiltrados = x.filter(x => x['idMedico'] == this.usuarioActual.id && x['estadoTurno'] == 'Realizado');;
 
       let sinDuplicados = todosLosTurnosFiltrados.filter((objetoDeTurno, index, arrayEspecialidades) => {
@@ -53,9 +54,10 @@ export class PacientesComponent {
       });
 
       let ids = sinDuplicados.map(x => x['idPaciente']);
-      let usuarios = await this.usuarioService.traerListaFiltradaPor_UN_CampoConCondicion_Observable('id', TipoIgualdad.in, ids);
-
-      this.listado = usuarios;
+      if (ids && ids.length > 0) {
+        let usuarios = await this.usuarioService.traerListaFiltradaPor_UN_CampoConCondicion_Observable('id', TipoIgualdad.in, ids);
+        this.listado = usuarios;
+      }
       this.spinner = false;
     });
   }
@@ -78,10 +80,10 @@ export class PacientesComponent {
   async mostrarHistoria(item: any) {
     if (item.tieneHC) {
       this.cargando = true;
-      let hc = await this.historiaService.traerItemPorId(item.HCId);
+      let hc = await this.historiaService.traerListaFiltradaPor_UN_Campo('pacienteId', item.id);
 
-      if (hc) {
-        this.historiaClinica = hc;
+      if (hc && hc.length > 0) {
+        this.historiaClinica = hc[0];
         this.mostrarHC = true;
       } else {
         this.cerrarHC();

@@ -5,13 +5,35 @@
     </div>
     <div class="row mx-auto w-50">
         <div class="col border p-2 w-50 bg-dark text-light">        
-            <app-buscador 
+            <!-- <app-buscador 
             [funcionBuscador]="buscarEspecialistaOEspecialidad" 
             [titulo]="tituloBuscador" 
             [funcionPipe]="transformarTexto" 
             [limpiarDesdeExterior]="limpiarAutocomplete"
             (OnLimpiarBuscador)="limpiarDatos()"
-            (OnSeleccionElemento)="obtenerItemSeleccionado($event)" ></app-buscador>            
+            (OnSeleccionElemento)="obtenerItemSeleccionado($event)" ></app-buscador>             -->
+
+
+
+
+
+            <div class="mb-3">
+                <label for="inputTexto" class="form-label">Buscar por Especialista | Especialidad | Datos del turno</label>
+                <div class="d-flex justify-content-around">
+                    <input type="text" class="form-control" (keydown)="keyDown($event, inputTexto)" autocomplete="off" #inputTexto name="inputTexto"
+                        id="inputTexto">
+                    <button class="btn btn-primary m-1" id="btnBuscar" (click)="buscar2(inputTexto)">
+                        <!-- https://icons.getbootstrap.com/ -->
+                        <i class="bi bi-search fw-bold"></i>
+                    </button>
+                    <!-- https://icons.getbootstrap.com/ -->
+                    <!-- <button class="btn btn-primary m-1" (click)="limpiar2()">
+                            <i class="bi bi-x-circle"></i>
+                        </button> -->
+                </div>
+            </div>
+
+
         </div>
     </div>
 
@@ -19,7 +41,7 @@
         <div class="col col border d-none">
             <h3 class="custom-font-headers">Id</h3>
         </div>
-        <div class="col col-12 col-xl-2 border">
+        <div class="col col-12 col-xl-1 border">
             <h3 class="custom-font-headers">Especialidad</h3>
         </div>
         <div class="col col-12 col-xl-1 border">
@@ -32,6 +54,10 @@
     <!--RESEÑA YA REALIZADA-->
     <div class="col col-12 col-xl-2 border">
         <h3 class="custom-font-headers">Reseñas</h3>
+    </div>
+
+    <div class="col col-12 col-xl-1 border">
+        <h3 class="custom-font-headers">Controles</h3>
     </div>
     
     <div class="col col-12 col-xl-1 border">
@@ -59,7 +85,7 @@
     <div class="col col border d-none">
         {{item.id}}
     </div>
-    <div class="col col-12 col-xl-2 border custom-font-data columna">
+    <div class="col col-12 col-xl-1 border custom-font-data columna">
         <p>
             {{item.especialidad}}
         </p>
@@ -88,6 +114,20 @@
             </ng-container>
         </div>
         
+        <!--DETALLES-->
+        <div class="col col-12 col-xl-1 border d-flex" style="align-items: center !important;">
+        <ng-container *ngIf="item.datos; else noHc">
+            <div>
+                <button class="btn btn-success fs-3 fw-bold m-1" (click)="verDetalles(item)">Detalles</button>
+            </div>
+        </ng-container>
+        <ng-template #noHc>
+            <div class="d-flex" style="align-items: center;">
+                <h3 class="custom-font-headers">Sin Controles</h3>
+            </div>
+        </ng-template>
+    </div>
+
         <div class="col col-12 col-xl-1 border custom-font-data columna justify-content-center">
             <p class="text-center">
                 {{item.estadoTurno}}
@@ -161,3 +201,5 @@
 [turno]="turnoParaEncuesta" 
 (onEncuestaCancelada)="encuestaCancelada()"
 ></app-encuesta>
+
+<app-detalle-hc (OnCerrar)="cerrarDetalles()" *ngIf="mostrarDetalles" [dato]="datoDetalle"></app-detalle-hc>

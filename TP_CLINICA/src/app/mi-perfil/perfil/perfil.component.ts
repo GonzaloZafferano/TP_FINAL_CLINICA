@@ -35,10 +35,10 @@ export class PerfilComponent {
   suscripcion: any;
   mostrarHC: boolean = false;
   historiaClinica: any;
-  ordenPipe : any;
+  ordenPipe: any;
   constructor(
     private usuarioService: UsuarioService,
-    private pdfService : PdfService,
+    private pdfService: PdfService,
     private historiaService: HcService, private swalService: SwalService
   ) { }
 
@@ -128,10 +128,12 @@ export class PerfilComponent {
 
   async verHC() {
     this.cargando = true;
-    if(this.usuario.tieneHC){
-      let hc = await this.historiaService.traerItemPorId(this.usuario.HCId);    
-      if (hc) {
-        this.historiaClinica = hc;
+    if (this.usuario.tieneHC) {
+
+      let hc = await this.historiaService.traerListaFiltradaPor_UN_Campo('pacienteId', this.usuario.id);
+
+      if (hc && hc.length > 0) {
+        this.historiaClinica = hc[0];
         this.mostrarHC = true;
         this.cargando = false;
       }
@@ -142,16 +144,18 @@ export class PerfilComponent {
     }
   }
 
-  cerrarHC(){
+  cerrarHC() {
     this.mostrarHC = false;
   }
 
-  async descargarPDF(){
+  async descargarPDF() {
     this.cargando = true;
-    if(this.usuario.tieneHC){
-      let hc = await this.historiaService.traerItemPorId(this.usuario.HCId);    
-      if (hc) {     
-        let contenido : string [] = [];
+    if (this.usuario.tieneHC) {
+      let hc : any = await this.historiaService.traerListaFiltradaPor_UN_Campo('pacienteId', this.usuario.id);
+
+      if (hc && hc.length > 0) {
+        hc = hc[0];
+        let contenido: string[] = [];
         let titulo = `Historia Clínica: ${this.usuario.apellido}, ${this.usuario.nombre}`;
 
         let sub1 = "Datos Actuales:";
@@ -160,7 +164,7 @@ export class PerfilComponent {
         let peso = 'Peso: ' + hc['peso'] + 'kg. ';
         let temperatura = 'Temperatura: ' + hc['temperatura'] + '°C. ';
         let presion = 'Presión: ' + `${hc['presion1']}/${hc['presion2']}mmHg. `;
-        
+
         let datosFijos = altura + peso + temperatura + presion;
 
         contenido.push(sub1);
@@ -168,11 +172,11 @@ export class PerfilComponent {
         contenido.push(sub2);
 
         let datos = this.ordenPipe.transform(hc['datos'], true);
-        for(let i = 0; i < datos.length; i++){
+        for (let i = 0; i < datos.length; i++) {
           let dato = datos[i];
           let fecha = new Date(dato.fechaHC).toLocaleString();
           let texto =
-          `Fecha: ${fecha}. Especialista: ${dato.medico.apellido}, ${dato.medico.nombre}. Especialidad: ${dato.especialidad}. Altura: ${dato.altura} mt. Peso: ${dato.peso} kg. Temperatura: ${dato.temperatura} °C. Presión: ${dato.presion1}/${dato.presion2}mmHg. Datos Adicionales: `;
+            `Fecha: ${fecha}. Especialista: ${dato.medico.apellido}, ${dato.medico.nombre}. Especialidad: ${dato.especialidad}. Altura: ${dato.altura} mt. Peso: ${dato.peso} kg. Temperatura: ${dato.temperatura} °C. Presión: ${dato.presion1}/${dato.presion2}mmHg. Datos Adicionales: `;
 
           if (dato.hayDatos) {
             for (let prop in dato) {
@@ -189,10 +193,10 @@ export class PerfilComponent {
           }
 
           contenido.push(texto);
-        }  
+        }
 
         this.pdfService.generatePDF(titulo, contenido);
-        
+
         this.cargando = false;
       }
     }

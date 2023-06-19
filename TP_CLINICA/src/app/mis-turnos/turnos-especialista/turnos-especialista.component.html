@@ -5,17 +5,42 @@
     </div>
     <div class="row w-50 mx-auto">
         <div class="col border p-2 w-50 bg-dark text-light">
-            <app-buscador [funcionBuscador]="buscarPacienteOEspecialidad" [titulo]="tituloBuscador"
+
+            <!-- <app-buscador [funcionBuscador]="buscarPacienteOEspecialidad" [titulo]="tituloBuscador"
                 [funcionPipe]="transformarTexto" [limpiarDesdeExterior]="limpiarAutocomplete"
                 (OnLimpiarBuscador)="limpiarDatos()"
-                (OnSeleccionElemento)="obtenerItemSeleccionado($event)"></app-buscador>
+                (OnSeleccionElemento)="obtenerItemSeleccionado($event)"></app-buscador> -->
+
+
+
+            <div class="mb-3">
+                <label for="inputTexto" class="form-label">Buscar por Paciente | Especialidad | Datos del turno</label>
+                <div class="d-flex justify-content-around">
+                    <input type="text" class="form-control" (keydown)="keyDown($event, inputTexto)" autocomplete="off" #inputTexto name="inputTexto"
+                        id="inputTexto">
+                    <button class="btn btn-primary m-1" id="btnBuscar" (click)="buscar2(inputTexto)">
+                        <!-- https://icons.getbootstrap.com/ -->
+                        <i class="bi bi-search fw-bold"></i>
+                    </button>
+                    <!-- https://icons.getbootstrap.com/ -->
+                    <!-- <button class="btn btn-primary m-1" (click)="limpiar2()">
+                            <i class="bi bi-x-circle"></i>
+                        </button> -->
+                </div>
+            </div>
+
+
+
+
+
+
         </div>
     </div>
 
     <div class="row w-100 bg-dark mx-auto text-light text-center">
         <div class="col col border d-none">
             <h3 class="custom-font-headers">Id</h3>
-        </div> 
+        </div>
         <div class="col col-12 col-xl-1 border">
             <h3 class="custom-font-headers">Especialidad</h3>
         </div>
@@ -34,8 +59,12 @@
         </div>
 
         <!--RESEÑA YA REALIZADA-->
-        <div class="col col-12 col-xl-3 border">
+        <div class="col col-12 col-xl-2 border">
             <h3 class="custom-font-headers">Reseñas</h3>
+        </div>
+
+        <div class="col col-12 col-xl-1 border">
+            <h3 class="custom-font-headers">Controles</h3>
         </div>
 
         <div class="col col-12 col-xl-2 border">
@@ -48,9 +77,8 @@
         <div class="spinner-border text-danger" style="align-self: center; scale: 1.2;"></div>
     </div>
     <ng-template #lista>
-        <div *ngFor="let item of listado | sortBySeconds; let indice = index" class="row w-100 mx-auto bg-light custom-pointer"
-        style="min-height: 100px;" 
-            (click)="seleccionDeFila(item)"
+        <div *ngFor="let item of listado | sortBySeconds; let indice = index"
+            class="row w-100 mx-auto bg-light custom-pointer" style="min-height: 100px;" (click)="seleccionDeFila(item)"
             [class.fila-seleccionada]="filaSeleccionada != null && item.id === filaSeleccionada.id">
             <div class="col col border d-none">
                 {{item.id}}
@@ -93,13 +121,13 @@
             </div>
 
             <!--RESEÑA-->
-            <div class="col col-12 col-xl-3 border custom-font-data columna justify-content-center">
+            <div class="col col-12 col-xl-2 border custom-font-data columna justify-content-center">
 
                 <ng-container *ngIf="item.estadoTurno == 'Solicitado'; else verResena">
-                    <div class="w-75">
+                    <div class="" style="width: 70%;">
                         <textarea #resena class="form-control w-100 resize"></textarea>
                     </div>
-                    <div class="w-25">
+                    <div class="" style="width: 30%;">
                         <button *ngIf="item.estadoTurno == 'Solicitado'" class="btn btn-danger fs-6 fw-bold m-1"
                             (click)="rechazar(item, resena)">Rechazar
                         </button>
@@ -129,6 +157,20 @@
                 </ng-template>
             </div>
 
+            <!--DETALLES-->
+            <div class="col col-12 col-xl-1 border d-flex" style="align-items: center !important;">
+                <ng-container *ngIf="item.datos; else noHc">
+                    <div>
+                        <button class="btn btn-success fs-3 fw-bold m-1" (click)="verDetalles(item)">Detalles</button>
+                    </div>
+                </ng-container>
+                <ng-template #noHc>
+                    <div class="d-flex" style="align-items: center;">
+                        <h3 class="custom-font-headers">Sin Controles</h3>
+                    </div>
+                </ng-template>
+            </div>
+
             <!--CANCELAR O CALIFICAR-->
             <div class="col col-12 col-xl-2 border custom-font-data text-right columna">
                 <div class="d-flex justify-content-center w-100">
@@ -145,4 +187,6 @@
 </div>
 
 <app-loader *ngIf="cargando"></app-loader>
-<app-cargar-historia *ngIf="cargandoHC" [paciente]="pacienteHc" (onHCCancelada)="cancelaHC()" (onHCCompleta)="hcCargada($event)"></app-cargar-historia>
+<app-cargar-historia *ngIf="cargandoHC" [paciente]="pacienteHc" (onHCCancelada)="cancelaHC()"
+    (onHCCompleta)="hcCargada($event)"></app-cargar-historia>
+    <app-detalle-hc (OnCerrar)="cerrarDetalles()" *ngIf="mostrarDetalles" [dato]="datoDetalle"></app-detalle-hc>

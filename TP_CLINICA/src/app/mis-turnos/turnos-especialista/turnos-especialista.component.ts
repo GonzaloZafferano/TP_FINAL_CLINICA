@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { HorariosService } from 'src/app/services/horarios.service';
 import { SwalService } from 'src/app/services/swal.service';
 import { UsuarioService } from 'src/app/services/usuarios.service';
+import { DatosTurnoPipe } from 'src/app/shared/pipes/datos-turno.pipe';
 
 @Component({
   selector: 'app-turnos-especialista',
@@ -9,14 +10,18 @@ import { UsuarioService } from 'src/app/services/usuarios.service';
   styleUrls: ['./turnos-especialista.component.css']
 })
 export class TurnosEspecialistaComponent {
+  @ViewChild('inputTexto', { static: false }) inputTexto: ElementRef | undefined;
   spinner: boolean = false;
-  cargandoHC : boolean = false;
-  pacienteHc : any;
+  cargandoHC: boolean = false;
+  pacienteHc: any;
   cargando: boolean = false;
   filaSeleccionada: any = null;
   listado: any = null;
   suscripcion: any;
   usuarioActual: any;
+  datosTurnoPipe: any;
+  mostrarDetalles: boolean = false;
+  datoDetalle: any;
   limpiarAutocomplete: boolean = false;
   tituloBuscador: string = 'Busque por  (paciente) Nombre | Apellido | Dni | (especialidad) | Nombre';
   constructor(private horariosService: HorariosService,
@@ -38,6 +43,7 @@ export class TurnosEspecialistaComponent {
 
   async ngOnInit() {
     this.usuarioActual = await this.usuarioService.obtenerUsuarioActual();
+    this.datosTurnoPipe = new DatosTurnoPipe();
     //this.cargarDatos();
   }
 
@@ -75,8 +81,8 @@ export class TurnosEspecialistaComponent {
       this.cargando = true;
       item.estadoTurno = 'Cancelado';
       item.comentarioMedico = input?.value.trim();
-        delete item['mostrarComentario'];
-        delete item['mostrarDetalle'];
+      delete item['mostrarComentario'];
+      delete item['mostrarDetalle'];
       this.horariosService.modificarItem(item).then(x => {
         this.swalService.exito('Turno cancelado!', 'Aviso.');
         this.cargando = false;
@@ -99,10 +105,10 @@ export class TurnosEspecialistaComponent {
   realizado(item: any, indice: number) {
     const input = document.getElementById('realizado' + indice) as HTMLInputElement;
     if (input.value && input.value != '') {
-      this.item  = item;
+      this.item = item;
       this.indice = indice;
       this.inputActual = input;
-      item.paciente.especialidad = item.especialidad; 
+      item.paciente.especialidad = item.especialidad;
       this.pacienteHc = item.paciente;
       this.cargandoHC = true;
       // this.cargando = true;
@@ -119,27 +125,27 @@ export class TurnosEspecialistaComponent {
     }
   }
 
-  item : any;
-  indice : any;
-  inputActual : any;
+  item: any;
+  indice: any;
+  inputActual: any;
 
-  finalizarTurno(evento : any){
+  finalizarTurno(evento: any) {
     this.cargandoHC = false;
-    this.cargando = true;   
+    this.cargando = true;
     this.item.estadoTurno = 'Realizado';
     this.item.comentarioMedico = this.inputActual.value;
     this.item.fechaFinalizacion = new Date().getTime();
     delete this.item['mostrarDetalle'];
     delete this.item['mostrarComentario'];
 
-    if(evento.cargo){
+    if (evento.cargo) {
       this.item.datos = evento.datos;
     }
 
     this.horariosService.modificarItem(this.item).then(x => {
       delete this.pacienteHc['especialidad'];
       this.pacienteHc.tieneHC = true;
-      this.usuarioService.modificarUsuario(this.pacienteHc).finally(()=>{
+      this.usuarioService.modificarUsuario(this.pacienteHc).finally(() => {
         this.swalService.exito('Turno Finalizado!', 'Aviso.');
         this.cargando = false
       })
@@ -150,13 +156,22 @@ export class TurnosEspecialistaComponent {
     );
   }
 
-  hcCargada(evento : any){
+  hcCargada(evento: any) {
     //{paciente : this.paciente, datos: datos, cargo : hayDatos}
     this.finalizarTurno(evento);
   }
 
-  cancelaHC(){
-    this.cargandoHC = false;   
+  cancelaHC() {
+    this.cargandoHC = false;
+  }
+
+  async keyDown(event: any, item: any) {
+    if (event.key === 'Enter' || event.keyCode === 13) {
+      await this.buscar2(item);
+    }
+  }
+  cerrarDetalles() {
+    this.mostrarDetalles = false;
   }
   rechazar(item: any, input: HTMLTextAreaElement) {
     if (input?.value?.trim() != '') {
@@ -177,6 +192,9 @@ export class TurnosEspecialistaComponent {
   limpiar() {
     this.listado = null;
     this.limpiarAutocomplete = !this.limpiarAutocomplete;
+    const inputTexto = document.getElementById('inputTexto') as HTMLInputElement;
+    inputTexto.disabled = false;
+    inputTexto.value = '';
   }
 
   ////////////////////-------------BUSCADOR----------------//////////////////////////////////////////
@@ -246,4 +264,101 @@ export class TurnosEspecialistaComponent {
     this.cargarDatos(item);
   }
   ////////////////////-------------FIN BUSCADOR----------------//////////////////////////////////////////
+
+
+
+  /////////////////////////////////////FILTRO DE TURNOS AVANZADO
+  async buscar2(input: any) {
+    let dato = input.value;
+    dato = dato.trim();
+    dato = dato.toLowerCase();
+    if (dato != '') {
+      this.cargando = true;
+
+      let idMedico = this.usuarioActual.id;
+      let turnos = await this.horariosService.obtenerListaDeItems();
+      let turnosOcupados = turnos.filter(x => x['estadoTurno'] != 'Libre' && x['idMedico'] == idMedico);
+      let turnosFiltrados = turnosOcupados.filter(x => {
+
+        //EL ESPECIALISTA NO SE BUSCA A SI MISMO
+        // if (x['nombreEspecialista'].includes(dato))
+        //   return true;
+
+        // if (x['medico']){
+        //   if(x['medico']?.dni.toLowerCase().includes(dato)){
+        //     return true;
+        //   }
+        // }
+
+        if (x['especialidad'].toLowerCase().includes(dato))
+          return true;
+
+        if (x['nombrePaciente'].toLowerCase().includes(dato))
+          return true;
+
+        if (x['paciente']){
+          if(x['paciente']?.dni.toLowerCase().includes(dato)){
+            return true;
+          }
+        }
+
+        if (x['comentarioMedico'].toLowerCase().includes(dato))
+          return true;
+        if (x['comentarioPaciente'].toLowerCase().includes(dato))
+          return true;
+
+        if (x['estadoTurno'].toLowerCase().includes(dato))
+          return true;
+
+        //ES LA FECHA DEL TURNO. 
+        if (x['fechaString'].includes(dato))
+          return true;
+
+        //Historia Clinica
+        let hc = x['datos'];
+
+        if (hc) {
+          if (hc['altura'] && hc['altura'].toString().includes(dato))
+            return true;
+
+          if (hc['presion1'] && hc['presion1'].toString().includes(dato))
+            return true;
+
+          if (hc['presion2'] && hc['presion2'].toString().includes(dato))
+            return true;
+
+          if (hc['peso'] && hc['peso'].toString().includes(dato))
+            return true;
+
+          if (hc['temperatura'] && hc['temperatura'].toString().includes(dato))
+            return true;
+
+          for (let prop in hc) {
+            if (prop != 'medico' && prop != 'altura' &&
+              prop != 'especialidad' && prop != 'fechaHC' &&
+              prop != 'hayDatos' && prop != 'presion1' &&
+              prop != 'presion2' && prop != 'peso' && prop != 'temperatura'
+            ) {
+              if (hc[prop] && hc[prop].toString().toLowerCase().includes(dato)) {
+                return true;
+              }
+            }
+          }
+        }
+        return false;
+      });
+      this.listado = turnosFiltrados;
+      this.cargando = false;
+    }
+  }
+
+  verDetalles(item: any) {
+    if (item && item.datos) {
+      let datos = this.datosTurnoPipe.transform(item.datos);
+      //this.swalService.info(datos, 'Detalles del Control');
+      this.datoDetalle = datos;
+      this.mostrarDetalles = true;
+    }
+  }
 }
+

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { HorariosService } from 'src/app/services/horarios.service';
 import { SwalService } from 'src/app/services/swal.service';
 import { UsuarioService } from 'src/app/services/usuarios.service';
+import { DatosTurnoPipe } from 'src/app/shared/pipes/datos-turno.pipe';
 
 @Component({
   selector: 'app-turnos-paciente',
@@ -18,6 +19,9 @@ export class TurnosPacienteComponent {
   suscripcion: any;
   usuarioActual: any;
   limpiarAutocomplete: boolean = false;
+  datosTurnoPipe: any;
+  mostrarDetalles: boolean = false;
+  datoDetalle: any;
   tituloBuscador: string = 'Busque por  (especialista) Nombre | Apellido | Dni | (especialidad) | Nombre';
   constructor(private horariosService: HorariosService,
     private usuarioService: UsuarioService,
@@ -39,6 +43,7 @@ export class TurnosPacienteComponent {
   async ngOnInit() {
     this.usuarioActual = await this.usuarioService.obtenerUsuarioActual();
     //this.cargarDatos();
+    this.datosTurnoPipe = new DatosTurnoPipe();
   }
 
 
@@ -140,6 +145,9 @@ export class TurnosPacienteComponent {
   limpiar() {
     this.listado = null;
     this.limpiarAutocomplete = !this.limpiarAutocomplete;
+    const inputTexto = document.getElementById('inputTexto') as HTMLInputElement;
+    inputTexto.disabled = false;
+    inputTexto.value = '';
   }
 
   guardarEncuesta(turno: any) {
@@ -223,4 +231,110 @@ export class TurnosPacienteComponent {
     this.cargarDatos(item);
   }
   ////////////////////-------------FIN BUSCADOR----------------//////////////////////////////////////////
+
+  
+
+  /////////////////////////////////////FILTRO DE TURNOS AVANZADO
+  async buscar2(input: any) {
+    let dato = input.value;
+    dato = dato.trim();
+    dato = dato.toLowerCase();
+    if (dato != '') {
+      this.cargando = true;
+
+      let idPaciente = this.usuarioActual.id;
+      let turnos = await this.horariosService.obtenerListaDeItems();
+      let turnosOcupados = turnos.filter(x => x['estadoTurno'] != 'Libre' && x['idPaciente'] == idPaciente);
+      let turnosFiltrados = turnosOcupados.filter(x => {
+
+       // EL ESPECIALISTA NO SE BUSCA A SI MISMO
+        if (x['nombreEspecialista'].toLowerCase().includes(dato))
+          return true;
+
+        if (x['medico']){
+          if(x['medico']?.dni.toLowerCase().includes(dato)){
+            return true;
+          }
+        }
+
+        if (x['especialidad'].toLowerCase().includes(dato))
+          return true;
+
+        // if (x['nombrePaciente'].toLowerCase().includes(dato))
+        //   return true;
+
+        // if (x['paciente']){
+        //   if(x['paciente']?.dni.toLowerCase().includes(dato)){
+        //     return true;
+        //   }
+        // }
+
+        if (x['comentarioMedico'].toLowerCase().includes(dato))
+          return true;
+        if (x['comentarioPaciente'].toLowerCase().includes(dato))
+          return true;
+
+        if (x['estadoTurno'].toLowerCase().includes(dato))
+          return true;
+
+        //ES LA FECHA DEL TURNO. 
+        if (x['fechaString'].includes(dato))
+          return true;
+
+        //Historia Clinica
+        let hc = x['datos'];
+
+        if (hc) {
+          if (hc['altura'] && hc['altura'].toString().includes(dato))
+            return true;
+
+          if (hc['presion1'] && hc['presion1'].toString().includes(dato))
+            return true;
+
+          if (hc['presion2'] && hc['presion2'].toString().includes(dato))
+            return true;
+
+          if (hc['peso'] && hc['peso'].toString().includes(dato))
+            return true;
+
+          if (hc['temperatura'] && hc['temperatura'].toString().includes(dato))
+            return true;
+
+          for (let prop in hc) {
+            if (prop != 'medico' && prop != 'altura' &&
+              prop != 'especialidad' && prop != 'fechaHC' &&
+              prop != 'hayDatos' && prop != 'presion1' &&
+              prop != 'presion2' && prop != 'peso' && prop != 'temperatura'
+            ) {
+              if (hc[prop] && hc[prop].toString().toLowerCase().includes(dato)) {
+                return true;
+              }
+            }
+          }
+        }
+        return false;
+      });
+      this.listado = turnosFiltrados;
+      this.cargando = false;
+    }
+  }
+
+  verDetalles(item: any) {
+    if (item && item.datos) {
+      let datos = this.datosTurnoPipe.transform(item.datos);
+      //this.swalService.info(datos, 'Detalles del Control');
+      this.datoDetalle = datos;
+      this.mostrarDetalles = true;
+    }
+  }
+
+  async keyDown(event: any, item: any) {
+    if (event.key === 'Enter' || event.keyCode === 13) {
+      await this.buscar2(item);
+    }
+  }
+
+  cerrarDetalles() {
+    this.mostrarDetalles = false;
+  }
 }
