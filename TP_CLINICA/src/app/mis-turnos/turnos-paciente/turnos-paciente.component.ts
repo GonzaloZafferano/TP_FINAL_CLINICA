@@ -232,7 +232,7 @@ export class TurnosPacienteComponent {
   }
   ////////////////////-------------FIN BUSCADOR----------------//////////////////////////////////////////
 
-  
+
 
   /////////////////////////////////////FILTRO DE TURNOS AVANZADO
   async buscar2(input: any) {
@@ -247,12 +247,12 @@ export class TurnosPacienteComponent {
       let turnosOcupados = turnos.filter(x => x['estadoTurno'] != 'Libre' && x['idPaciente'] == idPaciente);
       let turnosFiltrados = turnosOcupados.filter(x => {
 
-       // EL ESPECIALISTA NO SE BUSCA A SI MISMO
+        // EL ESPECIALISTA NO SE BUSCA A SI MISMO
         if (x['nombreEspecialista'].toLowerCase().includes(dato))
           return true;
 
-        if (x['medico']){
-          if(x['medico']?.dni.toLowerCase().includes(dato)){
+        if (x['medico']) {
+          if (x['medico']?.dni.toLowerCase().includes(dato)) {
             return true;
           }
         }
@@ -293,6 +293,12 @@ export class TurnosPacienteComponent {
 
           if (hc['presion2'] && hc['presion2'].toString().includes(dato))
             return true;
+
+          if (hc['presion1'] && hc['presion2']) {
+            if (`${hc['presion1'].toString()}/${hc['presion2'].toString()}`.includes(dato)) {
+              return true;
+            }
+          }
 
           if (hc['peso'] && hc['peso'].toString().includes(dato))
             return true;
