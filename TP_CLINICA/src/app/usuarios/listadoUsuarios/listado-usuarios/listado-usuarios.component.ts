@@ -64,7 +64,7 @@ export class ListadoUsuariosComponent {
   }
 
   async mostrarHistoria(item: any) {
-    if (item.tieneHC) {
+   // if (item.tieneHC) {
       this.cargando = true;
       let hc = await this.historiaService.traerListaFiltradaPor_UN_Campo('pacienteId', item.id);
 
@@ -74,6 +74,6 @@ export class ListadoUsuariosComponent {
       } else {
         this.cerrarHC();
       }
-    }
+   // }
   }
 }

@@ -9,6 +9,7 @@ import { MisTurnosGuard } from './guards/mis-turnos.guard';
 import { TurnosGuard } from './guards/turnos.guard';
 import { MiPerfilGuard } from './guards/mi-perfil.guard';
 import { SolicitarTurnoGuard } from './guards/solicitar-turno.guard';
+import { PacientesGuardGuard } from './guards/pacientes-guard.guard';
 
 const routes: Routes = [
   { path: '', loadChildren: () => import('./bienvenido/bienvenido.module').then(m => m.BienvenidoModule), canActivate : [BienvenidoGuard] }, 
@@ -21,7 +22,8 @@ const routes: Routes = [
   { path: 'mi-perfil', loadChildren: () => import('./mi-perfil/mi-perfil.module').then(m => m.MiPerfilModule), canActivate : [MiPerfilGuard]  },
   { path: 'solicitar-turno', loadChildren: () => import('./solicitar-turno/solicitar-turno.module').then(m => m.SolicitarTurnoModule), canActivate : [SolicitarTurnoGuard]  },
   { path: 'turnos', loadChildren: () => import('./turnos/turnos.module').then(m => m.TurnosModule), canActivate : [TurnosGuard]  },
-  { path: 'pacientes', loadChildren: () => import('./pacientes/pacientes.module').then(m => m.PacientesModule) },
+  { path: 'pacientes', loadChildren: () => import('./pacientes/pacientes.module').then(m => m.PacientesModule), canActivate : [PacientesGuardGuard] },
+  { path: '**', loadChildren: () => import('./error/error.module').then(m => m.ErrorModule) },
 
 ];
 

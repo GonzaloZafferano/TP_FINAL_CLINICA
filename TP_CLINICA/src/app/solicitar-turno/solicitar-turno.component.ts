@@ -24,6 +24,7 @@ export class SolicitarTurnoComponent {
   especialistas: any;
   especialidades: any;
   turnos: any;
+  turnosPorDia: any;
   suscripcionEspecialidades: any;
   suscripcionEspecialistas: any;
   suscripcionUsuarios: any;
@@ -105,6 +106,7 @@ export class SolicitarTurnoComponent {
       })
 
       this.turnos = turnosFiltradosPorFecha;
+      //this.turnosPorDia = turnosFiltradosPorFecha.filter(x => x.fechaString == turno.fechaString);
       this.spinnerTurnos = false;
       if (this.turnos.length == 0 && !this.cargando)
         this.toastService.informacion('El especialista seleccionado NO TIENE turnos disponibles para la especialidad seleccionada.', 'Aviso.');
@@ -127,21 +129,32 @@ export class SolicitarTurnoComponent {
       this.filaSeleccionada = especialidad;
       this.especialistas = null;
       this.turnos = null;
+      this.turnosPorDia = null;
       this.spinnerEspecialistas = true;
       this.especialidadSeleccionada = especialidad;
       this.eliminarSuscripcionTurnos();
       this.eliminarSuscripcionEspecialistas();
-      this.suscripcionEspecialistas = this.usuarioService.obtenerEspecialistaPorEspecialidad(especialidad).subscribe(x => {
-        this.especialistas = x;
-        if (this.especialistas.length == 0)
-          this.toastService.informacion('La especialidad seleccionada NO CUENTA con especialistas por el momento.', 'Aviso.');
-        this.spinnerEspecialistas = false;
+      this.suscripcionEspecialistas = this.usuarioService.obtenerListadoDeUsuariosObservable().subscribe(x => {
+        let especialistas = x.filter(x => {
+          if (x['especialidades']) {
+            let especialidades = x['especialidades'].filter((x: any) => x.nombre == especialidad.nombre);
+            return especialidades != null && especialidades.length > 0;
+          }
+          return false;
+        });
+        this.especialistas = especialistas;
+        setTimeout(() => {
+          if (this.especialistas.length == 0)
+            this.toastService.informacion('La especialidad seleccionada NO CUENTA con especialistas por el momento.', 'Aviso.');
+          this.spinnerEspecialistas = false;
+        }, 700);
       });
     }
   }
 
   seleccionTurno(turno: any) {
     this.turnos = null;
+    this.turnosPorDia = null;
     this.cargando = true;
     turno.ocupado = true;
     turno.estadoTurno = 'Solicitado';
@@ -166,6 +179,13 @@ export class SolicitarTurnoComponent {
     });
   }
 
+  //ACA ME TRAJE EL TURNO (DIA).
+  //AHORA NECESITO TODOS LOS TURNOS (HORARIOS) DE ESE DIA.
+  seleccionTurnoDia(turno: any, turnos: any[]) {
+    if (turno) {
+      this.turnosPorDia = turnos.filter(x => x.fechaString == turno.fechaString);
+    }
+  }
 
   ////////////////////-------------BUSCADOR----------------//////////////////////////////////////////
   //LO DECLARO DE ESTA FORMA PARA QUE EL COMPONENTE 

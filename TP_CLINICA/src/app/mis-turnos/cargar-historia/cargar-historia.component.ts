@@ -12,7 +12,7 @@ import { HcService } from 'src/app/services/hc.service';
 import { SwalService } from 'src/app/services/swal.service';
 import { ToastService } from 'src/app/services/toast.service';
 import { UsuarioService } from 'src/app/services/usuarios.service';
-import { validarCampoTexto, validarCampoNumero, validarSiDniExisteAsync, validarCampoArchivo, validarCorreo, validarSiCorreoExisteAsync, validarConfirmacionDeClave, validarCampoNumero_V2, validarCamposKeyValue } from 'src/app/validators/validaciones';
+import { validarCampoTexto, validarCampoNumero, validarSiDniExisteAsync, validarCampoArchivo, validarCorreo, validarSiCorreoExisteAsync, validarConfirmacionDeClave, validarCampoNumero_V2, validarCamposKeyValue, validarCamposKeyValue_v2, validarCamposKeyValue_v3 } from 'src/app/validators/validaciones';
 import { v4 } from 'uuid';
 
 @Component({
@@ -132,8 +132,8 @@ export class CargarHistoriaComponent {
           altura: new FormControl('', { validators: [validarCampoNumero_V2(0.2, 2.5)], }),
           peso: new FormControl('', { validators: [validarCampoNumero_V2(1, 300)], }),
           temperatura: new FormControl('', { validators: [validarCampoNumero_V2(30, 45)], }),
-          presion1: new FormControl('', { validators: [validarCampoNumero_V2(50, 140)], }),
-          presion2: new FormControl('', { validators: [validarCampoNumero_V2(40, 90)], }),
+          presion1: new FormControl('', { validators: [validarCampoNumero_V2(50, 140, null, true)], }),
+          presion2: new FormControl('', { validators: [validarCampoNumero_V2(40, 90, null, true)], }),
           opcionalNombre1: new FormControl('',),
           opcionalNombre2: new FormControl('',),
           opcionalNombre3: new FormControl('',),
@@ -141,7 +141,10 @@ export class CargarHistoriaComponent {
           opcionalValor2: new FormControl('',),
           opcionalValor3: new FormControl('',),
         },
-        [validarCamposKeyValue()]
+        [validarCamposKeyValue(1, 20, null, true, false),
+        validarCamposKeyValue_v2(1, 20, null, true, false),
+        validarCamposKeyValue_v3(1, 20, null, true, false),
+        ]
       );
 
     this.usuarioActual = this.usuarioService.usuarioAuth;
@@ -207,7 +210,7 @@ export class CargarHistoriaComponent {
 
       datos.hayDatos = hayDatos;
       //SI ES TRUE, LOS RECORRO DESPUES. SI ES FALSE, PONGO - : - Se puede hacer en un pipe.
-      
+
       this.HC.datos.push(datos);
 
       if (!this.esNueva) {

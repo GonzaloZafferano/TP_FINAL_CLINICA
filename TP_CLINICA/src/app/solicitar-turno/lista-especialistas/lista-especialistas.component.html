@@ -1,4 +1,4 @@
-<div style="height: 500px; overflow-y: auto">
+<div style="max-height: 700px; min-height: 160px;">
     <div class="border p-2 w-100 bg-dark text-light">
         <h3>{{titulo}}</h3>
         <div *ngIf="spinner; else lista" class="d-flex justify-content-around">
@@ -7,12 +7,20 @@
         </div>
         <ng-template #lista>
             <ng-container *ngIf="especialistas">
-                <div *ngIf="especialistas.length > 0; else sinEspecialistas">
-                    <div *ngFor="let especialista of especialistas">
-                        <div class="d-flex justify-content-between custom-pointer mx-0 border bg-light text-dark"
+                <div *ngIf="especialistas.length > 0; else sinEspecialistas"  style="max-height: 700px; min-height: 160px; overflow-y: auto">
+                    <div *ngFor="let especialista of especialistas" > 
+                        <div class="d-flex justify-content-center custom-pointer mx-0 border bg-light text-dark"
+                        >         
+                        <!--Descomentar la linea de abajo para que quede seleccionado de verde.-->        
+                        <!-- [class.fila-seleccionada]="filaSeleccionada != null && especialista.id === filaSeleccionada.id"> -->
+                        <!-- <p class="m-2 custom-font-data">{{especialista | especialistas}}</p> -->                                       
+                        <button [class.fila-seleccionada]="filaSeleccionada != null && especialista.id === filaSeleccionada.id"
+                         class="btn btn-primary"  type="button" style="border-radius: 50%; min-width: 150px;"
                         (click)="seleccionEspecialista(especialista)" 
-                        [class.fila-seleccionada]="filaSeleccionada != null && especialista.id === filaSeleccionada.id">
-                        <p class="m-2 custom-font-data">{{especialista | especialistas}}</p>
+                        >                        
+                            <img [src]="especialista.imagen" style="border-radius: 50%;" alt="Imagen especialista" width="100px">
+                            <p class="text-light fw-bold fs-6">{{especialista.apellido}}, {{especialista.nombre}}</p>
+                        </button> 
                     </div>
                 </div>
             </div>

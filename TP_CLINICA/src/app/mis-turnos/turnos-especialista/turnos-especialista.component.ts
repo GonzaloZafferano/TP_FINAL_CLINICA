@@ -138,9 +138,9 @@ export class TurnosEspecialistaComponent {
     delete this.item['mostrarDetalle'];
     delete this.item['mostrarComentario'];
 
-    if (evento.cargo) {
+    //if (evento.cargo) {
       this.item.datos = evento.datos;
-    }
+    //}
 
     this.horariosService.modificarItem(this.item).then(x => {
       delete this.pacienteHc['especialidad'];

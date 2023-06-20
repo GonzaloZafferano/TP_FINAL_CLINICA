@@ -17,6 +17,9 @@ import { BuscadorComponent } from './components/buscador/buscador.component';
 import { UsuarioPipe } from './pipes/usuario.pipe';
 import { HistoriaComponent } from './components/historia/historia.component';
 import { DatosTurnoPipe } from './pipes/datos-turno.pipe';
+import { FiltroDiasPipe } from './pipes/filtro-dias.pipe';
+import { FechaHoraFormatoPipe } from './pipes/fecha-hora-formato.pipe';
+import { HoraFormatoPipe } from './pipes/hora-formato.pipe';
 
 
 @NgModule({
@@ -24,13 +27,17 @@ import { DatosTurnoPipe } from './pipes/datos-turno.pipe';
     LoaderComponent, EstadosPipe, EspecialidadesPipe, FechaStringPipe, 
     TipoUsuarioPipe, HeaderComponent, TurnosPipe, SortdiashorariosPipe, DuracionAtencionPipe, 
     EspecialistasPipe, SortBySecondsPipe, SortByNamePipe, 
-    SortByNameAndLastNamePipe, BuscadorComponent, UsuarioPipe, HistoriaComponent, DatosTurnoPipe
+    SortByNameAndLastNamePipe, BuscadorComponent, UsuarioPipe, HistoriaComponent, DatosTurnoPipe,
+     FiltroDiasPipe,
+     FechaHoraFormatoPipe,
+     HoraFormatoPipe
   ],
   exports : [
     LoaderComponent, EstadosPipe, EspecialidadesPipe, FechaStringPipe, 
     TipoUsuarioPipe, HeaderComponent, TurnosPipe, SortdiashorariosPipe, DuracionAtencionPipe,
     EspecialistasPipe, SortBySecondsPipe, SortByNamePipe, 
-    SortByNameAndLastNamePipe, BuscadorComponent, UsuarioPipe, HistoriaComponent,DatosTurnoPipe
+    SortByNameAndLastNamePipe, BuscadorComponent, UsuarioPipe, HistoriaComponent,DatosTurnoPipe,
+    FiltroDiasPipe,FechaHoraFormatoPipe, HoraFormatoPipe
   ],
   imports: [
     CommonModule,    

@@ -16,11 +16,11 @@ export class DatosTurnoPipe implements PipeTransform {
           prop != 'hayDatos' && prop != 'presion1' &&
           prop != 'presion2' && prop != 'peso' && prop != 'temperatura'
         ) {
-          retorno += `${prop} : ${dato[prop]}. `;
+          retorno += `${prop}: ${dato[prop]}. `;
         }
       }
     } else {
-      retorno += ' - : -';
+      retorno += ' - ';
     }
 
     return retorno;

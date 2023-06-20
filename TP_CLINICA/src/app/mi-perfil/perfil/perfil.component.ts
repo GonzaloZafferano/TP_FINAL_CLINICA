@@ -128,7 +128,7 @@ export class PerfilComponent {
 
   async verHC() {
     this.cargando = true;
-    if (this.usuario.tieneHC) {
+    //if (this.usuario.tieneHC) {
 
       let hc = await this.historiaService.traerListaFiltradaPor_UN_Campo('pacienteId', this.usuario.id);
 
@@ -137,7 +137,7 @@ export class PerfilComponent {
         this.mostrarHC = true;
         this.cargando = false;
       }
-    }
+  //  }
     else {
       this.cargando = false;
       this.swalService.info('No posee historia clínica aún.');
@@ -150,7 +150,7 @@ export class PerfilComponent {
 
   async descargarPDF() {
     this.cargando = true;
-    if (this.usuario.tieneHC) {
+  //  if (this.usuario.tieneHC) {
       let hc : any = await this.historiaService.traerListaFiltradaPor_UN_Campo('pacienteId', this.usuario.id);
 
       if (hc && hc.length > 0) {
@@ -185,11 +185,11 @@ export class PerfilComponent {
                 prop != 'hayDatos' && prop != 'presion1' &&
                 prop != 'presion2' && prop != 'peso' && prop != 'temperatura'
               ) {
-                texto += `${prop} : ${dato[prop]}. `;
+                texto += `${prop}: ${dato[prop]}. `;
               }
             }
           } else {
-            texto += ' - : -';
+            texto += ' - ';
           }
 
           contenido.push(texto);
@@ -199,7 +199,7 @@ export class PerfilComponent {
 
         this.cargando = false;
       }
-    }
+   // }
     else {
       this.cargando = false;
       this.swalService.info('No posee historia clínica aún.');

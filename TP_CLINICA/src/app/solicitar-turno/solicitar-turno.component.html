@@ -15,7 +15,7 @@
         </div>
     </div>
     <div class="row w-100 p-0 m-0">
-        <div class="col col-12 col-md-4">
+        <div class="col col-12 col-md-3">
             <div class="border p-2 w-100 bg-dark text-light">
                 <h3>Seleccione Especialidad</h3>
                 <div *ngIf="spinner; else lista" class="d-flex justify-content-around">
@@ -24,26 +24,51 @@
                 </div>
                 <ng-template #lista>
                     <!-- <div style="height: 500px !important; width: 270px; overflow-y: scroll;"> -->
-                    <div>
+                    <div style="max-height: 700px; min-height: 160px; overflow-y: auto">
                         <div *ngFor="let especialidad of especialidades | sortByName">
-                            <div class="d-flex justify-content-between custom-pointer mx-0 border bg-light text-dark"
+                            <!-- <div class="d-flex justify-content-between custom-pointer mx-0 border bg-light text-dark"
                                 [class.fila-seleccionada]="filaSeleccionada != null && especialidad.id === filaSeleccionada.id"
                                 (click)="seleccionEspecialidad(especialidad)">
                                 <p class="m-2 custom-pointer">{{especialidad.nombre | titlecase}}</p>
+                            </div> -->
+
+                            <div class="d-flex justify-content-center custom-pointer mx-0 border bg-light text-dark">
+                                <!--Descomentar la linea de abajo para que quede seleccionado de verde.-->
+                                <!-- [class.fila-seleccionada]="filaSeleccionada != null && especialista.id === filaSeleccionada.id"> -->
+                                <!-- <p class="m-2 custom-font-data">{{especialista | especialistas}}</p> -->
+                                <button
+                                    [class.fila-seleccionada]="filaSeleccionada != null && especialidad.id === filaSeleccionada.id"
+                                    class="btn btn-primary" type="button" style="border-radius: 50%; min-width: 150px;"
+                                    (click)="seleccionEspecialidad(especialidad)">
+                                    <img [src]="especialidad.imagen ? especialidad.imagen : 'assets/imagenEspecialidad/medicina.jpg' " style="border-radius: 50%;"
+                                        alt="Imagen especialista" width="100px">
+                                </button>
                             </div>
                         </div>
                     </div>
                 </ng-template>
             </div>
         </div>
-        <div class="col col-12 col-md-4">
+        <div class="col col-12 col-md-3">
             <app-lista-especialistas [spinner]="spinnerEspecialistas" [especialistas]="especialistas"
                 (OnSeleccionEspecialista)="seleccionEspecialista($event)"></app-lista-especialistas>
         </div>
-        <div class="col col-12 col-md-4">
-            <app-lista-turnos [spinner]="spinnerTurnos" [turnos]="turnos"
-                (OnSeleccionTurno)="seleccionTurno($event)"></app-lista-turnos>
+
+
+        <div class="col col-12 col-md-3">
+            <!-- <app-lista-turnos [spinner]="spinnerTurnos" [turnos]="turnos"
+            (OnSeleccionTurno)="seleccionTurno($event)"></app-lista-turnos> -->
+
+            <!--NUEVO-->
+            <app-dias [spinner]="spinnerTurnos" [turnos]="turnos"
+                (OnSeleccionTurno)="seleccionTurnoDia($event, turnos)"></app-dias>
         </div>
+        <div class="col col-12 col-md-3">
+            <app-horas [spinner]="spinnerTurnos" [turnos]="turnosPorDia" (OnSeleccionTurno)="seleccionTurno($event)">
+            </app-horas>
+        </div>
+
+
     </div>
 </div>
 
