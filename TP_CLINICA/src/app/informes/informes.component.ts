@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ExcelService } from '../services/excel.service';
 import { LogsService } from '../services/logs.service';
 import { Perfil } from '../models/enums/perfil';
@@ -10,6 +10,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { validarCorreo, validarCampoTexto, validarCampoFecha } from '../validators/validaciones';
 import { UsuarioService } from '../services/usuarios.service';
 import { SwalService } from '../services/swal.service';
+import { Chart } from 'chart.js';
 
 @Component({
   selector: 'app-informes',
@@ -17,6 +18,12 @@ import { SwalService } from '../services/swal.service';
   styleUrls: ['./informes.component.css']
 })
 export class InformesComponent {
+  @ViewChild('graficosC', { static: true }) graficosC!: any;
+  @ViewChild('radioTorta', { static: true }) radioTorta!: any;
+  // @ViewChild('graficosT', { static: true }) graficosT!: any;
+  labels: any = [];
+  data: any = [];
+  titulo: any;
   suscripcionLogs: any;
   suscripcionTurnos: any;
   cargando: boolean = false;
@@ -26,6 +33,8 @@ export class InformesComponent {
   especialistas: any;
   form: any;
   filaSeleccionada: any;
+  mostrar: boolean = true;
+
   constructor(
     private excelService: ExcelService,
     private logService: LogsService,
@@ -57,6 +66,10 @@ export class InformesComponent {
       this.suscripcionTurnos.unsubscribe();
   }
 
+  // seleccionDeFila(itemSeleccionado: any) {
+  //   this.filaSeleccionada = itemSeleccionado;
+  // }
+
   get fechaFin() {
     return this.form?.get('fechaFin');
   }
@@ -70,7 +83,6 @@ export class InformesComponent {
   set fechaInicio(value: any) {
     this.form?.get('fechaInicio')?.patchValue(value);;
   }
-
 
   get fechaFin2() {
     return this.form?.get('fechaFin2');
@@ -105,17 +117,17 @@ export class InformesComponent {
               ]
             }
           ),
-          fechaInicio2: new FormControl('',
-            {
-              validators: [validarCampoFecha()],
-            }
-          ),
-          fechaFin2: new FormControl('',
-            {
-              validators: [validarCampoFecha()
-              ]
-            }
-          ),
+          // fechaInicio2: new FormControl('',
+          //   {
+          //     validators: [validarCampoFecha()],
+          //   }
+          // ),
+          // fechaFin2: new FormControl('',
+          //   {
+          //     validators: [validarCampoFecha()
+          //     ]
+          //   }
+          // ),
         },
       );
   }
@@ -156,6 +168,11 @@ export class InformesComponent {
   }
 
   obtenerTurnosPorEspecialidad() {
+    this.cargando = true;
+    let torta = this.radioTorta.nativeElement.checked;
+
+    this.data = [];
+    this.labels = [];
     let turnos = this.turnos;
     let especialidades = this.especialidades;
 
@@ -164,11 +181,30 @@ export class InformesComponent {
     let datos = {} as any;
 
     for (let i = 0; i < totalEspecialidades; i++) {
-      datos[especialidades[i].nombre] = turnos.filter((x: { idEspecialidad: any; }) => x.idEspecialidad == especialidades[i].id).length;
+      //datos[especialidades[i].nombre] = turnos.filter((x: { idEspecialidad: any; }) => x.idEspecialidad == especialidades[i].id).length;
+      let cantidadTurnos = turnos.filter((x: { idEspecialidad: any; }) => x.idEspecialidad == especialidades[i].id).length;
+
+
+      this.labels.push(`${especialidades[i].nombre}`);
+      this.data.push(cantidadTurnos);
     }
+
+    this.titulo = 'Turnos por especialidad';
+
+    setTimeout(() => {
+      this.mostrar = true;
+      this.graficosC.charts(torta ? 1 : 0);
+      this.cargando = false;
+
+    }, 1000);
   }
 
   obtenerTurnosPorDia() {
+    let torta = this.radioTorta.nativeElement.checked;
+    this.cargando = true;
+
+    this.data = [];
+    this.labels = [];
     let turnos = this.turnos;
     let totalTurnos = turnos.length;
 
@@ -176,99 +212,157 @@ export class InformesComponent {
       let fecha = new Date(x.fechaDate.seconds * 1000);
       return fecha.getDay() == 1;
     }).length;
+
+    this.labels.push(`Lunes`);
+    this.data.push(lunes);
+
     let martes = turnos.filter((x: any) => {
       let fecha = new Date(x.fechaDate.seconds * 1000);
       return fecha.getDay() == 2;
     }).length;
+
+    this.labels.push(`Martes`);
+    this.data.push(martes);
+
     let miercoles = turnos.filter((x: any) => {
       let fecha = new Date(x.fechaDate.seconds * 1000);
       return fecha.getDay() == 3;
     }).length;
+
+    this.labels.push(`Miércoles`);
+    this.data.push(miercoles);
+
     let jueves = turnos.filter((x: any) => {
       let fecha = new Date(x.fechaDate.seconds * 1000);
       return fecha.getDay() == 4;
     }).length;
+
+    this.labels.push(`Jueves`);
+    this.data.push(jueves);
+
     let viernes = turnos.filter((x: any) => {
       let fecha = new Date(x.fechaDate.seconds * 1000);
       return fecha.getDay() == 5;
     }).length;
+
+    this.labels.push(`Viernes`);
+    this.data.push(viernes);
+
     let sabado = turnos.filter((x: any) => {
       let fecha = new Date(x.fechaDate.seconds * 1000);
       return fecha.getDay() == 6;
     }).length;
+
+    this.labels.push(`Sábado`);
+    this.data.push(sabado);
+    this.titulo = 'Turnos por día';
+
+    setTimeout(() => {
+      this.mostrar = true;
+      this.graficosC.charts(torta ? 1 : 0);
+      this.cargando = false;
+
+    }, 1000);
   }
 
-  obtenerTurnosSolicitados() {
-    let fechaInicio = this.fechaInicio.value;
-    let fechaFin = this.fechaFin.value;
-    let fi = fechaInicio.split('/');
-    let ff = fechaFin.split('/');
+  obtenerTurnosSolicitados() {   
+    if (!this.form.invalid) {
+    this.cargando = true;
 
-    let fechaInicial = new Date(fi[2], parseInt(fi[1]) - 1, fi[0]);
-    let fechaFinal = new Date(ff[2], parseInt(ff[1]) - 1, ff[0]);
+      let torta = this.radioTorta.nativeElement.checked;
 
-    if (fechaFinal.getTime() < fechaInicial.getTime() || fechaFinal.getTime() == fechaInicial.getTime()) {
-      this.swalService.info('La fecha final no puede ser menor o igual que la fecha inicial.', 'Aviso.');
-    } else {
+      this.data = [];
+      this.labels = [];
+      let fechaInicio = this.fechaInicio.value;
+      let fechaFin = this.fechaFin.value;
+      let fi = fechaInicio.split('/');
+      let ff = fechaFin.split('/');
 
-      let turnosSolicitados = this.turnos.filter((x: any) => {
-        if (x.ocupado == true && x.fechaSolicitud != null && x.fechaSolicitud != undefined &&
-          x.fechaSolicitud >= fechaInicial.getTime() && x.fechaSolicitud <= fechaFinal.getTime())
-          return true;
-        return false;
-      });
+      let fechaInicial = new Date(fi[2], parseInt(fi[1]) - 1, fi[0]);
+      let fechaFinal = new Date(ff[2], parseInt(ff[1]) - 1, ff[0]);
 
-      let totalTurnosSolicitados = turnosSolicitados.length;
-      let turnosPorEspecialista = [];
-      for (let i = 0; i < this.especialistas.length; i++) {
-        let especialista = this.especialistas[i];
-        let cantidadTurnos = turnosSolicitados.filter((x: any) => {
-          return x.idMedico == especialista.id;
-        }).length;
+      if (fechaFinal.getTime() < fechaInicial.getTime() || fechaFinal.getTime() == fechaInicial.getTime()) {
+        this.swalService.info('La fecha final no puede ser menor o igual que la fecha inicial.', 'Aviso.');
+      } else {
 
-        turnosPorEspecialista.push({ nombre: especialista.nombre, apellido: especialista.apellido, cantidadTurnos: cantidadTurnos });
+        let turnosSolicitados = this.turnos.filter((x: any) => {
+          if (x.ocupado == true && x.fechaSolicitud != null && x.fechaSolicitud != undefined &&
+            x.fechaSolicitud >= fechaInicial.getTime() && x.fechaSolicitud <= fechaFinal.getTime())
+            return true;
+          return false;
+        });
+
+        let totalTurnosSolicitados = turnosSolicitados.length;
+        let turnosPorEspecialista = [];
+        for (let i = 0; i < this.especialistas.length; i++) {
+          let especialista = this.especialistas[i];
+          let cantidadTurnos = turnosSolicitados.filter((x: any) => {
+            return x.idMedico == especialista.id;
+          }).length;
+
+          this.labels.push(`${especialista.apellido}, ${especialista.nombre}`);
+          this.data.push(cantidadTurnos);
+          //turnosPorEspecialista.push({ nombre: especialista.nombre, apellido: especialista.apellido, cantidadTurnos: cantidadTurnos });
+        }
+
+        this.titulo = 'Turnos solicitados por médico entre ' + this.fechaInicio?.value + ' - ' + this.fechaFin?.value,
+
+          setTimeout(() => {
+            this.mostrar = true;
+            this.graficosC.charts(torta ? 1 : 0);
+    this.cargando = false;
+
+          }, 1000);
       }
     }
   }
 
   obtenerTurnosFinalizados() {
-    let fechaInicio = this.fechaInicio.value;
-    let fechaFin = this.fechaFin.value;
-    let fi = fechaInicio.split('/');
-    let ff = fechaFin.split('/');
+    if (!this.form.invalid) {
+      let torta = this.radioTorta.nativeElement.checked;
+      this.cargando = true;
 
-    let fechaInicial = new Date(fi[2], parseInt(fi[1]) - 1, fi[0]);
-    let fechaFinal = new Date(ff[2], parseInt(ff[1]) - 1, ff[0]);
+      this.data = [];
+      this.labels = [];
+      let fechaInicio = this.fechaInicio.value;
+      let fechaFin = this.fechaFin.value;
+      let fi = fechaInicio.split('/');
+      let ff = fechaFin.split('/');
 
-    if (fechaFinal.getTime() < fechaInicial.getTime() || fechaFinal.getTime() == fechaInicial.getTime()) {
-      this.swalService.info('La fecha final no puede ser menor o igual que la fecha inicial.', 'Aviso.');
-    } else {
+      let fechaInicial = new Date(fi[2], parseInt(fi[1]) - 1, fi[0]);
+      let fechaFinal = new Date(ff[2], parseInt(ff[1]) - 1, ff[0]);
 
-      let turnosFinalizados = this.turnos.filter((x: any) => {
-        if (x.ocupado == true && x.fechaFinalizacion != null && x.fechaFinalizacion != undefined &&
-          x.fechaFinalizacion >= fechaInicial.getTime() && x.fechaFinalizacion <= fechaFinal.getTime())
-          return true;
-        return false;
-      });
+      if (fechaFinal.getTime() < fechaInicial.getTime() || fechaFinal.getTime() == fechaInicial.getTime()) {
+        this.swalService.info('La fecha final no puede ser menor o igual que la fecha inicial.', 'Aviso.');
+      } else {
 
-      let totalTurnosFinalizados = turnosFinalizados.length;
-      let turnosPorEspecialista = [];
-      for (let i = 0; i < this.especialistas.length; i++) {
-        let especialista = this.especialistas[i];
-        let cantidadTurnos = turnosFinalizados.filter((x: any) => {
-          return x.idMedico == especialista.id;
-        }).length;
+        let turnosFinalizados = this.turnos.filter((x: any) => {
+          if (x.ocupado == true && x.fechaFinalizacion != null && x.fechaFinalizacion != undefined &&
+            x.fechaFinalizacion >= fechaInicial.getTime() && x.fechaFinalizacion <= fechaFinal.getTime())
+            return true;
+          return false;
+        });
 
-        turnosPorEspecialista.push({ nombre: especialista.nombre, apellido: especialista.apellido, cantidadTurnos: cantidadTurnos });
+        let totalTurnosFinalizados = turnosFinalizados.length;
+        let turnosPorEspecialista = [];
+        for (let i = 0; i < this.especialistas.length; i++) {
+          let especialista = this.especialistas[i];
+          let cantidadTurnos = turnosFinalizados.filter((x: any) => {
+            return x.idMedico == especialista.id;
+          }).length;
+          this.labels.push(`${especialista.apellido}, ${especialista.nombre}`);
+          this.data.push(cantidadTurnos);
+          //turnosPorEspecialista.push({ nombre: especialista.nombre, apellido: especialista.apellido, cantidadTurnos: cantidadTurnos });
+        }
+        this.titulo = 'Turnos finalizados por médico entre ' + this.fechaInicio?.value + ' - ' + this.fechaFin?.value,
+
+          setTimeout(() => {
+            this.mostrar = true;
+            this.graficosC.charts(torta ? 1 : 0);
+            this.cargando = false;
+          }, 1000);
       }
-
-      debugger;
     }
-
-  }
-
-  seleccionDeFila(itemSeleccionado: any) {
-    this.filaSeleccionada = itemSeleccionado;
   }
 }
 
