@@ -23,6 +23,7 @@ const routes: Routes = [
   { path: 'solicitar-turno', loadChildren: () => import('./solicitar-turno/solicitar-turno.module').then(m => m.SolicitarTurnoModule), canActivate : [SolicitarTurnoGuard]  },
   { path: 'turnos', loadChildren: () => import('./turnos/turnos.module').then(m => m.TurnosModule), canActivate : [TurnosGuard]  },
   { path: 'pacientes', loadChildren: () => import('./pacientes/pacientes.module').then(m => m.PacientesModule), canActivate : [PacientesGuardGuard] },
+  { path: 'informes', loadChildren: () => import('./informes/informes.module').then(m => m.InformesModule) },
   { path: '**', loadChildren: () => import('./error/error.module').then(m => m.ErrorModule) },
 
 ];
