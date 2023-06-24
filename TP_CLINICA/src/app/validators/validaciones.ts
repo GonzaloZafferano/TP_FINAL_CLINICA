@@ -342,12 +342,12 @@ export function validarCamposKeyValue(minimo: number, maximo: number, mensajes: 
     }
 
     if (opcionalNombre1?.value != '') {
-  
+
       let campoVacio = opcionalNombre1?.value == null || opcionalNombre1?.value == undefined || opcionalNombre1?.value.trim() == '';
       if (campoVacio)
-      errorN1.campoVacio = { hayError: true, mensaje: mensajes != null && mensajes.campoVacio != null ? mensajes.campoVacio : 'Campo requerido.' };
+        errorN1.campoVacio = { hayError: true, mensaje: mensajes != null && mensajes.campoVacio != null ? mensajes.campoVacio : 'Campo requerido.' };
       else if (opcionalNombre1?.value.length < minimo)
-      errorN1.lenMinimo = { hayError: true, mensaje: mensajes != null && mensajes.lenMinimo != null ? mensajes.lenMinimo : `Solo se admite un mínimo de ${minimo} caracteres.` };
+        errorN1.lenMinimo = { hayError: true, mensaje: mensajes != null && mensajes.lenMinimo != null ? mensajes.lenMinimo : `Solo se admite un mínimo de ${minimo} caracteres.` };
       else if (opcionalNombre1?.value.length > maximo) {
         errorN1.lenMaximo = { hayError: true, mensaje: mensajes != null && mensajes.lenMaximo != null ? mensajes.lenMaximo : `Solo se admite un máximo de ${maximo} caracteres.` };
       }
@@ -396,7 +396,7 @@ export function validarCamposKeyValue(minimo: number, maximo: number, mensajes: 
 
 
     // if (opcionalNombre2?.value != '') {
-  
+
     //   let campoVacio = opcionalNombre2?.value == null || opcionalNombre2?.value == undefined || opcionalNombre2?.value.trim() == '';
     //   if (campoVacio)
     //   errorN2.campoVacio = { hayError: true, mensaje: mensajes != null && mensajes.campoVacio != null ? mensajes.campoVacio : 'Campo requerido.' };
@@ -447,7 +447,7 @@ export function validarCamposKeyValue(minimo: number, maximo: number, mensajes: 
     // }
 
     // if (opcionalNombre3?.value != '') {
-  
+
     //   let campoVacio = opcionalNombre3?.value == null || opcionalNombre3?.value == undefined || opcionalNombre3?.value.trim() == '';
     //   if (campoVacio)
     //   errorN3.campoVacio = { hayError: true, mensaje: mensajes != null && mensajes.campoVacio != null ? mensajes.campoVacio : 'Campo requerido.' };
@@ -512,12 +512,12 @@ export function validarCamposKeyValue_v2(minimo: number, maximo: number, mensaje
     }
 
     if (opcionalNombre1?.value != '') {
-  
+
       let campoVacio = opcionalNombre1?.value == null || opcionalNombre1?.value == undefined || opcionalNombre1?.value.trim() == '';
       if (campoVacio)
-      errorN1.campoVacio = { hayError: true, mensaje: mensajes != null && mensajes.campoVacio != null ? mensajes.campoVacio : 'Campo requerido.' };
+        errorN1.campoVacio = { hayError: true, mensaje: mensajes != null && mensajes.campoVacio != null ? mensajes.campoVacio : 'Campo requerido.' };
       else if (opcionalNombre1?.value.length < minimo)
-      errorN1.lenMinimo = { hayError: true, mensaje: mensajes != null && mensajes.lenMinimo != null ? mensajes.lenMinimo : `Solo se admite un mínimo de ${minimo} caracteres.` };
+        errorN1.lenMinimo = { hayError: true, mensaje: mensajes != null && mensajes.lenMinimo != null ? mensajes.lenMinimo : `Solo se admite un mínimo de ${minimo} caracteres.` };
       else if (opcionalNombre1?.value.length > maximo) {
         errorN1.lenMaximo = { hayError: true, mensaje: mensajes != null && mensajes.lenMaximo != null ? mensajes.lenMaximo : `Solo se admite un máximo de ${maximo} caracteres.` };
       }
@@ -536,7 +536,7 @@ export function validarCamposKeyValue_v2(minimo: number, maximo: number, mensaje
       }
       //SI TIENE ERRORES, LOS SETEO AL CONTROL:
     }
-    
+
     if (Object.keys(errorN1).length) {
       opcionalNombre1?.setErrors(errorN1);
       return errorN1;
@@ -561,7 +561,7 @@ export function validarCamposKeyValue_v3(minimo: number, maximo: number, mensaje
     if (opcionalNombre1?.value.trim() != '' && opcionalValor1?.value.trim() == '') {
       errorV1.campoVacio = { hayError: true, mensaje: 'Campo requerido.' };
       opcionalValor1?.setErrors(errorV1);
-     // return errorV1;
+      // return errorV1;
     } else {
       opcionalValor1?.setErrors(null);
     }
@@ -575,12 +575,12 @@ export function validarCamposKeyValue_v3(minimo: number, maximo: number, mensaje
     }
 
     if (opcionalNombre1?.value != '') {
-  
+
       let campoVacio = opcionalNombre1?.value == null || opcionalNombre1?.value == undefined || opcionalNombre1?.value.trim() == '';
       if (campoVacio)
-      errorN1.campoVacio = { hayError: true, mensaje: mensajes != null && mensajes.campoVacio != null ? mensajes.campoVacio : 'Campo requerido.' };
+        errorN1.campoVacio = { hayError: true, mensaje: mensajes != null && mensajes.campoVacio != null ? mensajes.campoVacio : 'Campo requerido.' };
       else if (opcionalNombre1?.value.length < minimo)
-      errorN1.lenMinimo = { hayError: true, mensaje: mensajes != null && mensajes.lenMinimo != null ? mensajes.lenMinimo : `Solo se admite un mínimo de ${minimo} caracteres.` };
+        errorN1.lenMinimo = { hayError: true, mensaje: mensajes != null && mensajes.lenMinimo != null ? mensajes.lenMinimo : `Solo se admite un mínimo de ${minimo} caracteres.` };
       else if (opcionalNombre1?.value.length > maximo) {
         errorN1.lenMaximo = { hayError: true, mensaje: mensajes != null && mensajes.lenMaximo != null ? mensajes.lenMaximo : `Solo se admite un máximo de ${maximo} caracteres.` };
       }
@@ -599,7 +599,7 @@ export function validarCamposKeyValue_v3(minimo: number, maximo: number, mensaje
       }
       //SI TIENE ERRORES, LOS SETEO AL CONTROL:
     }
-    
+
     if (Object.keys(errorN1).length) {
       opcionalNombre1?.setErrors(errorN1);
       return errorN1;
@@ -609,4 +609,72 @@ export function validarCamposKeyValue_v3(minimo: number, maximo: number, mensaje
     return null;
 
   };
+}
+
+
+export function validarCampoFecha(): ValidatorFn {
+  return (control: AbstractControl): [key: string, value: any] | null => {
+    const campoAValidar = control;
+    const errors: any = {};
+    //CARGO LOS DISTINTOS ERRORES QUE PUEDE TENER.
+    let campoVacio = campoAValidar?.value == null || campoAValidar?.value == undefined || campoAValidar?.value.trim() == '';
+    if (campoVacio) {
+      errors.campoVacio = { hayError: true, mensaje: 'Campo requerido.' };
+    } else {
+      try {
+
+        if (campoAValidar.value.includes(' ') || campoAValidar.value.length > 10) {
+          errors.errorFormato = { hayError: true, mensaje: 'Formato de fecha inválido.' };
+        }
+        else if (campoAValidar.value.includes('/')) {
+          let datosFecha = campoAValidar.value.split('/');
+          if (datosFecha.length == 3) {
+            if (datosFecha[0] == '' ||
+              datosFecha[1] == '' ||
+              datosFecha[2] == '' ||
+              isNaN(datosFecha[0]) || isNaN(datosFecha[1]) || isNaN(datosFecha[2])) {
+              errors.errorFormato = { hayError: true, mensaje: 'Formato de fecha inválido.' };
+            } else {
+              let dia = parseInt(datosFecha[0]);
+              let mes = parseInt(datosFecha[1]);
+              let anio = parseInt(datosFecha[2]);
+              let fecha = new Date(anio, mes, dia);
+
+              if (dia > 31 || dia < 1 || mes < 1 || mes > 12) {
+                errors.errorFormato = { hayError: true, mensaje: 'Formato de fecha inválido.' };
+              } else {
+                if (fecha) {
+                  if (fecha.getFullYear() < 2010 || fecha.getFullYear() > 2050) {
+                    errors.errorParametros = { hayError: true, mensaje: 'Solo fechas entre los años 2010 y 2050.' };
+                  }
+                } else {
+                  errors.errorFormato = { hayError: true, mensaje: 'Formato de fecha inválido.' };
+
+                }
+              }
+            }
+          } else {
+            errors.errorFormato = { hayError: true, mensaje: 'Formato de fecha inválido.' };
+          }
+
+        } else {
+          errors.errorFormato = { hayError: true, mensaje: 'Formato de fecha inválido.' };
+        }
+
+
+      } catch (err) {
+        errors.fechaInvalida = { hayError: true, mensaje: 'Fecha inválida.' };
+      }
+
+    }
+
+
+    //SI TIENE ERRORES, LOS SETEO AL CONTROL:
+    if (Object.keys(errors).length) {
+      campoAValidar?.setErrors(errors);
+      return errors;
+    }
+    campoAValidar?.setErrors(null);
+    return null;
+  }
 }

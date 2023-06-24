@@ -1,5 +1,73 @@
 <button class="btn btn-primary fw-bold fs-4" (click)="descargarLogs()">Descargar Logs</button>
 <button class="btn btn-primary fw-bold fs-4" (click)="obtenerTurnosPorEspecialidad()">Turnos por especialidad</button>
+<button class="btn btn-primary fw-bold fs-4" (click)="obtenerTurnosPorDia()">Turnos por día</button>
+
+
+
+
+
+
+
+
+
+<form [formGroup]="form">
+    <fieldset>
+        <legend>Complete los datos para generar el informe.</legend>
+     <div class="d-flex justify-content-around">
+
+        <div>
+            <label class="form-label" for="fechaInicio">Fecha Inicio</label>
+            <input type="text" class="form-control" id="fechaInicio" formControlName="fechaInicio">
+            <ng-container *ngIf="fechaInicio?.errors">
+                <small class="d-block error" *ngFor="let error of obtenerErrores(fechaInicio?.errors)">
+                    {{fechaInicio?.getError(error).mensaje}}
+                </small>
+            </ng-container>
+        </div>
+
+       <!-- <div>
+        <label class="form-label" for="fechaFin">Especialistas</label>
+
+        <div *ngFor="let especialista of especialistas" class="border border-1 text-dark border-dark bg-light p-2 custom-pointer bg-light" (click)="seleccionDeFila(especialista)"
+        [class.fila-seleccionada]="filaSeleccionada != null && especialista.id === filaSeleccionada.id">
+            <h3>{{especialista?.apellido+', '+ especialista?.nombre}}</h3>
+        </div>
+       </div> -->
+
+        <div>
+            <label class="form-label" for="fechaFin">Fecha Fin</label>
+            <input type="text" class="form-control" id="fechaFin" formControlName="fechaFin">
+            <ng-container *ngIf="fechaFin?.errors">
+                <small class="d-block error" *ngFor="let error of obtenerErrores(fechaFin?.errors)">
+                    {{fechaFin?.getError(error).mensaje}}
+                </small>
+            </ng-container>
+        </div>
+        <div>
+<button class="btn btn-primary fw-bold fs-4" (click)="obtenerTurnosSolicitados()">Turnos solicitados por Especialista</button>
+<button class="btn btn-primary fw-bold fs-4" (click)="obtenerTurnosFinalizados()">Turnos finalizados por Especialista</button>
+
+        </div>
+     </div>
+
+    </fieldset>
+</form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 <app-loader *ngIf="cargando"></app-loader>

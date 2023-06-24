@@ -1,0 +1,18 @@
+.error{
+    color: red;
+    font-weight: bold;
+}
+
+.fila-seleccionada {
+    background-color: #009331 !important;
+    color: #fff !important;
+    font-weight: bold !important;
+
+    .nueva-especialidad {
+        color: black !important;
+    }
+}
+
+.custom-pointer {
+    cursor: pointer;
+}
