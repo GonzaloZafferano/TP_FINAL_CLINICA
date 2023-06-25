@@ -34,10 +34,10 @@ import { NgxCaptchaModule } from 'ngx-captcha';
     NgxCaptchaModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),    
-    SharedModule
+    SharedModule,    
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }  
  

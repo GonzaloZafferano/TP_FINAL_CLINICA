@@ -4,6 +4,7 @@ import { HcService } from '../services/hc.service';
 import { UsuarioService } from '../services/usuarios.service';
 import { HorariosService } from '../services/horarios.service';
 import { TipoIgualdad } from '../models/enums/TipoIgualdad';
+import { DatosTurnoPipe } from '../shared/pipes/datos-turno.pipe';
 
 @Component({
   selector: 'app-pacientes',
@@ -11,6 +12,7 @@ import { TipoIgualdad } from '../models/enums/TipoIgualdad';
   styleUrls: ['./pacientes.component.css']
 })
 export class PacientesComponent {
+  datoDetalle : any;
   filaSeleccionada: any;
   listado: any[] = [];
   spinner: boolean = false;
@@ -21,9 +23,17 @@ export class PacientesComponent {
   usuarioActual: any;
   hizoBusqueda: boolean = false;
   mostrarHC: boolean = false;
-  constructor(private usuarioService: UsuarioService, private horarioService: HorariosService, private historiaService: HcService) { }
+  turnos: any;
+  turnosDePaciente: any;
+  pacientesSeleccionados: any;
+  mostrarDetalles: boolean = false;
+  mostrarDetallesTurno: boolean = false;
+  datosTurnoPipe: any;
+  constructor(private usuarioService: UsuarioService,
+    private horarioService: HorariosService, private historiaService: HcService) { }
 
   async ngOnInit() {
+    this.datosTurnoPipe = new DatosTurnoPipe();
     this.usuarioActual = await this.usuarioService.obtenerUsuarioActual();
     this.obtenerUsuarios();
   }
@@ -45,6 +55,7 @@ export class PacientesComponent {
     this.suscripcion = this.horarioService.obtenerListadoDeItemsObservable().subscribe(async x => {
       this.spinner = true;
       this.hizoBusqueda = true;
+      this.turnos = x;
       let todosLosTurnosFiltrados = x.filter(x => x['idMedico'] == this.usuarioActual.id && x['estadoTurno'] == 'Realizado');;
 
       let sinDuplicados = todosLosTurnosFiltrados.filter((objetoDeTurno, index, arrayEspecialidades) => {
@@ -77,17 +88,47 @@ export class PacientesComponent {
     this.mostrarHC = false;
   }
 
-  async mostrarHistoria(item: any) {
-   // if (item.tieneHC) {
-      this.cargando = true;
-      let hc = await this.historiaService.traerListaFiltradaPor_UN_Campo('pacienteId', item.id);
+  async mostrarHistoria(item: any) {    
+    // if (item.tieneHC) {
+    this.cargando = true;
+    let hc = await this.historiaService.traerListaFiltradaPor_UN_Campo('pacienteId', item.id);
 
-      if (hc && hc.length > 0) {
-        this.historiaClinica = hc[0];
-        this.mostrarHC = true;
-      } else {
-        this.cerrarHC();
-      }
-   // }
+    if (hc && hc.length > 0) {
+      this.historiaClinica = hc[0];
+      this.mostrarHC = true;
+    } else {
+      this.cerrarHC();
+    }
+    this.cargando = false;
+    // }
+  }
+
+  async pacienteSeleccionado(paciente: any) {
+    this.cargando = true;
+    this.turnosDePaciente = this.turnos.filter((x: any) => x['idMedico'] == this.usuarioActual.id && x['idPaciente'] == paciente.id);
+    
+    this.pacientesSeleccionados =  this.listado.filter(x => x.id == paciente.id);
+    this.mostrarDetalles = true;  
+    this.cargando = false;
+  }
+
+  verDetallesTurno(item: any) {
+    if (item && item.datos) {
+      let datos = this.datosTurnoPipe.transform(item.datos);
+      //this.swalService.info(datos, 'Detalles del Control');
+      this.datoDetalle = datos;
+      this.mostrarDetallesTurno = true;
+    }
+  }
+  cerrarDetalles() {
+    this.mostrarDetallesTurno = false;
+  }
+
+  mostrarDetalle(item: any) {
+    item.mostrarDetalle = !item.mostrarDetalle;
+  }
+
+  mostrarComentario(item: any) {
+    item.mostrarComentario = !item.mostrarComentario;
   }
 }
