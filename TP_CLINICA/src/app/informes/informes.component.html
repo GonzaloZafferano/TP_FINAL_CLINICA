@@ -7,88 +7,93 @@
     <div class="row w-100 bg-light border border-dark">
         <div class="col col-12 col-md-2 text-center fs-2 fw-bold">Informes</div>
         <div class="col col-12 col-md-8 text-center">
-        <button class="btn btn-primary fw-bold fs-4 m-2" (click)="descargarLogs()">Descargar Logs</button>
+            <button class="btn btn-success fw-bold fs-4 m-2" (click)="descargarLogs()">Descargar Logs</button>
 
         </div>
     </div>
 
-<div class="row w-100 bg-light border border-dark">
-    <div class="col col-12 col-md-2 text-center fs-2 fw-bold" style="display: flex; align-items: center; justify-content: center;">
-        Gráficos
-    </div>
-
-    <div class="col col-12 col-md-8">
-    <div class="row w-100 bg-light">
-
-  
-    <div class="col col-12 col-md-4 d-flex justify-content-around">
-        <div class="form-check">
-            <input #radioTorta class="form-check-input fs-4 " type="radio" name="flexRadioDisabled" id="flexRadioDisabled" checked>
-            <label class="form-check-label fs-4" for="flexRadioDisabled">
-                Gráficos Torta
-            </label>
-        </div>
-        <div class="form-check">
-            <input class="form-check-input fs-4" type="radio" name="flexRadioDisabled" id="flexRadioCheckedDisabled">
-            <label class="form-check-label fs-4" for="flexRadioCheckedDisabled">
-                Gráficos Barra
-            </label>
+    <div class="row w-100 bg-light border border-dark">
+        <div class="col col-12 col-md-2 text-center fs-2 fw-bold"
+            style="display: flex; align-items: center; justify-content: center;">
+            Gráficos
         </div>
 
-    </div>
-    <div class="col col-12 col-md-6">
-        <button class="btn btn-primary fw-bold fs-4 m-2" (click)="obtenerTurnosPorEspecialidad()">Turnos por
-            especialidad</button>
-        <button class="btn btn-primary fw-bold fs-4 m-2" (click)="obtenerTurnosPorDia()">Turnos por día</button>
-    </div>
+        <div class="col col-12 col-md-8">
+            <div class="row w-100 bg-light">
+                <div class="col col-12 col-md-4 d-flex justify-content-around">
+                    <div class="form-check">
+                        <input #radioTorta class="form-check-input fs-4 " type="radio" name="flexRadioDisabled"
+                        (click)="cambioCheck(0)"
+                            id="flexRadioDisabled" checked>
+                        <label class="form-check-label fs-4" for="flexRadioDisabled">
+                            Gráficos Torta
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input fs-4" type="radio" name="flexRadioDisabled"
+                        (click)="cambioCheck(1)"
+                            id="flexRadioCheckedDisabled">
+                        <label class="form-check-label fs-4" for="flexRadioCheckedDisabled">
+                            Gráficos Barra
+                        </label>
+                    </div>
 
-</div>
-<div class="row w-100 bg-light">
-
-    <div class="col col-12 col-md-4" style="align-items: center;">
-        <form [formGroup]="form">
-            <!-- <fieldset> -->
-            <!-- <legend>Complete los datos para generar el informe.</legend> -->
-            <div class="d-flex justify-content-around">
-                <div>
-                    <label class="form-label fs-4" for="fechaInicio">Fecha Inicio</label>
-                    <input type="text" placeholder="01/01/2020" class="form-control" id="fechaInicio"
-                        formControlName="fechaInicio">
-                    <ng-container *ngIf="fechaInicio?.errors">
-                        <small class="d-block error" *ngFor="let error of obtenerErrores(fechaInicio?.errors)">
-                            {{fechaInicio?.getError(error).mensaje}}
-                        </small>
-                    </ng-container>
                 </div>
-                <div>
-                    <label class="form-label fs-4" for="fechaFin">Fecha Fin</label>
-                    <input placeholder="30/12/2020" type="text" class="form-control" id="fechaFin"
-                        formControlName="fechaFin">
-                    <ng-container *ngIf="fechaFin?.errors">
-                        <small class="d-block error" *ngFor="let error of obtenerErrores(fechaFin?.errors)">
-                            {{fechaFin?.getError(error).mensaje}}
-                        </small>
-                    </ng-container>
+                <div class="col col-12 col-md-6">
+                    <button class="btn btn-primary fw-bold fs-4 m-2" (click)="obtenerTurnosPorEspecialidad()">Turnos por
+                        especialidad</button>
+                    <button class="btn btn-primary fw-bold fs-4 m-2" (click)="obtenerTurnosPorDia()">Turnos por
+                        día</button>
+                </div>
+
+            </div>
+            <div class="row w-100 bg-light">
+                <div class="col col-12 col-md-4" style="align-items: center;">
+                    <form [formGroup]="form">
+                        <!-- <fieldset> -->
+                        <!-- <legend>Complete los datos para generar el informe.</legend> -->
+                        <div class="d-flex justify-content-around">
+                            <div>
+                                <label class="form-label fs-4" for="fechaInicio">Fecha Inicio</label>
+                                <input type="text" placeholder="01/01/2020" class="form-control" id="fechaInicio"
+                                    formControlName="fechaInicio">
+                                <ng-container *ngIf="fechaInicio?.errors">
+                                    <small class="d-block error"
+                                        *ngFor="let error of obtenerErrores(fechaInicio?.errors)">
+                                        {{fechaInicio?.getError(error).mensaje}}
+                                    </small>
+                                </ng-container>
+                            </div>
+                            <div>
+                                <label class="form-label fs-4" for="fechaFin">Fecha Fin</label>
+                                <input placeholder="30/12/2020" type="text" class="form-control" id="fechaFin"
+                                    formControlName="fechaFin">
+                                <ng-container *ngIf="fechaFin?.errors">
+                                    <small class="d-block error" *ngFor="let error of obtenerErrores(fechaFin?.errors)">
+                                        {{fechaFin?.getError(error).mensaje}}
+                                    </small>
+                                </ng-container>
+                            </div>
+                        </div>
+                        <!-- </fieldset> -->
+                    </form>
+                </div>
+                <div class="col col-12 col-md-6 d-flex" style="align-items: center;">
+                    <button [disabled]="form.invalid" class="btn btn-primary fw-bold fs-4 m-2"
+                        (click)="obtenerTurnosSolicitados()">Turnos solicitados
+                        por Especialista</button>
+                    <button [disabled]="form.invalid" class="btn btn-primary fw-bold fs-4 m-2"
+                        (click)="obtenerTurnosFinalizados()">Turnos finalizados
+                        por Especialista</button>
                 </div>
             </div>
-            <!-- </fieldset> -->
-        </form>
+        </div>
     </div>
-    <div class="col col-12 col-md-6 d-flex" style="align-items: center;">
-
-        <button [disabled]="form.invalid" class="btn btn-primary fw-bold fs-4 m-2" (click)="obtenerTurnosSolicitados()">Turnos solicitados
-            por Especialista</button>
-        <button [disabled]="form.invalid" class="btn btn-primary fw-bold fs-4 m-2" (click)="obtenerTurnosFinalizados()">Turnos finalizados
-            por Especialista</button>
+    <div [hidden]="!mostrar">
+        <app-grafico-barras id="graficosC" #graficosC [data]="data" [titulo]="titulo"
+            [labels]="labels" [titulopdf]="tituloPDF"></app-grafico-barras>
     </div>
-</div>
-</div>
-</div>
-<div [hidden]="!mostrar" style="height: 600px; background-color: white; margin-top: 15px;">
-    <app-grafico-barras id="graficosC" #graficosC [data]="data" [titulo]="titulo"
-        [labels]="labels"></app-grafico-barras>
-</div>
-<!-- <div  style="height: 700px;">
+    <!-- <div  style="height: 700px;">
     <app-grafico-torta id="graficosT" #graficosT [data]="data" [titulo]="titulo" [labels]="labels"></app-grafico-torta>
 </div> -->
 

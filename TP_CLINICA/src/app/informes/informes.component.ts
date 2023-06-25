@@ -11,6 +11,7 @@ import { validarCorreo, validarCampoTexto, validarCampoFecha } from '../validato
 import { UsuarioService } from '../services/usuarios.service';
 import { SwalService } from '../services/swal.service';
 import { Chart } from 'chart.js';
+import jsPDF from 'jspdf';
 
 @Component({
   selector: 'app-informes',
@@ -34,6 +35,8 @@ export class InformesComponent {
   form: any;
   filaSeleccionada: any;
   mostrar: boolean = true;
+  tituloPDF: string = '';
+  ultimoGrafico: number = -1;
 
   constructor(
     private excelService: ExcelService,
@@ -170,10 +173,11 @@ export class InformesComponent {
   obtenerTurnosPorEspecialidad() {
     this.cargando = true;
     let torta = this.radioTorta.nativeElement.checked;
+    this.ultimoGrafico = 1;
 
     this.data = [];
     this.labels = [];
-    let turnos = this.turnos;
+    let turnos = this.turnos.filter((x: any) => x.ocupado == true);
     let especialidades = this.especialidades;
 
     let totalTurnos = turnos.length;
@@ -190,6 +194,7 @@ export class InformesComponent {
     }
 
     this.titulo = 'Turnos por especialidad';
+    this.tituloPDF = 'TurnosPorEspecialidad';
 
     setTimeout(() => {
       this.mostrar = true;
@@ -202,10 +207,11 @@ export class InformesComponent {
   obtenerTurnosPorDia() {
     let torta = this.radioTorta.nativeElement.checked;
     this.cargando = true;
+    this.ultimoGrafico = 2;
 
     this.data = [];
     this.labels = [];
-    let turnos = this.turnos;
+    let turnos = this.turnos.filter((x: any) => x.ocupado == true);
     let totalTurnos = turnos.length;
 
     let lunes = turnos.filter((x: any) => {
@@ -256,6 +262,7 @@ export class InformesComponent {
     this.labels.push(`Sábado`);
     this.data.push(sabado);
     this.titulo = 'Turnos por día';
+    this.tituloPDF = 'TurnosPorDia';
 
     setTimeout(() => {
       this.mostrar = true;
@@ -265,9 +272,10 @@ export class InformesComponent {
     }, 1000);
   }
 
-  obtenerTurnosSolicitados() {   
+  obtenerTurnosSolicitados() {
     if (!this.form.invalid) {
-    this.cargando = true;
+      this.cargando = true;
+      this.ultimoGrafico = 3;
 
       let torta = this.radioTorta.nativeElement.checked;
 
@@ -306,13 +314,14 @@ export class InformesComponent {
         }
 
         this.titulo = 'Turnos solicitados por médico entre ' + this.fechaInicio?.value + ' - ' + this.fechaFin?.value,
+          this.tituloPDF = 'TurnosSolicitadosPorMedico';
 
-          setTimeout(() => {
-            this.mostrar = true;
-            this.graficosC.charts(torta ? 1 : 0);
-    this.cargando = false;
+        setTimeout(() => {
+          this.mostrar = true;
+          this.graficosC.charts(torta ? 1 : 0);
+          this.cargando = false;
 
-          }, 1000);
+        }, 1000);
       }
     }
   }
@@ -321,6 +330,7 @@ export class InformesComponent {
     if (!this.form.invalid) {
       let torta = this.radioTorta.nativeElement.checked;
       this.cargando = true;
+      this.ultimoGrafico = 4;
 
       this.data = [];
       this.labels = [];
@@ -354,6 +364,7 @@ export class InformesComponent {
           this.data.push(cantidadTurnos);
           //turnosPorEspecialista.push({ nombre: especialista.nombre, apellido: especialista.apellido, cantidadTurnos: cantidadTurnos });
         }
+        this.tituloPDF = 'TurnosFinalizadosPorMedico';
         this.titulo = 'Turnos finalizados por médico entre ' + this.fechaInicio?.value + ' - ' + this.fechaFin?.value,
 
           setTimeout(() => {
@@ -361,6 +372,26 @@ export class InformesComponent {
             this.graficosC.charts(torta ? 1 : 0);
             this.cargando = false;
           }, 1000);
+      }
+    }
+  }
+
+
+  public cambioCheck(event: any) {
+    if (this.ultimoGrafico != -1) {
+      switch (this.ultimoGrafico) {
+        case 1:
+          this.obtenerTurnosPorEspecialidad();
+          break;
+        case 2:
+          this.obtenerTurnosPorDia();
+          break;
+        case 3:
+          this.obtenerTurnosSolicitados();
+          break;
+        case 4:
+          this.obtenerTurnosFinalizados();
+          break;
       }
     }
   }
