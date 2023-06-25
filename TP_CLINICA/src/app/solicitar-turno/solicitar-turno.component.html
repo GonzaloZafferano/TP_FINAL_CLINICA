@@ -1,6 +1,6 @@
 <div class="entrada p-0 m-0">
     <div class="bg-dark">
-        <h3 class="text-center text-light custom-font">SOLICITUD DE TURNOS</h3>
+        <h3 class="text-center" appIluminar>SOLICITUD DE TURNOS</h3>
     </div>
     <div class="d-flex justify-content-between">
         <div class="row w-50 m-2">
@@ -24,15 +24,15 @@
                 </div>
                 <ng-template #lista>
                     <!-- <div style="height: 500px !important; width: 270px; overflow-y: scroll;"> -->
-                    <div style="max-height: 700px; min-height: 160px; overflow-y: auto">
-                        <div *ngFor="let especialidad of especialidades | sortByName">
+                    <div style="max-height: 700px; min-height: 160px; overflow-y: auto" class="bg-light">
+                        <div *ngFor="let especialidad of especialidades | sortByName" [appResaltador]="'green'" >
                             <!-- <div class="d-flex justify-content-between custom-pointer mx-0 border bg-light text-dark"
                                 [class.fila-seleccionada]="filaSeleccionada != null && especialidad.id === filaSeleccionada.id"
                                 (click)="seleccionEspecialidad(especialidad)">
                                 <p class="m-2 custom-pointer">{{especialidad.nombre | titlecase}}</p>
                             </div> -->
 
-                            <div class="d-flex justify-content-center custom-pointer mx-0 border bg-light text-dark">
+                            <div class="d-flex justify-content-center  mx-0 border text-dark">
                                 <!--Descomentar la linea de abajo para que quede seleccionado de verde.-->
                                 <!-- [class.fila-seleccionada]="filaSeleccionada != null && especialista.id === filaSeleccionada.id"> -->
                                 <!-- <p class="m-2 custom-font-data">{{especialista | especialistas}}</p> -->

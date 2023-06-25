@@ -1,6 +1,6 @@
-<div class="container-fluid m-0 p-0">
+<div class="container-fluid m-0 p-0 bg-light">
     <div class="d-flex bg-dark p-2 justify-content-between">
-        <h3 class="fw-bold fs-4 text-light">Mis Turnos</h3>
+        <h3 class="fw-bold" appIluminar>Mis Turnos</h3>
         <button class="btn btn-warning fw-bold fs-4 p-2" (click)="limpiar()">Limpiar</button>
     </div>
     <div class="row mx-auto w-50">
@@ -80,7 +80,9 @@
     <div class="spinner-border text-danger" style="align-self: center; scale: 1.2;"></div>
 </div>
 <ng-template #lista>
-    <div *ngFor="let item of listado | sortBySeconds; let indice = index" class="row w-100 mx-auto custom-pointer bg-light" style="min-height: 100px;" (click)="seleccionDeFila(item)"
+    <div *ngFor="let item of listado | sortBySeconds; let indice = index" class="row w-100 mx-auto"
+    [appResaltador]="'green'" 
+    style="min-height: 100px;" (click)="seleccionDeFila(item)"
     [class.fila-seleccionada]="filaSeleccionada != null && item.id === filaSeleccionada.id">
     <div class="col col border d-none">
         {{item.id}}

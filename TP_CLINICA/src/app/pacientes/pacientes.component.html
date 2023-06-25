@@ -1,5 +1,5 @@
-<div class="container-fluid entrada">
-    <h3 class="text-center custom-font">Listado de Pacientes</h3>
+<div class="container-fluid p-0 m-0 entrada bg-light">
+    <h3 class="bg-dark p-0 m-0 text-center" appIluminar>Listado de Pacientes</h3>
     <div class="row bg-dark text-light text-center">
         <div class="col col border d-none">
             <h3 class="custom-font-headers">Id</h3>
@@ -33,7 +33,8 @@
     </div>
     <ng-template #lista>
         <ng-container *ngIf="listado && listado.length > 0; else sinPac">
-            <div *ngFor="let item of listado" class="row custom-pointer bg-light" (click)="seleccionDeFila(item)"
+            <div *ngFor="let item of listado" class="row custom-pointer" (click)="seleccionDeFila(item)"
+            [appResaltador]="'green'" 
                 [class.fila-seleccionada]="filaSeleccionada != null && item.id === filaSeleccionada.id">
                 <div class="col col border d-none">
                     {{item.id}}

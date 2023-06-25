@@ -17,7 +17,7 @@ import { NgxCaptchaModule } from 'ngx-captcha';
 
 @NgModule({
   declarations: [
-    AppComponent, 
+    AppComponent,
   ],
   imports: [
     HttpClientModule,

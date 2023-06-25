@@ -20,6 +20,9 @@ import { DatosTurnoPipe } from './pipes/datos-turno.pipe';
 import { FiltroDiasPipe } from './pipes/filtro-dias.pipe';
 import { FechaHoraFormatoPipe } from './pipes/fecha-hora-formato.pipe';
 import { HoraFormatoPipe } from './pipes/hora-formato.pipe';
+import { ResaltadorDirective } from './directives/resaltador.directive';
+import { IluminarDirective } from './directives/iluminar.directive';
+import { CrecerDirective } from './directives/crecer.directive';
 
 
 @NgModule({
@@ -30,14 +33,18 @@ import { HoraFormatoPipe } from './pipes/hora-formato.pipe';
     SortByNameAndLastNamePipe, BuscadorComponent, UsuarioPipe, HistoriaComponent, DatosTurnoPipe,
      FiltroDiasPipe,
      FechaHoraFormatoPipe,
-     HoraFormatoPipe
+     HoraFormatoPipe,
+     ResaltadorDirective,
+     IluminarDirective,
+     CrecerDirective
   ],
   exports : [
     LoaderComponent, EstadosPipe, EspecialidadesPipe, FechaStringPipe, 
     TipoUsuarioPipe, HeaderComponent, TurnosPipe, SortdiashorariosPipe, DuracionAtencionPipe,
     EspecialistasPipe, SortBySecondsPipe, SortByNamePipe, 
     SortByNameAndLastNamePipe, BuscadorComponent, UsuarioPipe, HistoriaComponent,DatosTurnoPipe,
-    FiltroDiasPipe,FechaHoraFormatoPipe, HoraFormatoPipe
+    FiltroDiasPipe,FechaHoraFormatoPipe, HoraFormatoPipe, 
+    ResaltadorDirective, IluminarDirective, CrecerDirective
   ],
   imports: [
     CommonModule,    

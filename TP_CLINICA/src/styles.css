@@ -93,3 +93,22 @@
     border-radius: 50px !important;
     background-color: #ffffff !important;
 }
+
+
+@keyframes efecto-titulo-luminoso {
+    0% {
+        text-shadow: 0 0 5px #11ff00;
+    }
+
+    50% {
+        text-shadow: 0 0 20px #ff0000, 0 0 30px #ff0000;
+    }
+
+    100% {
+        text-shadow: 0 0 5px #11ff00;
+    }
+}
+
+.titulo-luminoso{
+    animation: efecto-titulo-luminoso 2s infinite;
+}

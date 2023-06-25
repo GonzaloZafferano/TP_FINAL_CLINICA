@@ -6,3 +6,8 @@
 .entrada{
     -webkit-animation:shake-horizontal .8s cubic-bezier(.455,.03,.515,.955) both;animation:shake-horizontal .8s cubic-bezier(.455,.03,.515,.955) both
 }
+
+button{
+    font-size: 24px;
+    font-weight: 100;
+}

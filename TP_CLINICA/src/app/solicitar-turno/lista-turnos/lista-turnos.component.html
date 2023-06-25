@@ -9,7 +9,8 @@
             <ng-container *ngIf="turnos">
                 <div *ngIf="turnos.length > 0; else sinTurnos">
                     <div *ngFor="let turno of turnos | sortBySeconds">
-                        <div class="d-flex justify-content-between custom-pointer mx-0 border bg-light text-dark"
+                        <div class="d-flex justify-content-between  mx-0 border text-dark"
+                        [appResaltador]="'green'" 
                         [class.fila-seleccionada]="filaSeleccionada != null && turno.id === filaSeleccionada.id"
                         (click)="seleccionFila(turno)"
                         style="align-items: center;">
