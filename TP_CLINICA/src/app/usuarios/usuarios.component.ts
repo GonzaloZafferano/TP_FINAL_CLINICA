@@ -10,6 +10,8 @@ import { AuthService } from '../services/auth.service';
 import { LocalstorageService } from '../services/localstorage.service';
 import { ExcelService } from '../services/excel.service';
 import * as XLSX from 'xlsx';
+import { HorariosService } from '../services/horarios.service';
+import { SwalService } from '../services/swal.service';
 @Component({
   selector: 'app-usuarios',
   templateUrl: './usuarios.component.html',
@@ -28,11 +30,18 @@ export class UsuariosComponent {
   usuario: any;
   cargando: boolean = true;
   suscripcion: any;
+  todosLosTurnos: any;
+  suscripcionTurnos: any;
+  pacientes: any;
+  especialistas: any;
+
   constructor(private solicitudService: SolicitudesService,
+    private horarioService: HorariosService,
     private localStorage: LocalstorageService,
     private usuarioService: UsuarioService,
     private toastService: ToastService,
     private excelService: ExcelService,
+    private swalService: SwalService,
     private authService: AuthService, private router: Router) { }
 
   async ngOnInit() {
@@ -40,6 +49,23 @@ export class UsuariosComponent {
     this.ocultarBotones();
     this.obtenerUsuariosEnEspera();
     this.obtenerUsuarios();
+
+    this.suscripcionTurnos = this.horarioService.obtenerListadoDeItemsObservable().subscribe(x => {
+      this.todosLosTurnos = x.filter(x => x['ocupado']);
+      this.todosLosTurnos = this.ordenar(this.todosLosTurnos);
+    });
+  }
+
+  ordenar(array: any) {
+    return array.sort((a: any, b: any) => {
+      if (a.fechaSolicitud < b.fechaSolicitud) {
+        return -1;
+      }
+      else if (a.fechaSolicitud > b.fechaSolicitud) {
+        return 1;
+      }
+      return 0;
+    });
   }
 
   async obtenerUsuarioActual() {
@@ -54,6 +80,9 @@ export class UsuariosComponent {
 
     if (this.suscripcion)
       this.suscripcion.unsubscribe();
+
+    if (this.suscripcionTurnos)
+      this.suscripcionTurnos.unsubscribe();
   }
 
   cerrarSesion() {
@@ -102,6 +131,8 @@ export class UsuariosComponent {
 
     this.suscripcion = this.usuarioService.obtenerListadoDeUsuariosObservable().subscribe(x => {
       this.spinner = true;
+      this.pacientes = x.filter(x => x['perfil'] == Perfil.paciente);
+      this.especialistas = x.filter(x => x['perfil'] == Perfil.especialista);
       this.listadoUsuarios = x;
       this.spinner = false;
     });
@@ -130,6 +161,68 @@ export class UsuariosComponent {
       [pacientesEx, especialistasEx, adminsEx],
       'Usuarios', ['Pacientes', 'Especialistas', 'Administradores'],
       [40, 20, 20, 30, 10, 5, 15]);
+
+    this.cargando = false;
+  }
+
+  pacienteSeleccionado(usuario: any) {
+    this.cargando = true;
+    let turnosUsuario = this.todosLosTurnos.filter((x: any) => x?.paciente?.id == usuario.id);
+    if (turnosUsuario && turnosUsuario.length > 0) {
+
+      let pacienteExcel = turnosUsuario.map((x: any) => {
+        return {
+          Paciente: x.nombrePaciente,
+          Especialidad: x.especialidad,
+          Especialista: x.nombreEspecialista,
+          //Fecha_turno: x.fechaString,
+          Fecha_Solicitud: new Date(x.fechaSolicitud).toLocaleDateString(),
+          Estado_turno: x.estadoTurno,
+          Duracion_turno: x.fechaFinalizacion != undefined ? x.duracion + ' minutos.' : ' - ',
+          Fecha_Finalizacion: x.fechaFinalizacion != undefined ? new Date(x.fechaFinalizacion).toLocaleDateString() : ' - ',
+          Comentario_paciente: x.comentarioPaciente,
+          Comentario_medico: x.comentarioMedico
+        }
+      });
+
+      this.excelService.obtenerExcelDeVariasHojas(
+        [pacienteExcel],
+        'Turnos_paciente', ['Turnos_paciente'],
+        [40, 20, 40, /*20,*/ 20, 20, 20, 20, 40, 40]);
+    }else{
+      this.swalService.info('No se ecnontraron datos.')
+    }
+
+    this.cargando = false;
+  }
+
+  especialistaSeleccionado(usuario: any) {
+    this.cargando = true;
+    let turnosUsuario = this.todosLosTurnos.filter((x: any) => x?.medico?.id == usuario.id);
+    if (turnosUsuario && turnosUsuario.length > 0) {
+      let especialistaExcel = turnosUsuario.map((x: any) => {
+        return {
+          Especialista: x.nombreEspecialista,
+          Especialidad: x.especialidad,
+          Paciente: x.nombrePaciente,
+          // Fecha_turno: x.fechaString,
+          Fecha_Solicitud: new Date(x.fechaSolicitud).toLocaleDateString(),
+          Estado_turno: x.estadoTurno,
+          Duracion_turno: x.fechaFinalizacion != undefined ? x.duracion + ' minutos.' : ' - ',
+          Fecha_Finalizacion: x.fechaFinalizacion != undefined ? new Date(x.fechaFinalizacion).toLocaleDateString() : ' - ',
+          Comentario_paciente: x.comentarioPaciente,
+          Comentario_medico: x.comentarioMedico
+        }
+      });
+
+      this.excelService.obtenerExcelDeVariasHojas(
+        [especialistaExcel],
+        'Turnos_Especialista', ['Turnos_Especialista'],
+        [40, 20, 40,/* 20,*/ 20, 20, 20, 20, 40, 40]);
+
+    } else {
+      this.swalService.info('El especialista seleccionado no posee turnos ocupados.');
+    }
 
     this.cargando = false;
   }

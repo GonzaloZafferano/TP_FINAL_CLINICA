@@ -313,7 +313,7 @@ export class InformesComponent {
           //turnosPorEspecialista.push({ nombre: especialista.nombre, apellido: especialista.apellido, cantidadTurnos: cantidadTurnos });
         }
 
-        this.titulo = 'Turnos solicitados por médico entre ' + this.fechaInicio?.value + ' - ' + this.fechaFin?.value,
+        this.titulo = 'Turnos solicitados entre ' + this.fechaInicio?.value + ' - ' + this.fechaFin?.value,
           this.tituloPDF = 'TurnosSolicitadosPorMedico';
 
         setTimeout(() => {
@@ -365,7 +365,7 @@ export class InformesComponent {
           //turnosPorEspecialista.push({ nombre: especialista.nombre, apellido: especialista.apellido, cantidadTurnos: cantidadTurnos });
         }
         this.tituloPDF = 'TurnosFinalizadosPorMedico';
-        this.titulo = 'Turnos finalizados por médico entre ' + this.fechaInicio?.value + ' - ' + this.fechaFin?.value,
+        this.titulo = 'Turnos finalizados entre ' + this.fechaInicio?.value + ' - ' + this.fechaFin?.value,
 
           setTimeout(() => {
             this.mostrar = true;

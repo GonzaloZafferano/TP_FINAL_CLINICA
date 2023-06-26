@@ -1,4 +1,45 @@
-<div class="container-fluid p-0 m-0 entrada" >
+<div class="container-fluid p-0 m-0 entrada" >    
+    <div class="row w-100 bg-dark p-0 m-0">
+        <div class="col col-12 col-md-6 d-flex justify-content-center" style="flex-direction: column;">
+        <h3 class="text-center fw-bold text-light">Seleccione un paciente par descargar sus turnos</h3>
+        <div style="display: flex; flex-direction: row; justify-content: center;">
+    <div *ngFor="let paciente of pacientes" class="mat-typography">
+        <button mat-fab color="primary" style="height: 120px; width: 120px;"
+            (click)="pacienteSeleccionado(paciente)">
+            <div>
+                <mat-icon>
+                    <img style="border-radius: 50%; width: 70px; height: 70px;" [src]="paciente.imagen2">
+                </mat-icon>
+                <small class="d-block">
+                    {{paciente.apellido +', '+ paciente.nombre}}
+                </small>
+            </div>
+        </button>
+    </div>
+        </div>
+</div>
+
+<div class="col col-12 col-md-6 d-flex justify-content-center" style="flex-direction: column;">
+    <h3 class="text-center fw-boldf text-light">Seleccione un especialista par descargar sus turnos</h3>
+    <div style="display: flex; flex-direction: row; justify-content: center;">
+
+
+<div *ngFor="let especialista of especialistas" class="mat-typography">
+    <button mat-fab color="primary" style="height: 120px; width: 120px;"
+        (click)="especialistaSeleccionado(especialista)">
+        <div>
+            <mat-icon>
+                <img style="border-radius: 50%; width: 70px; height: 70px;" [src]="especialista.imagen">
+            </mat-icon>
+            <small class="d-block">
+                {{especialista.apellido +', '+ especialista.nombre}}
+            </small>
+        </div>
+    </button>
+</div>
+</div>
+</div>
+</div>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark" *ngIf="!ocultarNav">
         <div class="row w-100">
             <div class="col col-12 col-md-6">
@@ -14,7 +55,7 @@
             </ng-template> -->
             <div class="col col-12 col-md-6 d-flex justify-content-end">
                 <button (click)="descargarExcel()" [hidden]="!ocultarBotonUsuarios"
-                class="btn btn-success fs-4 fw-bold p-2 m-2">Descargar Excel</button>
+                class="btn btn-success fs-4 fw-bold p-2 m-2">Descargar Excel de Usuarios</button>
                 <button [hidden]="ocultarBotonUsuariosEnEspera" (click)="ocultarBotones('/usuarios/usuarios-en-espera')"
                     class="btn btn-warning p-2 m-2 fs-4 fw-bold" routerLink="usuarios-en-espera">Usuarios en espera
                     ({{getUsuarioEnEspera() == -1 ? '0' : getUsuarioEnEspera()}})</button>
